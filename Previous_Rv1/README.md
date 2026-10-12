@@ -4,7 +4,6 @@ Chang, Chen, et al., *Distinct critical network regimes facilitate memory encodi
 consolidation* — the version first submitted to Nature Neuroscience
 (`../112596_0_merged_pdf_1150299_td8mg9 (1).pdf`; 5 main figures, Extended Data 1–10).
 
-Everything here reproduces a figure of that PDF. Nothing has been re-analysed.
 
 ## Folders
 
@@ -16,40 +15,6 @@ Everything here reproduces a figure of that PDF. Nothing has been re-analysed.
 | `analysis_scripts/` | The scripts that made those data from the recordings (they need the raw data on the lab servers). |
 | `figure_output/` | Where the figure notebooks save their panels when you run them. |
 
-## How the figure notebooks were made
-
-Each notebook in `figure_scripts/` is the author's original notebook with one kind of change:
-the code that loaded data from the lab servers (pickles, MATLAB `.mat` files, raw recordings
-on `W:`, `V:`, `X:`, `Z:`) is replaced by reading a CSV. The original loading code is still in
-the notebook, commented out, directly below the CSV read. All processing, statistics and
-plotting code is unchanged. Save paths point at `../figure_output/`.
-
-`analysis_scripts/make_figure_csvs.py` did this. For every notebook it ran the original from the
-lab data, wrote the CSVs at the end of each loading block, wrote the copy, ran the copy, and
-checked that (1) every line the original prints after loading (statistics, n, p-values) is
-printed identically by the copy and (2) every figure file the copy saves is identical to the
-original's (vector paths, and pixel by pixel for rasterised parts). The results are listed in
-`analysis_scripts/make_figure_csvs_check.txt` (one line per build; the last line for a notebook is
-the current one).
-
-`csv/` is slimmed: bulk data that no panel uses is left out (the full exports stay in `csv_full/`,
-which is not in git). What was removed:
-
-- `Fig2_C_Example_replayprobalit`: the 40 ms rate series (MUA, pyramidal, interneuron) are cut to
-  14 200–14 700 s around the plotted 3-min window (14 350.6–14 530.6 s, hard-coded in the notebook);
-  they are smoothed over 30 s before being sampled there, so the panel is unchanged. One printout of
-  that notebook (a whole-session mean E/I ratio, not in any panel) therefore differs and is not
-  compared.
-- `Fig2_G_Example_branchingratio`: `ripple_events.csv` keeps only `start`, `stop`, `peaks`.
-- `Fig2_E_replay_non_replay` reads the same table as `Fig2_D_E_...` (panel 2e) instead of a copy.
-
-- `FigS10_eplipsy`: no spike times (see Extended Data 10 below).
-
-No CSV holds spike times. Kept whole on purpose: the window- and event-level tables (every d2 window,
-every SWR), because the statistics (mixed models, paired tests, histograms) run on them; and the
-session-wide 40 ms population rate of the two example sessions (`Fig1_C`, `FigS5_A`; binned counts,
-not spikes), because the panel clips the trace at the 99.5th percentile of the whole session and the
-notebook interpolates the session's 30 s-smoothed rate at every d2 window.
 
 ## Running
 
@@ -165,12 +130,6 @@ Output files:
   `S3_F_pooled_CA3_E_FR_per_unit_vs_ripple_tiles.svg`, `S3_G_model_pooled_CA2_E_FR_per_unit_vs_barrage_tiles.svg`.
 - ED 5, 6: `HP18_hp18_day36_20250510_MUA_d2_example.svg`, `figS5_*.svg`, `figS6*.svg`, `fig2_A_pre_vs_postsleep_perfile_paired.svg` (rats).
 - ED 10: `branching_ratio_comparison_epilepsy.svg`.
-
-**ED 10 ships no spike times.** The notebook starts from the spike times of the CA1 units. The CSVs
-instead hold what it computes from them: avalanche sizes and durations, and the branching ratio of
-every window. The cells that read and bin the spikes are commented out in the copy, as for every
-loading block. The epochs are hand-set in the notebook and stay as written. The avalanche plots in
-that notebook are drawn on screen only; the saved panel and the statistics use the branching ratios.
 
 ## Not here yet
 
