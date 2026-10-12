@@ -1,0 +1,6 @@
+name,startTime,stopTime,environment,behavioralParadigm,notes,manipulation,stimuli,basepath
+presleep_230706_101325,0.0,7747.95515,sleep,,,,,W:\data\PPP\PPP8\day8
+T_long_230706_123014,7747.9552,10138.29755,T_maze,1.0,,,,W:\data\PPP\PPP8\day8
+midsleep_230706_132205,10138.2976,16915.05275,sleep,,,,,W:\data\PPP\PPP8\day8
+T_long2_230706_151914,16915.0528,19030.14395,T_maze,1.0,,,,W:\data\PPP\PPP8\day8
+postsleep_230706_155635,19030.144,26253.07515,sleep,,postsleep animal eye was  not fully open,,,W:\data\PPP\PPP8\day8

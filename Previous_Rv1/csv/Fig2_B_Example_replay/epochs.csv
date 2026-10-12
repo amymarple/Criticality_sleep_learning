@@ -1,0 +1,7 @@
+name,startTime,stopTime,environment,manipulation,behavioralParadigm,stimuli,notes,basepath
+preSleep_240116_093523,0.0,8769.33115,sleep,,,,,W:\data\PPP\PPP21\day4
+freeT1_240116_120846,8769.3312,10538.93115,T_maze,,,,,W:\data\PPP\PPP21\day4
+midSleep_240116_124208,10538.9312,18445.70235,sleep,,,,,W:\data\PPP\PPP21\day4
+freeT2_240116_150038,18445.7024,20110.01595,T_maze,,,,,W:\data\PPP\PPP21\day4
+postSleep_240116_153138,20110.016,22194.51515,sleep,,,,,W:\data\PPP\PPP21\day4
+postSleep_240116_160634,22194.5152,28315.75035,sleep,,,,,W:\data\PPP\PPP21\day4

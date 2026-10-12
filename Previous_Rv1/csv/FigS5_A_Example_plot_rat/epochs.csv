@@ -1,0 +1,7 @@
+name,startTime,stopTime,environment,behavioralParadigm,manipulation,stimuli,notes,basepath
+hp18_probe_250510_103205,0.0,672.78715,cheeseboard,,,,,V:\data\hpc_ctx_project\HP18\hp18_day36_20250510
+hp18_presleep_250510_104939,672.7872,6795.07835,sleep,,,,,V:\data\hpc_ctx_project\HP18\hp18_day36_20250510
+hp18_cheeseboard1_250510_123603,6795.0784,9961.59355,cheeseboard,reward_swap,,,,V:\data\hpc_ctx_project\HP18\hp18_day36_20250510
+hp18_postsleep1_250510_133447,9961.5936,16732.74875,sleep,,,,,V:\data\hpc_ctx_project\HP18\hp18_day36_20250510
+hp18_cheeseboard2_250510_153307,16732.7488,19367.35995,cheeseboard,reward_swap,,,,V:\data\hpc_ctx_project\HP18\hp18_day36_20250510
+hp18_postsleep2_250510_162249,19367.36,28202.96315,sleep,,,,,V:\data\hpc_ctx_project\HP18\hp18_day36_20250510
