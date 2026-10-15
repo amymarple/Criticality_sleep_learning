@@ -250,6 +250,6 @@ The bootstraps are drawn from these tables; the notebook runs no analysis script
 | d | `d_sextiles.csv`: ISI entropy by SWR-rate sextile; `d_session_rho.csv`: per-session ρ (the star) | [`ed_nonoverlap.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap.py) (thinned, row-aligned with `rat_d2_windows_by_state.csv`) ← [`notebooks/exploration/MUA_sleepstage_rat.ipynb`](analysis_scripts/notebooks/exploration/MUA_sleepstage_rat.ipynb) |
 | f | `f_sextiles.csv`: d2 and ISI entropy by BARR-rate sextile | [`ed_nonoverlap_rats_tiles.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap_rats_tiles.py) ← `data/rats/ripple_barr/isi/*.pkl` (per window) ← rat barrage sessions (AB4, AYA6, AYA7, AYA10) |
 
-f is drawn as submitted, on rank sextiles of BARR rate; the stars are the trend over the 6 sextile means (n = 6).
+
 
 
