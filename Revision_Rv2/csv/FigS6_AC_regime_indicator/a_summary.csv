@@ -1,0 +1,6 @@
+predictor,n_sessions,p_signrank
+d2_bg,11,0.0009765625
+MUA_bg,11,0.51953125
+fano_bg,11,0.5771484375
+sync_bg,11,0.7001953125
+EI_bg,11,0.240234375

@@ -1,0 +1,6 @@
+panel,arm,test,contrast,n_sessions,p,rho_wmean_fisher,n_files_tested
+1d,D_disjoint,"paired session medians, signed-rank",Sleep - Wake,18,0.0023345947265625,,
+1e,B_corrected_all,"per-file Spearman(d2 bin, MUA dyn range) + Stouffer, one-sided decreasing",NREM,18,0.00033183026726008524,-0.43783414742513876,17.0
+1e,B_corrected_all,"per-file Spearman(d2 bin, MUA dyn range) + Stouffer, one-sided decreasing",REM,16,0.00019326122506075846,-0.5090697645677389,14.0
+1e,B_corrected_all,"per-file Spearman(d2 bin, MUA dyn range) + Stouffer, one-sided decreasing",THETA,17,2.171782792910666e-10,-0.7755281230227477,15.0
+1e,B_corrected_all,"per-file Spearman(d2 bin, MUA dyn range) + Stouffer, one-sided decreasing",non-THETA,18,2.1373969676969656e-17,-0.8409341627598003,17.0

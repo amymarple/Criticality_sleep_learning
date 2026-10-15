@@ -1,0 +1,11 @@
+panel,quantity,value,test
+a,p,0.00014623915190606628,one-sided Wilcoxon signed-rank of the session fractions against 0.5
+b,p,0.016523854947347143,"mixed model S2 x novel (animal, session nested): the star"
+b,p_permutation,0.07795146030440148,exact permutation (24310 assignments)
+c,p,2.03e-09,that mixed model: the star
+d,R2,0.903,linear trend of the six sextile means (n = 6)
+d,p,0.004,that trend: the star
+e,bin_ms,1.9339659613085887,1x the mean inter-event interval (axis label)
+f,p_DCC,0.0155029296875,"paired Wilcoxon signed-rank, high vs low: the star"
+f,p_KS,0.00213623046875,"paired Wilcoxon signed-rank, high vs low: the star"
+g,p,0.010986328125,"paired Wilcoxon signed-rank, high vs low tercile: the star"

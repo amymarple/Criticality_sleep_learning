@@ -1,0 +1,37 @@
+part,model,variable,session,b1
+ladder,d2,d2_excised,PPP20_day4,0.04685220664797988
+ladder,d2,d2_excised,PPP20_day5,0.05502571159302455
+ladder,d2,d2_excised,PPP21_day4,0.12083487165564531
+ladder,d2,d2_excised,PPP21_day5,0.07212898787806529
+ladder,d2,d2_excised,PPP23_day7,0.04381710775176266
+ladder,d2,d2_excised,PPP23_day8,0.040541300959098574
+ladder,d2,d2_excised,PPP4_day11,0.15532163428430576
+ladder,d2,d2_excised,PPP7_day8,0.1229677797376742
+ladder,d2,d2_excised,PPP8_day8,0.038331256789245184
+ladder,+ SWR rate,d2_excised,PPP20_day4,0.0304554440607929
+ladder,+ SWR rate,d2_excised,PPP20_day5,0.0492918334630532
+ladder,+ SWR rate,d2_excised,PPP21_day4,0.0849460769238813
+ladder,+ SWR rate,d2_excised,PPP21_day5,0.06555868550149846
+ladder,+ SWR rate,d2_excised,PPP23_day7,0.02890043169002595
+ladder,+ SWR rate,d2_excised,PPP23_day8,0.027922671051088185
+ladder,+ SWR rate,d2_excised,PPP4_day11,0.15594569723454083
+ladder,+ SWR rate,d2_excised,PPP7_day8,0.12077850490969477
+ladder,+ SWR rate,d2_excised,PPP8_day8,0.03316176360920972
+ladder,+ amplitude,d2_excised,PPP20_day4,0.029522443242529596
+ladder,+ amplitude,d2_excised,PPP20_day5,0.05014741540079784
+ladder,+ amplitude,d2_excised,PPP21_day4,0.0745727025139843
+ladder,+ amplitude,d2_excised,PPP21_day5,0.05212543829213738
+ladder,+ amplitude,d2_excised,PPP23_day7,0.02229297232832482
+ladder,+ amplitude,d2_excised,PPP23_day8,0.019377475067246176
+ladder,+ amplitude,d2_excised,PPP4_day11,0.18053477503969198
+ladder,+ amplitude,d2_excised,PPP7_day8,0.09309068698841981
+ladder,+ amplitude,d2_excised,PPP8_day8,0.01100513177487935
+ladder,+ duration,d2_excised,PPP20_day4,0.026583061403142837
+ladder,+ duration,d2_excised,PPP20_day5,0.047346010819207536
+ladder,+ duration,d2_excised,PPP21_day4,0.0730629875881096
+ladder,+ duration,d2_excised,PPP21_day5,0.04942868732126485
+ladder,+ duration,d2_excised,PPP23_day7,0.022522514173800127
+ladder,+ duration,d2_excised,PPP23_day8,0.02070151130812517
+ladder,+ duration,d2_excised,PPP4_day11,0.17617439012733238
+ladder,+ duration,d2_excised,PPP7_day8,0.06764453117154767
+ladder,+ duration,d2_excised,PPP8_day8,0.012324285784217124

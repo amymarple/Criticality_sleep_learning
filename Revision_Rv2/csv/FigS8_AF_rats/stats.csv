@@ -1,0 +1,13 @@
+panel,quantity,value,test
+a,p,0.0347900390625,"session-paired Wilcoxon signed-rank, post vs pre"
+b,p,8.344650268554688e-07,"session-paired Wilcoxon signed-rank, SWRs vs shuffle: the inset star"
+e,p,0.0068359375,"session-paired Wilcoxon signed-rank, BARRs vs shuffle: the inset star"
+c,slope_replay,0.5177009541771541,"linear trend over the 6 sextile means (n = 6), replay SWRs"
+c,slope_nonreplay,0.2493090259548272,"same, non-replay SWRs"
+c,slope_difference,-0.268392,non-replay - replay
+c,p_difference,0.0209,"slope difference, t-test (n_points = 12)"
+d,p,2.980232238769531e-07,"per session Spearman rho(entropy, SWR rate) over windows, Wilcoxon signed-rank of the rhos"
+f,r_d2,-0.888,linear trend over the 6 sextile means (n = 6)
+f,p_d2,0.018,that trend: the star
+f,r_isi,0.849,linear trend over the 6 sextile means (n = 6)
+f,p_isi,0.032,that trend: the star

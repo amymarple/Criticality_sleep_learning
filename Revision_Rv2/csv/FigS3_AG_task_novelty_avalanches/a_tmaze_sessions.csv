@@ -1,0 +1,18 @@
+session,animal,n_trials,n_correct,two_mazes,figures,frac_correct,mouse_label,mouse_color
+PPP20_day4,PPP20,70.0,64,False,Fig1+Fig2-replay,0.9142857142857144,Mouse 4,#1f77b4
+PPP20_day5,PPP20,76.0,61,False,Fig1+Fig2-replay,0.8026315789473685,Mouse 4,#1f77b4
+PPP20_day7,PPP20,74.0,61,True,Fig1,0.8243243243243243,Mouse 4,#1f77b4
+PPP20_day8,PPP20,71.0,52,True,Fig1,0.7323943661971831,Mouse 4,#1f77b4
+PPP20_day9,PPP20,77.0,62,True,Fig1,0.8051948051948052,Mouse 4,#1f77b4
+PPP21_day4,PPP21,80.0,65,False,Fig1+Fig2-replay,0.8125,Mouse 5,#ff7f0e
+PPP21_day5,PPP21,86.0,71,False,Fig1+Fig2-replay,0.8255813953488372,Mouse 5,#ff7f0e
+PPP21_day7,PPP21,77.0,63,True,Fig1,0.8181818181818182,Mouse 5,#ff7f0e
+PPP21_day8,PPP21,75.0,60,True,Fig1,0.8,Mouse 5,#ff7f0e
+PPP23_day7,PPP23,79.0,69,False,Fig1+Fig2-replay,0.8734177215189873,Mouse 6,#2ca02c
+PPP23_day8,PPP23,75.0,55,False,Fig1+Fig2-replay,0.7333333333333333,Mouse 6,#2ca02c
+PPP4_day11,PPP4,31.0,26,False,Fig1+Fig2-replay,0.8387096774193549,Mouse 1,#8c564b
+PPP7_day12,PPP7,46.0,33,True,Fig1+Fig3-barrage,0.717391304347826,Mouse 2,#d62728
+PPP7_day14,PPP7,37.0,29,True,Fig1,0.7837837837837838,Mouse 2,#d62728
+PPP7_day8,PPP7,48.0,39,False,Fig2-replay,0.8125,Mouse 2,#d62728
+PPP8_day14,PPP8,67.0,54,True,Fig1,0.8059701492537313,Mouse 3,#9467bd
+PPP8_day8,PPP8,52.0,36,False,Fig1+Fig2-replay,0.6923076923076923,Mouse 3,#9467bd

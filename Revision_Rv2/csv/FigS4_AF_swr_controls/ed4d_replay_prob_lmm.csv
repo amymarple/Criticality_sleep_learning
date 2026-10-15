@@ -1,0 +1,3 @@
+data,arm,model,p,n_sessions
+non-overlapping (ED 4d),full window,random intercept + slope,0.008454583048411034,9
+non-overlapping (ED 4d),ripple-excised,random intercept + slope,1.2111638370390695e-07,9

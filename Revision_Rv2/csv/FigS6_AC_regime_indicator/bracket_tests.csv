@@ -1,0 +1,5 @@
+panel,comparison,p_paired_holm
+b,d2 - MUA_bg,0.078
+b,d2 - EI_bg,0.002
+b,d2 - fano_bg,0.009000000000000001
+b,d2 - sync_bg,0.024

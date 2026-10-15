@@ -1,0 +1,2 @@
+panel,model,p,n_sessions,n_animals
+h ISI entropy (bits),C(animal) + (1 + rate|session),0.01589389116759547,12,5
