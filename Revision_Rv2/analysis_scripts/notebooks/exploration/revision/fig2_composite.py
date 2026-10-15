@@ -16,7 +16,7 @@ Panels (b, c are the example panels of the submitted figure and are not reproduc
   e' the matched-rate panel on common support (5.4's replacement, embedded)           [fig2e_nonoverlap_panel.png]
   f  binomial ladder: log-odds of replay per SD of ripple-excised d2, 4 rungs           [metric_replay_ladder.csv]
   g  peri-ripple branching-ratio PSTH, ripple-excised, EXAMPLE session PPP21_day5
-     (shade = SEM over its ripples, as submitted), inset = per-session change (9)       [fig2g_psth_*_PPP21_day5.csv, fig2g_psth_nine_sessions.csv]
+     (shade = SEM over its ripples), inset = per-session change (9)       [fig2g_psth_*_PPP21_day5.csv, fig2g_psth_nine_sessions.csv]
   h  ISI entropy vs SWR-rate sextile, raw units, both arms                             [fig2_agh_nine_sessions.csv]
 
     -> reports/revision_figs/fig2_composite_nine_sessions.png / .svg
@@ -91,8 +91,7 @@ def main():
     (ax_a, ax_d, ax_e, ax_e2), (ax_f, ax_g, ax_h, ax_x) = axes
 
     # f' -- the final Fig 2f panel: replay-rate ablation of d2 / MUA / FR std | MUA / E/I
-    # with the mixed model's stars and brackets, drawn by fig2f_standalone.draw so it is
-    # the same panel as the standalone fig2f_standalone_excised.png
+    # with the mixed model's stars and brackets, drawn by fig2f_standalone.draw
     from fig2f_standalone import compute as fig2f_compute, draw as fig2f_draw
     fig2f_draw(ax_x, fig2f_compute(), compact=True)
     ax_x.set_title("f′  ablation, mixed-model test", loc="left", fontweight="bold")
@@ -140,7 +139,7 @@ def main():
     ax_d.set_title("d", loc="left", fontweight="bold")
     _despine(ax_d)
 
-    # e (native, the submitted form) --------------------------------------
+    # e (native) --------------------------------------
     for col, c, fmt, lab in (("rate_in", DARK, "o-", "replay SWRs"), ("rate_out", RED, "s--", "non-replay SWRs")):
         rows = []
         for s_, g in W.groupby("session"):
@@ -196,7 +195,7 @@ def main():
     ax_f.set_title("f", loc="left", fontweight="bold")
     _despine(ax_f)
 
-    # g (example session, as submitted) ------------------------------------
+    # g (example session) ------------------------------------
     EX = "PPP21_day5"
     Ce = pd.read_csv(os.path.join(LOGDIR, f"fig2g_psth_curves_{EX}.csv"))
     Ce = Ce[Ce.arm == "excised"].sort_values("lag_s")

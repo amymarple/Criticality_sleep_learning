@@ -6,8 +6,8 @@ Three variants of the ripple-excised d2 ladder, same windows:
   A. Background covariates: MUA_bg and MUA_std_bg are the mean and SD of the 40 ms population
      rate over the ripple-excised part of each 30 s window (raw ripple start/stop, as the
      published d2 excises), so every predictor is a property of the state between events.
-     The in-ripple versions (MUA and MUA_std computed with ripples included) are recomputed
-     the same way as a check against the pickle's MUA / MUA_std.
+     The in-ripple versions (MUA and MUA_std, computed with ripples included) are recomputed
+     the same way.
   B. Measurement-error correction (regression calibration): per session,
      lambda* = 1 - sigma_err^2 / var(d2 | covariates), with sigma_err from the delta-method
      error bar (excised arm: a fixed ratio to d2; published arm: d2_err from the error-bar
@@ -45,13 +45,13 @@ from r35_swr_property_control import SESSIONS                            # noqa:
 from r35_background_vs_ripple import load_d2_mat                         # noqa: E402
 
 BIN = 0.04
-ERR_RATIO_EXCISED = 0.216        # delta-method sd / d2 ratio, validated against the published arm's d2_err
+ERR_RATIO_EXCISED = 0.216        # delta-method sd / d2 ratio (excised arm)
 OUT_CSV = os.path.join(LOGDIR, "fig2f_background_state_glm.csv")
 OUT_WIN = os.path.join(LOGDIR, "fig2f_background_state_windows.csv")
 
 # (tag, predictors, label). First predictor is the one whose b is reported as b1.
 MODELS = [
-    # the ladder as it was (in-ripple covariates), for reference on the same table
+    # in-ripple covariates
     ("M1",  ["d2_z"],                                        "d2"),
     ("M3",  ["d2_z", "MUA_z", "MUA_std_z"],                  "d2 + MUA + MUA_std   (in-ripple)"),
     ("M5",  ["d2_z", "MUA_z", "MUA_std_z", "rate_z"],        "d2 + MUA + MUA_std + rate (in-ripple)"),
@@ -72,16 +72,11 @@ def window_fr_std(units, ripples, centers):
     """Across-neuron ("spatial") SD of the per-neuron rate in each window, with and without
     the bins that overlap a ripple. Returns (fr_std, fr_std_bg, fr_mean_bg).
 
-    This is Fig 2F's third feature (generate_GLM.ipynb cell 4): per-neuron rate over
-    [c-15, c+15) with searchsorted 'left' at both ends, SD across neurons with ddof=0 --
-    not the 30 s rolling temporal SD that the same notebook stores as MUA_std in cells 5-7.
-    The two are different variables.
-
-    The full-window value is computed on the same 40 ms grid as the excised one rather
-    than by direct searchsorted on [c-15, c+15), so the two differ only by the mask; the
-    grid spans the window exactly (750 x 40 ms = 30 s), reproducing cell 4. fr_mean_bg is
-    the across-neuron mean on the excised bins, the per-neuron analogue of MUA_bg, kept so
-    the covariate set matches Fig 2F.
+    Per-neuron rate over [c-15, c+15) with searchsorted 'left' at both ends, SD across
+    neurons with ddof=0 -- not the 30 s rolling temporal SD stored as MUA_std; the two
+    are different variables. The full-window value uses the same 40 ms grid as the
+    excised one, differing only by the mask (750 x 40 ms = 30 s). fr_mean_bg is the
+    across-neuron mean on the excised bins, the per-neuron analogue of MUA_bg.
     """
     r0 = np.sort(ripples[:, 0])
     r1 = ripples[:, 1][np.argsort(ripples[:, 0])]

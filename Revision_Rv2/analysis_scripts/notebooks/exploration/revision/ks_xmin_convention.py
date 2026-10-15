@@ -18,8 +18,7 @@ freexmin_sweep.py uses that same call, so the free arm here reproduces it.
 
 Reuses the repo's own detection and ripple-rate code (`avalanche_ripple.detect`,
 `ripple_rate_at`) so the avalanches are the same avalanches used throughout this analysis.
-Bins are per-session multiples of the mean IEI; 1x is the validated bin, 2x included as the
-marginal case.
+Bins are per-session multiples of the mean IEI; 1x is the primary bin, 2x the marginal case.
 
     -> data/revision/log/ks_xmin_convention.csv
 """

@@ -43,13 +43,8 @@ SYNC_AGG = 2
 # 200 = the d2-kernel-matched choice (200*4ms = 796 ms vs d2's p*dt = 800 ms).
 # 2500 = Wilting & Priesemann's own rat k_max (10 s), the fit range at which the
 # state-level m passes their H_offset/H_tau consistency tests; a 30 s window
-# (7500 bins) reaches this lag. Validated against a known-m branching process
-# before use.
+# (7500 bins) reaches this lag.
 #
-# COST. fit_m's grid scan is O(n_grid * k_max) with n_grid = 1560, so a k_max=2500
-# fit costs roughly an order of magnitude more per window per population than
-# k_max=200. Against the windows left after STATE_WINDOW_CAP (run_fig1_metrics.py),
-# the full sweep below takes several hours for all 18 sessions.
 # Do NOT thin with --max-windows to save time -- it is proportional, so it deletes
 # THETA and REM. Adjust STATE_WINDOW_CAP instead.
 K_MAX_SWEEP = (25, 50, 100, 200, 500, 1000, 2500)
@@ -63,7 +58,7 @@ STATES = ("THETA", "nonTHETA", "REM", "NREM")
 
 
 # ----------------------------------------------------------------------------
-# Interval algebra (mirrors generate_branching_ratio_mouse.ipynb)
+# Interval algebra
 # ----------------------------------------------------------------------------
 def shrink_intervals(iv, guard=GUARD_S):
     iv = np.asarray(iv, float)
@@ -189,10 +184,8 @@ def _fit_exp_wls(kk, rr, w):
     """Global weighted least-squares fit of r_k = b*m^k. Returns (m, b).
 
     Variable projection reduces this to a smooth 1-D problem in m, solved by a
-    grid scan plus golden-section refinement. Replaces scipy.optimize.curve_fit,
-    which routes through scipy.linalg -- unusable in this env (missing LAPACK
-    libraries) -- and which, being a local optimiser from a single start, could
-    also settle into a local minimum.
+    grid scan plus golden-section refinement, which guarantees a global optimum
+    rather than converging to a local minimum from a single start.
     """
     sum_wrr = float(np.dot(w, rr * rr))
     sse = _wls_sse(_M_GRID, kk, rr, w, sum_wrr)
@@ -229,9 +222,7 @@ def active_unit_counts(unit_spikes, t0, t1, bin_s=BIN_BR_S):
     """A_t = number of *units active* per bin, not total spikes.
 
     This is the input `generate_branching_ratio_mouse.ipynb` feeds to MR_estimation
-    (`A_t = np.count_nonzero(spike_matrix, axis=0)`), so the revision numbers stay
-    comparable with the stored per-session results. The difference from a pooled
-    spike count is negligible (<0.003 in m).
+    (`A_t = np.count_nonzero(spike_matrix, axis=0)`).
     """
     n = max(int(round((t1 - t0) / bin_s)), 1)
     A = np.zeros(n, np.int64)
@@ -251,7 +242,7 @@ def rk_curve(activity, k_max=K_MAX_REF):
     Exact, but O(N log N) instead of O(N*k_max): the cross term
     sum_i A[i]*A[i+k] is the raw autocorrelation, obtained for all lags at once
     by FFT; every other term comes from prefix sums. Identical to looping
-    scipy.stats.linregress over lags, ~100x faster at k_max=200.
+    scipy.stats.linregress over lags.
     """
     A = np.asarray(activity, float)
     N = A.size
@@ -391,9 +382,9 @@ def tau_ms(m, dt_s=BIN_BR_S):
 # Window-level metrics
 # ----------------------------------------------------------------------------
 def isi_entropy(spike_times, n_bins=ISI_N_BINS):
-    """Shannon entropy (bits) of the log10(ISI) distribution — unchanged from
-    generate_ISI_entropy_ripple.ipynb. Scale-invariant: a rate change translates
-    log10(ISI), the auto-ranged histogram translates with it, entropy is unchanged."""
+    """Shannon entropy (bits) of the log10(ISI) distribution. Scale-invariant: a
+    rate change translates log10(ISI), the auto-ranged histogram translates with
+    it, entropy is unchanged."""
     st = np.asarray(spike_times, float)
     st = np.unique(st[np.isfinite(st)])
     if st.size < 3:

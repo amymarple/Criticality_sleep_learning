@@ -17,8 +17,8 @@ Metrics (the "d2 seat"):
     isi_entropy_pooled    pooled log-ISI entropy, full window
     isi_excised           pooled log-ISI entropy, ripple-free sub-windows
 Ladder: M1 metric | M2 + MUA | M5 + MUA + SWR rate. b1 = log-odds of replay per +1
-within-session SD. FR_STD=1 inserts a FR_std rung, EI=1 FR_std + E/I rungs, MUA_STD=1 the older
-MUA_std ladder; BG=1 puts MUA and FR_std in the seat (bg_main). The seat-rotation figure
+within-session SD. FR_STD=1 inserts a FR_std rung, EI=1 FR_std + E/I rungs, MUA_STD=1 an
+alternate MUA_std ladder; BG=1 puts MUA and FR_std in the seat (bg_main). The seat-rotation figure
 (d2 / MUA / SWR rate, and the joint model) is fig2f_seat_ladders.py, which reads the window
 table this script writes.
 
@@ -51,19 +51,19 @@ OUT = os.path.join(LOGDIR, "metric_replay_ladder.csv")
 METRICS = [("d2_excised", "d2, ripple-excised"), ("d2_published", "d2, full window"),
            ("BR_excised", "BR, ripple-excised"), ("BR_pyr_k200", "BR, full window"),
            ("isi_excised", "ISI entropy, ripple-excised"), ("isi_entropy_pooled", "ISI entropy, full window")]
-# Covariate set = the submitted Fig 2F's (d2, MUA, FR_std), cumulative, then SWR rate (E/I also
-# tried). FR_std is the across-neuron SD of per-neuron rates in the window (generate_GLM.ipynb
-# cell 4; computed here with fig2f_background_state_glm.window_fr_std on the full window), E/I is
-# the Fig-1 pickle's EI_logratio. MUA_std remains available as an alternative rung (MUA_STD=1).
+# Covariate set = the submitted Fig 2F's (d2, MUA, FR_std), cumulative, then SWR rate. FR_std is
+# the across-neuron SD of per-neuron rates in the window (generate_GLM.ipynb; computed here with
+# fig2f_background_state_glm.window_fr_std on the full window), E/I is the Fig-1 pickle's
+# EI_logratio. MUA_std remains available as an alternative rung (MUA_STD=1).
 MODELS = [("M1", ["m_z"], "metric"),
           ("M2", ["m_z", "MUA_z"], "+ MUA"),
           ("M5", ["m_z", "MUA_z", "rate_z"], "+ SWR rate")]
-if os.environ.get("FR_STD"):   # inserts the FR_std rung (forms a suppressor pair with MUA); FR_STD=1 restores it
+if os.environ.get("FR_STD"):   # inserts the FR_std rung (forms a suppressor pair with MUA); FR_STD=1 enables it
     MODELS = [("M1", ["m_z"], "metric"),
               ("M2", ["m_z", "MUA_z"], "+ MUA"),
               ("M3", ["m_z", "MUA_z", "FR_std_z"], "+ FR_std"),
               ("M5", ["m_z", "MUA_z", "FR_std_z", "rate_z"], "+ SWR rate")]
-if os.environ.get("EI"):   # inserts the E/I rung (absorbs part of d2's coefficient); EI=1 restores it
+if os.environ.get("EI"):   # inserts the E/I rung (absorbs part of d2's coefficient); EI=1 enables it
     MODELS = [("M1", ["m_z"], "metric"),
               ("M2", ["m_z", "MUA_z"], "+ MUA"),
               ("M3", ["m_z", "MUA_z", "FR_std_z"], "+ FR_std"),
@@ -77,7 +77,7 @@ if os.environ.get("MUA_STD"):
 
 
 def add_fr_std(W):
-    """Across-neuron SD of per-neuron rate per window, all CA1 units (as cell 4)."""
+    """Across-neuron SD of per-neuron rate per window, all CA1 units."""
     from neuro_py.io import loading
     from r35_swr_property_control import SESSIONS
     from fig2f_background_state_glm import window_fr_std

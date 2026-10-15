@@ -2,26 +2,26 @@
 one change: each window's d2 replaced by its background d2.
 
 Fig. 3g compares presleep and postsleep d2 in the seven Sncg sessions. Its d2 is the full-window
-value, so ripples and barrages inside a window enter it. The background d2 (every ripple and
-barrage interval excised) had not been computed on these sessions.
+value, so ripples and barrages inside a window enter it; the background d2 excises every ripple
+and barrage interval.
 
-Everything else is the submitted pipeline:
+Everything else is the published pipeline:
   * Rows: the stored pickles `data/ripple_barr/manipulation/sncg/*.pkl`. `fig3g_reproduce.py`
     asserts that each pickle's rows are the first N NREM windows of each epoch of its source
     `.mat` (CA1+CA2, 80 ms bins, 60 s windows, order 20, for six sessions; the 40 ms / 30 s `.mat`
     for SNCG06_day27), so row k of an epoch is the k-th `.mat` window of that epoch; its centre is
     taken from the `.mat`.
   * Units: those the `.mat` pooled (`params.brain_region`, matched by `contains` as the MATLAB
-    worker does, no firing-rate filter; the selection matched on params.n_cells / total_spikes,
-    since labels were re-curated after some files were written); all units pooled into one train.
+    worker does, no firing-rate filter; selection matched on params.n_cells / total_spikes); all
+    units pooled into one train.
   * Intact d2 recomputed per window with `d2_yw_matlab_match.d2_yw_segments` on the whole window at
-    the `.mat`'s bin and order -- checked against the `.mat` d2 before the background arm is trusted.
+    the `.mat`'s bin and order.
   * Background d2: the same estimator on the window minus every ripple and barrage interval
     (`load_ripples_events`, `load_barrage_events`), event-free runs >= 1 s
     (`r16_glue_control.free_segments`, MIN_FREE_S), autocovariance within segments.
   * Statistics: `fig3g_reproduce.resample` (1 000 rows per session x epoch, seed 0) and
-    `fig3g_reproduce.lmm` (d2 ~ C(epoch) + C(animal), random intercept per session), unchanged;
-    plus the session-level paired comparison (`session_level`).
+    `fig3g_reproduce.lmm` (d2 ~ C(epoch) + C(animal), random intercept per session); plus the
+    session-level paired comparison (`session_level`).
 
     -> data/revision/log/fig3g_background_windows.csv   (per pickle row: epoch, centre, d2 arms)
     -> data/revision/log/fig3g_background.csv           (LMM and session statistics per arm)
@@ -75,9 +75,9 @@ def mat_source(bp, tag):
 
 
 def pooled_spikes(bp, prm):
-    """The units the .mat pooled. Labels were re-curated after some .mat files were written, so the
-    candidate selections are tried in order and the one whose cell count and spike total match
-    params.n_cells / total_spikes is used: the .mat's regions, CA1 + CA2, all units."""
+    """The units the .mat pooled: candidate selections (the .mat's regions, CA1 + CA2, all units)
+    are tried in order, and the one whose cell count and spike total match params.n_cells /
+    total_spikes is used."""
     from neuro_py.io import loading
     st, cm = loading.load_spikes(bp)
     lab = cm.brainRegion.astype(str).str.upper()

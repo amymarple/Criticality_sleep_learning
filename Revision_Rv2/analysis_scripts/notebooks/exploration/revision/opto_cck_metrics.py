@@ -102,8 +102,7 @@ def load_units(bp, population="CA1"):
     from neuro_py.io import loading
     st, cm = loading.load_spikes(basepath=bp)
     state_dict = loading.load_SleepState_states(bp)
-    # a state with a single bout comes back as shape (2,), which
-    # fig1_metrics.shrink_intervals cannot index — normalise to (n, 2)
+    # normalise single-bout state arrays to shape (n, 2)
     for k, v in list(state_dict.items()):
         a = np.asarray(v, float)
         if a.ndim == 1 and a.size == 2:

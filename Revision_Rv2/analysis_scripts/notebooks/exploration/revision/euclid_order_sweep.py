@@ -130,9 +130,8 @@ def one_session(bp):
                     # unit normal is (1..1)/sqrt(p), so the distance is closed-form.
                     rec[f"d2ex_p{p}"] = abs(1.0 - s) / np.sqrt(p)
                     rec[f"sumphi_p{p}"] = s
-                    # QR projection (calc_dbv1.m port), kept to document its divergence
-                    # from the exact value at p>=30, where cond(X) ~ 1e17 exceeds
-                    # double precision; valid through p=20.
+                    # QR projection (calc_dbv1.m port); diverges from the exact value at
+                    # p>=30, where cond(X) ~ 1e17 exceeds double precision -- valid through p=20.
                     rec[f"d2qr_p{p}"] = euclid_db(phi)
                     rec[f"phinorm_p{p}"] = float(np.linalg.norm(phi))
                     rt = np.abs(np.roots(np.r_[phi[::-1], -1.0]))

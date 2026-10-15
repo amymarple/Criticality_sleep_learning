@@ -69,7 +69,7 @@ def d2_yw_segments(sp, segs, p=P, dt=DT):
     mu, sd = allsig.mean(), allsig.std(ddof=1)          # MATLAB std: ddof=1
     if not np.isfinite(sd) or sd == 0:
         return np.nan
-    acf = np.zeros(p + 1)      # lags 1..p+1 as MATLAB (maxLag = order + 1 ... it asks order)
+    acf = np.zeros(p + 1)      # lags 1..p+1, matching MATLAB's convention
     cnt = np.zeros(p + 1)
     for s in sigs:
         z = (s - mu) / sd

@@ -24,9 +24,8 @@ d2 arms joined per window (nearest centre within 1 s, as opto_cck_metrics.join_d
   d2_plain_mat    the current plain .mat on the share
   d2_excised_mat  the _rippleablate .mat
 d2_pkl is contemporaneous with the excised .mat, so it is the paired full-window arm for the
-excised contrast; d2_plain_mat (regenerated later for some sessions, no longer matching the
-pickle as closely) is also reported. `params` of both .mat arms are printed so a unit-set
-change is visible.
+excised contrast; d2_plain_mat is also reported. `params` of both .mat arms are printed so a
+unit-set change is visible.
 
 Windows: the same NREM ∩ block, 30 s non-overlapping grid as opto_cck_metrics (CA1,
 firingRate > 0.2 Hz). Same paired contrasts (session x phase; session).
@@ -68,7 +67,7 @@ from run_fig1_metrics import assert_local_path  # noqa: E402
 # the same definition as the Figure 3 barrage cohort (r16_event_excised_windows.py).
 # d2_excised_py / d2_full_py: d2 (2024 Euclidean, p = 20) recomputed in Python on the
 # 40 ms population count with event-overlapping bins dropped and the runs glued
-# (r35_sham_excision.bin_mask / glue / d2_of — the validated producer behind r16),
+# (r35_sham_excision.bin_mask / glue / d2_of — the producer behind r16),
 # so the barrage arms have a d2 on the same excision; d2_excised_mat stays ripple-only.
 EXCISE_SUFFIX = {"ripples": "", "barrages": "_barr", "both": "_ripbarr"}
 K_MAX = ocm.K_MAX

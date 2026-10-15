@@ -1,17 +1,13 @@
 # analysis_scripts: from the recordings to the figure tables
 
-This folder holds every script that turns the raw recordings into the tables in [`../csv/`](../csv). It is laid out
-like the lab repository, so each script runs as it is: a script's `REPO` is this folder, and it writes to `data/...`
-inside it, creating the folder. Paths to the recordings (`W:\data\PPP`, `X:\data\Barrage`, ...) and to
-`Previous_Rv1` are written in full in the scripts, as on the lab machine; change them for another machine.
+The scripts that turn the recordings into the tables in [`../csv/`](../csv). They write to `data/` inside this folder.
+Paths to the recordings (`W:\data\PPP`, `X:\data\Barrage`, ...) are written in full; change them for another machine.
+How the steps connect: [README](../README.md#from-the-recordings-to-the-figures); methods by topic:
+[METHODS.md](METHODS.md).
 
-How the steps connect is described in the main [README](../README.md#from-the-recordings-to-the-figures). Method
-details beyond each script's header are in [METHODS.md](METHODS.md), grouped by topic.
-
-**Names.** Script names keep the working names of the analyses: `ed*` / `ED<n>` refer to the Extended Data figures
-of the first submission, and `fig2f_*` to the replay-model panel (panel e of the revised Figure 2). The tables below
-give the panel of the revised figures. "Ripple-excised" (or "background") d2 is d2 computed after removing every
-40 ms bin that overlaps an SWR (and, for the background d2, a barrage) and joining the rest of the window.
+Names: `ed*` / `ED<n>` are the Extended Data figures of the first submission; `fig2f_*` is the replay-model panel
+(Fig 2e). Background (ripple-excised) d2: d2 after removing every 40 ms bin that overlaps an SWR (and a barrage)
+and joining the rest of the window.
 
 ## Contents
 
@@ -43,7 +39,7 @@ In `notebooks/helper/` and `notebooks/exploration/`. Each worker is run inside a
 
 ## First-submission producers
 
-In `notebooks/exploration/`: the lab notebooks of the first submission that read each session folder (spikes, sleep states, ripples, barrages, replay decoding, the d2 `.mat` files) and write per-session tables to `data/<experiment>/`. The `MUA_sleepstage*` notebooks keep only the cells that make the figure tables; their commented-out cells are run by uncommenting them, one session at a time. Producers used only by the first-submission figures are in [`../../Previous_Rv1/analysis_scripts/`](../../Previous_Rv1/analysis_scripts).
+In `notebooks/exploration/`: the lab notebooks of the first submission that read each session folder (spikes, sleep states, ripples, barrages, replay decoding, the d2 `.mat` files) and write per-session tables to `data/<experiment>/`. Commented-out cells of the `MUA_sleepstage*` notebooks are run by uncommenting them, one session at a time. Producers used only by the first-submission figures are in [`../../Previous_Rv1/analysis_scripts/`](../../Previous_Rv1/analysis_scripts).
 
 | script | what it does |
 |---|---|
@@ -76,8 +72,8 @@ In `notebooks/exploration/revision/`: every script the figure tables come from, 
 | [`fig1_state_space_umap_session.py`](notebooks/exploration/revision/fig1_state_space_umap_session.py) | Window-feature UMAP of one session, one animal or all 18 sessions; writes the embedding drawn in Fig 1c. | Fig 1c |
 | [`fig1_state_umap_all18.ipynb`](notebooks/exploration/revision/fig1_state_umap_all18.ipynb) | Draws the saved UMAP embedding of all 18 sessions (10 window features). | Fig 1c |
 | [`fig1_si_sessions.py`](notebooks/exploration/revision/fig1_si_sessions.py) | Structure index of d2 per session against the session's own null, in the format of the lab's pupil paper (two columns per session: the index and its null). | Fig 1d |
-| [`ed_nonoverlap.py`](notebooks/exploration/revision/ed_nonoverlap.py) | Runs the first-submission figure notebooks (`Previous_Rv1`) on non-overlapping windows: every window table is thinned as it is read. | Fig 1e, 2a; Supp 2a-e, 3c, 4a, b, e, f, 7, 8 |
-| [`fig2c_example_excised.py`](notebooks/exploration/revision/fig2c_example_excised.py) | The example trace of Fig 2b: the submitted panel plus the ripple-excised d2. | Fig 2b (curve) |
+| [`ed_nonoverlap.py`](notebooks/exploration/revision/ed_nonoverlap.py) | Runs the first-submission figure notebooks on non-overlapping windows. | Fig 1e, 2a; Supp 2a-e, 3c, 4a, b, e, f, 7, 8 |
+| [`fig2c_example_excised.py`](notebooks/exploration/revision/fig2c_example_excised.py) | The example trace of Fig 2b with the ripple-excised d2. | Fig 2b (curve) |
 | [`excised_br_entropy.py`](notebooks/exploration/revision/excised_br_entropy.py) | Ripple-excised branching ratio and ISI entropy per non-overlapping NREM window, on the windows of the ripple-excised d2. | Fig 2c; Supp 4d |
 | [`fig2_new.py`](notebooks/exploration/revision/fig2_new.py) | Drawing functions of the Figure 2 panels. | Fig 2c, d, f, g; Supp 3g, 4c, d (drawing) |
 | [`fig2f_swr_property_ladder.py`](notebooks/exploration/revision/fig2f_swr_property_ladder.py) | Replay model with d2, adding SWR rate, amplitude and duration one at a time. | Fig 2d |
@@ -85,7 +81,7 @@ In `notebooks/exploration/revision/`: every script the figure tables come from, 
 | [`r35_replay_rate_model.py`](notebooks/exploration/revision/r35_replay_rate_model.py) | Replay rate (replays per window) as the outcome, with the variables of the submitted Fig 2f. | Fig 2e |
 | [`fig2g_psth_excised.py`](notebooks/exploration/revision/fig2g_psth_excised.py) | Branching ratio around SWRs vs shuffled times, full window and ripple-excised, nine decoded sessions. | Fig 2f |
 | [`fig2_agh_excised.py`](notebooks/exploration/revision/fig2_agh_excised.py) | d2, branching ratio and ISI entropy by SWR-rate sextile, full window and ripple-excised, nine replay-decoded sessions. | Fig 2g; Supp 4c |
-| [`fig3_background_repro.py`](notebooks/exploration/revision/fig3_background_repro.py) | Figure 3e-h: the submitted panels e, f, h reproduced from their inputs; e with the background d2 beside the full-window d2; g as session means of the background d2. | Fig 3e-h; Supp 8d |
+| [`fig3_background_repro.py`](notebooks/exploration/revision/fig3_background_repro.py) | Figure 3e-h: d2 (full window and background), branching ratio and ISI entropy against barrage rate; g as session means of the background d2. | Fig 3e-h; Supp 8d |
 | [`r16_glue_control.py`](notebooks/exploration/revision/r16_glue_control.py) | d2 with SWRs and barrages removed, computed four ways: whole window, remaining segments joined, within segments only, and a sham removal of the same length. | Fig 3e |
 | [`fig3f_psth_excised.py`](notebooks/exploration/revision/fig3f_psth_excised.py) | Branching ratio around barrages, on the ripple- and barrage-excised background. | Fig 3f |
 | [`fig3g_background.py`](notebooks/exploration/revision/fig3g_background.py) | CCK silencing (Sncg sessions) with each window's d2 replaced by its background d2. | Fig 3g |
@@ -93,14 +89,14 @@ In `notebooks/exploration/revision/`: every script the figure tables come from, 
 | [`r38_hyperplane_explainer.py`](notebooks/exploration/revision/r38_hyperplane_explainer.py) | d2 (2024 Euclidean) on real data: the beta = 2 hyperplane, a fitted AR(20) kernel and one session's windows relative to it. | Supp 1a-d |
 | [`euclid_order_sweep.py`](notebooks/exploration/revision/euclid_order_sweep.py) | d2 (2024 Euclidean) across AR orders in all states; also the beta-manifolds drawn in Supplementary Fig 1c, d. | Supp 1c, d (beta manifolds) |
 | [`ed_nonoverlap_ed1b.py`](notebooks/exploration/revision/ed_nonoverlap_ed1b.py) | Variance explained by the AR(20) fit vs window length (submitted Extended Data 1b), on non-overlapping windows. | Supp 2a |
-| [`ed_nonoverlap_d2err.py`](notebooks/exploration/revision/ed_nonoverlap_d2err.py) | Rebuilds the two input tables of the submitted d2-uncertainty notebook (Extended Data 1c, 2c) on non-overlapping windows. | Supp 2b; 3d |
-| [`fig1de_nonoverlap.py`](notebooks/exploration/revision/fig1de_nonoverlap.py) | Submitted Figure 1d, e on non-overlapping windows, with PPP7 day 14's pairs built from its own d2. | Supp 2d, f |
-| [`ed_nonoverlap_ed2a_ed1f.py`](notebooks/exploration/revision/ed_nonoverlap_ed2a_ed1f.py) | Rebuilds the inputs of submitted Extended Data 2a (novel vs familiar d2) and 1f (branching ratio by state) on non-overlapping windows. | Supp 2e; 3b |
+| [`ed_nonoverlap_d2err.py`](notebooks/exploration/revision/ed_nonoverlap_d2err.py) | The two input tables of the d2-uncertainty panels (Extended Data 1c, 2c) on non-overlapping windows. | Supp 2b; 3d |
+| [`fig1de_nonoverlap.py`](notebooks/exploration/revision/fig1de_nonoverlap.py) | Figure 1d, e of the first submission on non-overlapping windows. | Supp 2d, f |
+| [`ed_nonoverlap_ed2a_ed1f.py`](notebooks/exploration/revision/ed_nonoverlap_ed2a_ed1f.py) | The inputs of Extended Data 2a (novel vs familiar d2) and 1f (branching ratio by state) on non-overlapping windows. | Supp 2e; 3b |
 | [`fig1e_scatter_d2raw.py`](notebooks/exploration/revision/fig1e_scatter_d2raw.py) | The d2-MUA scatter (submitted Fig 1e) with d2 in raw units and MUA z-scored, on non-overlapping windows. | Supp 2f; 7c |
 | [`m25_task_performance.py`](notebooks/exploration/revision/m25_task_performance.py) | Trials and fraction correct per task block for every Figure 1-3 session, from the behaviour files. | Supp 3a |
 | [`m25_tmaze_box.py`](notebooks/exploration/revision/m25_tmaze_box.py) | T-maze alternation performance per session against chance. | Supp 3a |
-| [`ed2a_novel_vs_control.py`](notebooks/exploration/revision/ed2a_novel_vs_control.py) | Novel vs familiar sessions (submitted Extended Data 2a) as a difference in differences between the two groups. | Supp 3b |
-| [`ed2a_ppp8_day14_rebuild.py`](notebooks/exploration/revision/ed2a_ppp8_day14_rebuild.py) | Novel vs familiar d2 (submitted Extended Data 2a) with PPP8 day 14's d2 computed from its own recording. | Supp 3b |
+| [`ed2a_novel_vs_control.py`](notebooks/exploration/revision/ed2a_novel_vs_control.py) | Novel vs familiar sessions (Extended Data 2a) as a difference in differences between the two groups. | Supp 3b |
+| [`ed2a_ppp8_day14_rebuild.py`](notebooks/exploration/revision/ed2a_ppp8_day14_rebuild.py) | d2 of PPP8 day 14 relative to pre-task sleep, for the novel vs familiar comparison. | Supp 3b |
 | [`mixture_proof.py`](notebooks/exploration/revision/mixture_proof.py) | The NREM avalanche-size distribution as a two-component mixture, split by each avalanche's local ripple rate (median split: low vs high), compared against the pooled single power-law fit. | Supp 3e |
 | [`ripple_criticality_batch.ipynb`](notebooks/exploration/revision/ripple_criticality_batch.ipynb) | Avalanche power-law fits in low vs high SWR-rate NREM periods, per session. | Supp 3e-g |
 | [`ks_xmin_convention.py`](notebooks/exploration/revision/ks_xmin_convention.py) | KS distance of low vs high SWR-rate avalanches under both xmin conventions (common and per group). | Supp 3f |
@@ -110,7 +106,7 @@ In `notebooks/exploration/revision/`: every script the figure tables come from, 
 | [`r16_event_excised_windows.py`](notebooks/exploration/revision/r16_event_excised_windows.py) | The barrage-cohort window table with every predictor computed after removing SWRs and barrages. | Supp 6a-c |
 | [`r16_predictor_heterogeneity.py`](notebooks/exploration/revision/r16_predictor_heterogeneity.py) | How much each predictor's event-type coefficient varies across NREM blocks (predictors orthogonalised in a fixed order). | Supp 6b, c |
 | [`r16_robustness_index.py`](notebooks/exploration/revision/r16_robustness_index.py) | Indices of how consistently each predictor relates to event type across NREM blocks and sessions. | Supp 6b, c |
-| [`ed_nonoverlap_rats_tiles.py`](notebooks/exploration/revision/ed_nonoverlap_rats_tiles.py) | Rebuilds three rat tables that carry no window times (submitted Extended Data 6c, 6f, 6g) on non-overlapping windows. | Supp 8c, f |
+| [`ed_nonoverlap_rats_tiles.py`](notebooks/exploration/revision/ed_nonoverlap_rats_tiles.py) | Three rat tables without window times (Extended Data 6c, 6f, 6g) on non-overlapping windows. | Supp 8c, f |
 
 ### Data preparation
 
@@ -124,38 +120,38 @@ In `notebooks/exploration/revision/`: every script the figure tables come from, 
 | [`metric_replay_ladder.py`](notebooks/exploration/revision/metric_replay_ladder.py) | Replay models with the branching ratio or ISI entropy in place of d2, on the same windows. | the Fig 2d windows (metric_replay_ladder_windows.csv) |
 | [`opto_sncg_metrics.py`](notebooks/exploration/revision/opto_sncg_metrics.py) | Branching ratio, ISI entropy, MUA and d2 in the Sncg CCK-silencing sessions, presleep vs postsleep. | the Sncg windows (Fig 3g) |
 | [`r25_drift_control_rates.py`](notebooks/exploration/revision/r25_drift_control_rates.py) | d2 vs SWR rate and d2 vs barrage rate after detrending, after partialling out the within-window trend, and in low-drift windows. | the intact-window d2 of Supp 6 (r25_drift_control_rates_windows.csv) |
-| [`r35_extend_replay_sessions.py`](notebooks/exploration/revision/r35_extend_replay_sessions.py) | The replay / SWR window table for all 10 sessions with decoded replay, built with one procedure for every session. | the Fig 2e replay windows |
-| [`r35_make_ppp4day11_pkl.py`](notebooks/exploration/revision/r35_make_ppp4day11_pkl.py) | Writes the PPP4 day 11 table into the replay / non-replay folder read by the submitted Fig 2e notebook, in place of PPP4 day 10. | the PPP4_day11 replay table of the Fig 2 sessions |
+| [`r35_extend_replay_sessions.py`](notebooks/exploration/revision/r35_extend_replay_sessions.py) | The replay / SWR window table of the 10 sessions with decoded replay. | the Fig 2e replay windows |
+| [`r35_make_ppp4day11_pkl.py`](notebooks/exploration/revision/r35_make_ppp4day11_pkl.py) | Writes the PPP4 day 11 table into the replay / non-replay folder read by the submitted Fig 2e notebook. | the PPP4_day11 replay table of the Fig 2 sessions |
 | [`r35_replay_full_covariates.py`](notebooks/exploration/revision/r35_replay_full_covariates.py) | The replay model with all the event-classifier covariates. | the Fig 2e window table |
 | [`run_fig1_metrics.py`](notebooks/exploration/revision/run_fig1_metrics.py) | Batch driver: the per-window metrics of every Figure 1 session. | per-session window metrics (batch driver) |
 
 ### Shared code
 
-Imported by other scripts (a script needs these next to it to run).
+Imported by other scripts.
 
 | script | what it does | imported by |
 |---|---|---|
 | [`aggregate_fig1_metrics.py`](notebooks/exploration/revision/aggregate_fig1_metrics.py) | Group-level tables from the per-session window metrics of `run_fig1_metrics.py`. | [`fig1_state_space_export.py`](notebooks/exploration/revision/fig1_state_space_export.py) |
-| [`avalanche_ripple.py`](notebooks/exploration/revision/avalanche_ripple.py) | Avalanche exponents and DCC as a function of ripple rate. | [`ks_xmin_convention.py`](notebooks/exploration/revision/ks_xmin_convention.py), [`mixture_proof.py`](notebooks/exploration/revision/mixture_proof.py), [`ripple_criticality_batch.ipynb`](notebooks/exploration/revision/ripple_criticality_batch.ipynb) |
-| [`barrage_order_kernel_sweep.py`](notebooks/exploration/revision/barrage_order_kernel_sweep.py) | d2 (2024 Euclidean) of the barrage sessions over a range of AR orders and kernel lengths. | [`fig3f_psth_excised.py`](notebooks/exploration/revision/fig3f_psth_excised.py), [`m25_task_performance.py`](notebooks/exploration/revision/m25_task_performance.py), [`r16_event_dissociation.py`](notebooks/exploration/revision/r16_event_dissociation.py) ... |
+| [`avalanche_ripple.py`](notebooks/exploration/revision/avalanche_ripple.py) | Avalanche detection (`detect`) and the local SWR rate of each avalanche (`ripple_rate_at`). | [`ks_xmin_convention.py`](notebooks/exploration/revision/ks_xmin_convention.py), [`mixture_proof.py`](notebooks/exploration/revision/mixture_proof.py), [`ripple_criticality_batch.ipynb`](notebooks/exploration/revision/ripple_criticality_batch.ipynb) |
+| [`barrage_order_kernel_sweep.py`](notebooks/exploration/revision/barrage_order_kernel_sweep.py) | The barrage-session list (`BARRAGE_SESSIONS`) and d2 of those sessions over AR orders. | [`fig3f_psth_excised.py`](notebooks/exploration/revision/fig3f_psth_excised.py), [`m25_task_performance.py`](notebooks/exploration/revision/m25_task_performance.py), [`r16_event_dissociation.py`](notebooks/exploration/revision/r16_event_dissociation.py) ... |
 | [`br_ripple_replay.py`](notebooks/exploration/revision/br_ripple_replay.py) | Branching ratio by SWR-rate sextile and by replay-probability sextile, on non-overlapping windows. | [`excised_br_entropy.py`](notebooks/exploration/revision/excised_br_entropy.py) |
 | [`d2_composition_glm.py`](notebooks/exploration/revision/d2_composition_glm.py) | GLM with d2 as the outcome and the window's state measures, SWR activity and replay content as predictors (Shapley attribution). | [`br_ripple_replay.py`](notebooks/exploration/revision/br_ripple_replay.py), [`d2_correlates_table.py`](notebooks/exploration/revision/d2_correlates_table.py), [`excised_br_entropy.py`](notebooks/exploration/revision/excised_br_entropy.py) |
 | [`d2_correlates_table.py`](notebooks/exploration/revision/d2_correlates_table.py) | Per-session correlation table of d2 with window metrics, extended with E/I balance and synchrony. | [`br_ripple_replay.py`](notebooks/exploration/revision/br_ripple_replay.py), [`d2_yw_matlab_match.py`](notebooks/exploration/revision/d2_yw_matlab_match.py) |
-| [`d2_yw_matlab_match.py`](notebooks/exploration/revision/d2_yw_matlab_match.py) | Compares the Python and the MATLAB ripple-excised d2 (Yule-Walker vs OLS fit of the AR model). | [`fig3g_background.py`](notebooks/exploration/revision/fig3g_background.py), [`r16_glue_control.py`](notebooks/exploration/revision/r16_glue_control.py), [`r38_hyperplane_explainer.py`](notebooks/exploration/revision/r38_hyperplane_explainer.py) |
+| [`d2_yw_matlab_match.py`](notebooks/exploration/revision/d2_yw_matlab_match.py) | Yule-Walker d2 of a window with segments removed (`d2_yw_segments`), as in the MATLAB workers. | [`fig3g_background.py`](notebooks/exploration/revision/fig3g_background.py), [`r16_glue_control.py`](notebooks/exploration/revision/r16_glue_control.py), [`r38_hyperplane_explainer.py`](notebooks/exploration/revision/r38_hyperplane_explainer.py) |
 | [`euclid_d2_err_orders.py`](notebooks/exploration/revision/euclid_d2_err_orders.py) | d2 (2024 Euclidean) and its delta-method error bar across AR orders, for every NREM window. | [`d2_yw_matlab_match.py`](notebooks/exploration/revision/d2_yw_matlab_match.py), [`r25_drift_control_rates.py`](notebooks/exploration/revision/r25_drift_control_rates.py), [`r25_stationarity_battery.py`](notebooks/exploration/revision/r25_stationarity_battery.py) ... |
 | [`fig1_d2_vs_mua_2x2.py`](notebooks/exploration/revision/fig1_d2_vs_mua_2x2.py) | d2 vs MUA per state, for both d2 definitions (2024 Euclidean, 2025 KL), full window and ripple-excised. | [`fig2_new.py`](notebooks/exploration/revision/fig2_new.py), [`fig2c_example_excised.py`](notebooks/exploration/revision/fig2c_example_excised.py) |
 | [`fig1_lfp_manifold.py`](notebooks/exploration/revision/fig1_lfp_manifold.py) | State space built from LFP features (as in Chang, Tang et al., Nature 2025), with d2 shown on it rather than used as a feature. | [`fig1_nrem_feature_gradient.py`](notebooks/exploration/revision/fig1_nrem_feature_gradient.py), [`fig1_si_sessions.py`](notebooks/exploration/revision/fig1_si_sessions.py), [`fig1_state_space_umap_session.py`](notebooks/exploration/revision/fig1_state_space_umap_session.py) ... |
-| [`fig1_nonoverlap_contrasts.py`](notebooks/exploration/revision/fig1_nonoverlap_contrasts.py) | The submitted Figure 1 state contrasts, recomputed on non-overlapping windows. | [`fig1de_nonoverlap.py`](notebooks/exploration/revision/fig1de_nonoverlap.py) |
+| [`fig1_nonoverlap_contrasts.py`](notebooks/exploration/revision/fig1_nonoverlap_contrasts.py) | Non-overlapping window selection and the Figure 1 state contrasts. | [`fig1de_nonoverlap.py`](notebooks/exploration/revision/fig1de_nonoverlap.py) |
 | [`fig1_nrem_feature_gradient.py`](notebooks/exploration/revision/fig1_nrem_feature_gradient.py) | Structure index of d2 within NREM in the window-feature space, against a time-shift null that keeps d2's own time structure. | [`fig1_state_feature_gradient.py`](notebooks/exploration/revision/fig1_state_feature_gradient.py), [`fig1_state_space_umap_session.py`](notebooks/exploration/revision/fig1_state_space_umap_session.py) |
 | [`fig1_state_feature_gradient.py`](notebooks/exploration/revision/fig1_state_feature_gradient.py) | Structure index of d2 within each state and across all states, in the window-feature space. | [`fig1_si_sessions.py`](notebooks/exploration/revision/fig1_si_sessions.py) |
 | [`fig1_state_space_umap.py`](notebooks/exploration/revision/fig1_state_space_umap.py) | UMAP embedding of the window features, with its colours and labels. | [`fig1_nrem_feature_gradient.py`](notebooks/exploration/revision/fig1_nrem_feature_gradient.py), [`fig1_si_sessions.py`](notebooks/exploration/revision/fig1_si_sessions.py), [`fig1_state_feature_gradient.py`](notebooks/exploration/revision/fig1_state_feature_gradient.py) ... |
 | [`fig2_composite.py`](notebooks/exploration/revision/fig2_composite.py) | The quantitative Figure 2 panels on the nine decoded sessions and non-overlapping windows. | [`fig2_new.py`](notebooks/exploration/revision/fig2_new.py), [`fig2c_example_excised.py`](notebooks/exploration/revision/fig2c_example_excised.py) |
 | [`fig2f_background_state_glm.py`](notebooks/exploration/revision/fig2f_background_state_glm.py) | The replay GLM of the submitted Fig 2f with background-state covariates, a measurement-error correction and temporal precedence. | [`metric_replay_ladder.py`](notebooks/exploration/revision/metric_replay_ladder.py), [`r35_extend_replay_sessions.py`](notebooks/exploration/revision/r35_extend_replay_sessions.py) |
-| [`fig2f_backtrace.py`](notebooks/exploration/revision/fig2f_backtrace.py) | Rebuilds the per-window input table of the submitted Fig 2f GLM from its stored per-session results. | [`fig2f_backtrace_model.py`](notebooks/exploration/revision/fig2f_backtrace_model.py) |
-| [`fig2f_backtrace_model.py`](notebooks/exploration/revision/fig2f_backtrace_model.py) | Reruns the submitted Fig 2f GLM on the rebuilt input table. | [`r35_extend_replay_sessions.py`](notebooks/exploration/revision/r35_extend_replay_sessions.py) |
-| [`fig2f_producer_glm.py`](notebooks/exploration/revision/fig2f_producer_glm.py) | The model functions of the submitted Fig 2f GLM, as in its notebook. | [`fig2f_backtrace_model.py`](notebooks/exploration/revision/fig2f_backtrace_model.py) |
+| [`fig2f_backtrace.py`](notebooks/exploration/revision/fig2f_backtrace.py) | Per-window state table of the replay GLM (`load_all_states`). | [`fig2f_backtrace_model.py`](notebooks/exploration/revision/fig2f_backtrace_model.py) |
+| [`fig2f_backtrace_model.py`](notebooks/exploration/revision/fig2f_backtrace_model.py) | Population MUA per window (`population_mua`) and the replay GLM of the submitted Fig 2f. | [`r35_extend_replay_sessions.py`](notebooks/exploration/revision/r35_extend_replay_sessions.py) |
+| [`fig2f_producer_glm.py`](notebooks/exploration/revision/fig2f_producer_glm.py) | The replay GLM functions of the submitted Fig 2f (`cv_predictive_gain_logistic`). | [`fig2f_backtrace_model.py`](notebooks/exploration/revision/fig2f_backtrace_model.py) |
 | [`fig2f_seat_ladders.py`](notebooks/exploration/revision/fig2f_seat_ladders.py) | Replay models (binomial, per SWR) with d2, MUA and SWR rate each as the main predictor, alone and together. | [`fig2_new.py`](notebooks/exploration/revision/fig2_new.py), [`fig2f_swr_property_ladder.py`](notebooks/exploration/revision/fig2f_swr_property_ladder.py) |
-| [`fig3g_reproduce.py`](notebooks/exploration/revision/fig3g_reproduce.py) | Reproduces the submitted Fig 3g statistic from its stored table, then the session-level comparison. | [`fig3g_background.py`](notebooks/exploration/revision/fig3g_background.py) |
+| [`fig3g_reproduce.py`](notebooks/exploration/revision/fig3g_reproduce.py) | Resampling, mixed model and session-level comparison of Fig 3g (`resample`, `lmm`, `session_level`). | [`fig3g_background.py`](notebooks/exploration/revision/fig3g_background.py) |
 | [`opto_cck_excised.py`](notebooks/exploration/revision/opto_cck_excised.py) | The CCK-silencing contrast with ripple time removed from every window. | [`fig3f_psth_excised.py`](notebooks/exploration/revision/fig3f_psth_excised.py) |
 | [`opto_cck_metrics.py`](notebooks/exploration/revision/opto_cck_metrics.py) | Branching ratio, ISI entropy and MUA in the uLED CCK-silencing sessions, per stimulation block (baseline vs stimulation). | [`fig3g_background.py`](notebooks/exploration/revision/fig3g_background.py), [`fig3g_reproduce.py`](notebooks/exploration/revision/fig3g_reproduce.py), [`opto_cck_excised.py`](notebooks/exploration/revision/opto_cck_excised.py) ... |
 | [`r16_event_dissociation.py`](notebooks/exploration/revision/r16_event_dissociation.py) | Burst measures and d2 against SWR rate and barrage rate. | [`r16_event_excised_windows.py`](notebooks/exploration/revision/r16_event_excised_windows.py), [`r16_glue_control.py`](notebooks/exploration/revision/r16_glue_control.py) |
@@ -173,7 +169,7 @@ Imported by other scripts (a script needs these next to it to run).
 
 ## First-submission figure notebooks, raw-data versions
 
-In `notebooks/figures/`. Revision scripts run cells of these notebooks, so that they reuse the submitted code (state corrections, loading and drawing functions). Their CSV-reading copies are in [`../../Previous_Rv1/figure_scripts/`](../../Previous_Rv1/figure_scripts).
+In `notebooks/figures/`. Revision scripts run cells of these notebooks (state corrections, loading and drawing functions). Their CSV-reading copies are in [`../../Previous_Rv1/figure_scripts/`](../../Previous_Rv1/figure_scripts).
 
 | notebook | used by |
 |---|---|

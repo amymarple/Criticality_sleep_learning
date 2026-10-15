@@ -35,7 +35,7 @@ def _autocov_fft(x: np.ndarray, maxlag: int) -> np.ndarray:
     m = 1 << (int(np.ceil(np.log2(2*n-1))))
     Xf = np.fft.rfft(x, n=m)
     ac_full = np.fft.irfft(Xf * np.conj(Xf), n=m)[:n]  # lags 0..n-1
-    # biased estimator: divide by N, consistent with original code
+    # biased estimator: divide by N
     ac_full = ac_full / n
     return ac_full[:maxlag+1]
 
@@ -67,7 +67,7 @@ def _levinson(ac: np.ndarray, order: int):
             phi[:k] = phi[:k] - lambda_k * phi[:k][::-1]
             phi[k] = lambda_k
             E *= (1.0 - lambda_k*lambda_k)
-        # guard against slight negative due to rounding
+        # keep E strictly positive
         if E <= 0:
             E = 1e-18
     return phi, float(E)
@@ -221,7 +221,7 @@ def d2_from_timeseries(x, order=10, dt=1.0, num_w=2**14, method="auto", maxiter=
     return d2_bits_per_second, info
 
 if __name__ == "__main__":
-    # quick smoke test
+    # Example usage
     rng = np.random.default_rng(0)
     N = 200000
     phi_true = np.array([0.9, 0.05])

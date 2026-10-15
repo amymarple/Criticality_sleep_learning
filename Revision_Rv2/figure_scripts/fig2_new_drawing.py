@@ -153,12 +153,12 @@ LADDER_DISPLAY = {"d2": "alone", "+ SWR rate": "+ rate", "+ amplitude": "+ rate,
 
 # --- fig2_new.py
 def panel_ladder(ax):
-    _imported_fig2f_seat_ladders()  # from fig2f_seat_ladders import box_panel (defined in this file)
+    _imported_fig2f_seat_ladders()
     L = pd.read_csv(os.path.join(LOGDIR, "fig2f_swr_property_ladder.csv"))
     L = L[(L.part == "ladder") & (L.session != "__pooled__")]
     rungs = ["d2", "+ SWR rate", "+ amplitude", "+ duration"]
     data = [L[L.model == r].sort_values("session").b1.to_numpy() for r in rungs]
-    pass  # from fig2f_swr_property_ladder import LADDER_DISPLAY (defined in this file)
+    pass
     box_panel(ax, data, [LADDER_DISPLAY[r] for r in rungs], ["#c03d3e", "#d4595a", "#e57373", "#ee8f8f"],
               ylabel="d2 coefficient, log-odds per SD\n(ripple-excised d2; binomial, per session)")
     _despine(ax)

@@ -1,7 +1,7 @@
 """
-fig1_state_space_umap.py — stage 2 of the Chang-2025-style state-space figure.
+fig1_state_space_umap.py — the Chang-2025-style state-space figure.
 
-RUN WITH A UMAP-CAPABLE ENV, NOT `criticality` (umap-learn is LAPACK-dead there):
+RUN WITH A UMAP-CAPABLE ENV, NOT `criticality`:
 
     C:/Users/Cornell/.conda/envs/scientific-skills/python.exe fig1_state_space_umap.py
 
@@ -21,7 +21,7 @@ Features are z-scored PER SESSION before pooling, so the pooled embedding
 shows state structure rather than animal/unit-count batch structure. A
 session-colored diagnostic panel is included to verify that.
 
-Inputs : data/revision/log/fig1_state_space_features.csv  (stage 1)
+Inputs : data/revision/log/fig1_state_space_features.csv
 Outputs: reports/revision_figs/fig1_state_umap.png/.svg
          data/revision/log/fig1_state_space_embedding.csv
          data/revision/log/fig1_state_space_knn.csv
@@ -112,8 +112,8 @@ def main():
                 df.loc[sub.index[m], "ripple_amp_mean"] = sub["ripple_amp_mean"].mean()
                 n_imp += int(m.sum())
         print(f"ripple_amp_mean: {n_imp} zero-ripple windows imputed to session mean")
-    # a feature that is missing for a whole session (e.g. a failed ripple load)
-    # must not silently delete that session via the row-wise NaN drop below
+    # a feature missing for a whole session must not silently delete that
+    # session via the row-wise NaN drop below
     bad = [c for c in feats if df[c].isna().mean() > 0.2]
     if bad:
         print(f"[!] excluding mostly-NaN features from the embedding: {bad}")

@@ -13,8 +13,7 @@ amplitude / duration (d2_composition_glm.add_swr). Binomial GLM of replay_count 
 predictors z-scored within session, session as the unit, two-sided signed-rank. Ladder
 (cumulative): d2 | + SWR rate | + amplitude | + duration. The published figure is the
 ladder alone; JOINT=1 adds a second panel (every coefficient of the final joint model).
-CELLS=1 / MUA=1 add further rungs; those tagged runs write suffixed CSVs and put the
-figure in reports/revision_figs/backup/.
+CELLS=1 / MUA=1 add further rungs; those tagged runs write suffixed CSVs.
 
     -> data/revision/log/fig2f_swr_property_ladder.csv          (_cells / _mua when tagged)
     -> reports/revision_figs/fig2f_ladder_d2_swrprops.png
@@ -48,17 +47,12 @@ from fig2f_seat_ladders import box_panel, WIN_CSV, FIGDIR, D2        # noqa: E40
 OUT_CSV = os.path.join(LOGDIR, "fig2f_swr_property_ladder" + ("_cells" if os.environ.get("CELLS") else "") + ("_mua" if os.environ.get("MUA") else "") + ".csv")
 LABEL = {D2: "d2", "rate": "SWR rate", "ripple_amp": "SWR amplitude", "ripple_dur": "SWR duration",
          "n_cells": "cells / SWR", "MUA": "MUA"}
-# Candidate SWR-property covariates are duration, amplitude and participating-cell count
-# (trajectory length exists only for replay events, so it cannot be a covariate of
-# replay-vs-not; it is addressed separately as a replay-quality question). n_cells = mean
-# number of units firing in the window's SWRs (build_events).
+# Candidate SWR-property covariates: duration, amplitude, participating-cell count.
+# n_cells = mean number of units firing in the window's SWRs (build_events).
 RUNGS = [("d2", [D2]), ("+ SWR rate", [D2, "rate"]), ("+ amplitude", [D2, "rate", "ripple_amp"]),
          ("+ duration", [D2, "rate", "ripple_amp", "ripple_dur"])]
-# The main model is d2 + rate + amplitude + duration. Participating cells per SWR is not a
-# covariate here: a replay call is a population sequence, so cells per SWR is part of the
-# outcome (the decoder needs them; Fernandez-Ruiz 2019: recruitment is replay content), and
-# conditioning on it would condition on a mediator. CELLS=1 adds the rung anyway as a
-# sensitivity check; MUA=1 adds MUA.
+# Main model: d2 + rate + amplitude + duration. Cells / SWR is not a covariate (a mediator
+# of the replay call); CELLS=1 adds it anyway as a sensitivity rung. MUA=1 adds MUA.
 if os.environ.get("CELLS"):
     RUNGS.append(("+ cells / SWR", RUNGS[-1][1] + ["n_cells"]))
 if os.environ.get("MUA"):
@@ -111,7 +105,7 @@ def main():
                              for v, b in alone.items()))
 
     # The published figure is the ladder alone; JOINT=1 redraws the two-panel version
-    # (b = every coefficient of the joint model) into backup/
+    # (b = every coefficient of the joint model)
     two = bool(os.environ.get("JOINT"))
     fig, axes = plt.subplots(1, 2 if two else 1, figsize=(8.4, 3.4) if two else (4.6, 3.4), squeeze=False,
                              gridspec_kw=dict(width_ratios=[1.1, 1]) if two else None)

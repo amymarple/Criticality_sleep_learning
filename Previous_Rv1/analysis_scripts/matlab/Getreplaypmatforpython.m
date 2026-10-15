@@ -1,6 +1,6 @@
 % Settings
-basepath = 'W:\data\PPP\PPP20\day4';  % or your folder
-epoch = 5;   % k is your epoch number
+basepath = 'W:\data\PPP\PPP20\day4';
+epoch = 5;   % epoch number
 
 left_all = {};    % initialize empty cell array
 right_all = {};

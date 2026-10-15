@@ -11,7 +11,7 @@ per session x window length, `centers`, `explain_variance`, `D2_values` into
 
 Method:
   1. The FigS1_B notebook's original loader (fields grouped by the `win(\d+)` key in field order; one
-     list entry per session) rebuilds the shipped CSV from the .mat on all windows. Asserted row by row.
+     list entry per session) rebuilds the shipped CSV from the .mat on all windows.
   2. Within each session x window length, windows in time order, one kept only if its centre is
      >= window_size after the last kept one (the windows are NREM only, so this is the disjoint rule of
      fig1de_nonoverlap at L = window length).

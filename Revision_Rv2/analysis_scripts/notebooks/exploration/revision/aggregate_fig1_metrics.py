@@ -76,9 +76,7 @@ def load_all(pattern="*_fig1_metrics_nonoverlap.pkl"):
 
 def merge_dropin(W, pattern="*_fig1_dropin_nonoverlap.pkl"):
     """Left-merge the drop-in columns (fig1_dropin_metrics.py) onto the base
-    windows. Join key (session, state, center_s) — both grids come from the
-    same pickle floats, so the key is exact; rounding matters only for the
-    CSV round-trip case. No drop-in files -> W unchanged."""
+    windows, keyed on (session, state, center_s). No drop-in files -> W unchanged."""
     parts = []
     for f in sorted(glob.glob(os.path.join(INDIR, pattern))):
         with open(f, "rb") as fh:
@@ -119,7 +117,7 @@ def main():
     print(f"reading {INDIR}")
     W = load_all()
     W = merge_dropin(W)
-    # dict.fromkeys dedupes while keeping order -- BR_k200 is in both lists
+    # de-duplicated, order preserved
     have = [c for c in dict.fromkeys(METRICS + KCOLS) if c in W.columns]
 
     # --- session-level medians: the unit of analysis -------------------------
@@ -184,10 +182,8 @@ def main():
         print(tau.round(1).to_string())
         sweeps[pop + "_tau"] = tau
 
-        # Absolute m is bin- and k_max-dependent; the state ORDERING is not.
-        # m is critical at 1, so HIGHER m = CLOSER to criticality -- the opposite of
-        # d2. Sorted DESCENDING so this reads closest->furthest, matching every d2
-        # ordering.
+        # m is critical at 1; higher m = closer to criticality. Sorted descending
+        # so this reads closest -> furthest, matching the d2 ordering.
         print(f"--- states by m, {pop}: CLOSEST -> FURTHEST from criticality "
               f"(descending m) ---")
         for c in cols:
@@ -199,13 +195,9 @@ def main():
             assert_local_path(os.path.join(OUTDIR, "fig1_kmax_sweep.csv")))
 
     # --- d2 vs BR: agreement within state ------------------------------------
-    # Both populations. d2 is fitted over all CA1 units with no cell-type or
-    # firing-rate filter (per n_cells in the MATLAB .mat params), so BR_all_k200
-    # is the population-matched comparator for the d2-branching-ratio relation.
-    # BR_pyr_k200 is the population behind Fig. 2g and the state-discriminating
-    # arm. k200 is kernel-matched to d2 (796 ms vs 800 ms history); k2500 is
-    # W&P's rat fit range, the m that passes their H_offset/H_tau checks. Both
-    # are reported, giving the d2-BR relation at each kernel choice.
+    # BR_all_k200 (no cell-type/rate filter) is population-matched to d2; BR_pyr_k200
+    # is the Fig. 2g population. k200 matches d2's 800 ms kernel; k2500 is W&P's rat
+    # fit range. Both are reported.
     br_cols = [c for c in ("BR_all_k200", "BR_pyr_k200",
                            "BR_all_k2500", "BR_pyr_k2500") if c in W.columns]
     if "d2" in W.columns and W["d2"].notna().any() and br_cols:

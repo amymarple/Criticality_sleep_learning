@@ -13,10 +13,8 @@ ripple time intervals are subtracted from each 30 s window and the surviving rip
 subwindows are glued and fitted together (MATLAB producer:
 notebooks/helper/time_resolved_d2_across_state_ripple_ablate.m); only NREM differs from
 the standard file. Both d2 arms are read from the .mat files rather than from the
-pickles, since at least one session's stored pickle holds the ripple-ablated d2 under the
-standard column name, which would make that session's comparison degenerate; reading both
-arms from the .mat files keeps every session on the same footing. The script also reports
-the percentage of each fitting window removed by the ablation.
+pickles, so every session is on the same footing. The script also reports the percentage
+of each fitting window removed by the ablation.
 
 Two quantities: (1) r(d2, d2_ablate) per session; (2) the SWR-rate / replay-probability
 relationship on ripple-free d2. Also re-runs the GLM ablation (r35_glm_ablation.py) with
@@ -103,8 +101,7 @@ def frac_window_removed(basepath, centers, win=30.0):
 
 # The KL pair comes from r35_kl_rippleablate.py, which computes the FULL-window and
 # RIPPLE-EXCISED KL with the same Yule-Walker estimator on the same windows, so the KL
-# arms are paired exactly as the Euclidean arms are. Validated against the stored
-# MLE-based kl_error_bars.csv.
+# arms are paired exactly as the Euclidean arms are.
 KL_CSV = os.path.join(LOGDIR, "r35_kl_rippleablate.csv")
 KL_ORDER = 20
 ARMS = [("d2_std", "Euclidean, full"), ("d2_ablate", "Euclidean, ripple-excised"),

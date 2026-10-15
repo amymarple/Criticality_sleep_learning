@@ -44,7 +44,7 @@ from r35_replay_lmm import prepare, fit_lmm, star, X, LAB, PRED       # noqa: E4
 
 def compute():
     """Pooled drop-one + bootstrap CI + per-session values (rate_model CSV) and the mixed
-    model's fixed effects and d2-vs-each contrasts (refit here, ~10 s)."""
+    model's fixed effects and d2-vs-each contrasts (refit here)."""
     src = os.path.join(LOGDIR, "r35_replay_rate_model.csv")
     assert os.path.exists(src), "run r35_replay_rate_model.py first"
     G = pd.read_csv(src)

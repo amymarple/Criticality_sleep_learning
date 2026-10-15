@@ -1,14 +1,13 @@
 """
-fig1_state_space_export.py — stage 1 of the Chang-2025-style state-space figure.
+fig1_state_space_export.py — feature export for the Chang-2025-style state-space figure.
 
 Merges the base metric pickles with the drop-in columns and writes ONE flat CSV
-of per-window fingerprint features + overlay values, so the UMAP stage can run
-in a different conda env (umap-learn is dead in `criticality` — sklearn/LAPACK;
-working envs: scientific-skills / dyngdim / can_field).
+of per-window fingerprint features + overlay values, so the UMAP step can run
+in a separate conda env (scientific-skills / dyngdim / can_field).
 
 Design copied from the lab's own published paper (Chang et al., Nature 637, 2025,
 Fig. 1d-e): 2-D embedding for visualization only; quantification happens in the
-original high-dimensional space against label shuffles (stage 2).
+original high-dimensional space against label shuffles, in the UMAP step.
 
 FEATURES = the physiological fingerprint (observables only). d2/BR/tau are
 exported as OVERLAY columns, not embedding features — they color the map the

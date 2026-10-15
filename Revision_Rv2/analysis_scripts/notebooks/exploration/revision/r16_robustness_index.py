@@ -15,7 +15,7 @@ A. META-ANALYTIC, from the per-block coefficient and its SE (ORTHO=1 table, wher
      mu / tau     the pooled effect in units of its own between-epoch spread -- a
                   standardised "consistency" (Cohen's d over epochs);
      Phi(|mu|/tau)  the fraction of epochs expected to share the sign of the pooled
-                  effect (checked against the observed fraction);
+                  effect;
      95 % PI      prediction interval for the effect in a NEW epoch,
                   mu +- 1.96 sqrt(tau^2 + SE_mu^2) (IntHout et al. 2016) -- the
                   meta-analytic statement of "will it replicate".

@@ -8,24 +8,21 @@ center_s), without touching those files:
   sw_broadband        buzcode SleepScoreMaster's broadbandSlowWave, window mean.
                       For these sessions SWweights='PSS' with IRASA=1, i.e. it is
                       itself a power-spectrum-slope score, min-max NORMALIZED 0-1
-                      PER SESSION; renamed here from the notebook's "SWSlope"
-                      column name, used within-session only.
+                      PER SESSION; used within-session only.
   psd_slope_<range>   raw aperiodic (1/f) exponent: Welch PSD of the SleepScore
                       slow-wave channel per 30 s window, log-log linear fit over
                       a fixed frequency range (55-65 Hz line noise excluded).
                       Cross-session comparable, unlike sw_broadband.
   synchrony_sub81_*   fraction-active synchrony subsampled to a FIXED 81 E units
                       (the minimum n_E across the 18 sessions), so the column is
-                      comparable across sessions. The existing synchrony_sub_*
-                      used 0.8*n_E, a per-session target.
+                      comparable across sessions.
 
 LFP comes from <basename>.SleepScoreLFP.LFP.mat (full-length SW channel at
-1250 Hz, present in all 18 sessions) -- the 8-19 GB .lfp files are only ever
-opened as a read-only memmap for a 1000-sample channel-identity check
-(SWchanID is 1-based MATLAB; .lfp column = SWchanID - 1).
+1250 Hz, present in all 18 sessions); the .lfp files are only opened as a
+read-only memmap for a 1000-sample channel-identity check (SWchanID is
+1-based MATLAB; .lfp column = SWchanID - 1).
 
-scipy.optimize.curve_fit and sklearn fail in this environment (missing LAPACK
-DLLs); fits use scipy.stats.linregress.
+Fits use scipy.stats.linregress.
 
     ENV=C:/Users/Cornell/.conda/envs/criticality/python.exe
     $ENV fig1_dropin_metrics.py --test          # PPP20 day4, prints summary
@@ -69,14 +66,11 @@ LOGDIR = os.path.join(OUTDIR, "log")
 SYNC_TARGET_FIXED = 81      # = min n_E over the 18 sessions
 NPERSEG_S = 2.0             # Welch segment length
 NOTCH_HZ = (55.0, 65.0)     # line noise, always excluded from fits
-# Fit ranges. PRIMARY = 20-45 Hz: chosen for split-half reliability and
-# agreement with the expected (Gao 2017) direction of the E/I-ratio relation.
-# The literature default 30-45 Hz (Gao 2017 / Lendner 2020) performs poorly in
-# CA1 -- slow gamma sits inside the band -- and is kept only as the
-# convention-matched variant. Never fit <20 Hz (theta harmonics) or >90 Hz
+# Fit ranges. 20-45 Hz is primary; 30-45 Hz is the literature convention
+# (Gao 2017 / Lendner 2020). Avoid <20 Hz (theta harmonics) and >90 Hz
 # (CA1 ripple band ~100-250 Hz).
 FIT_RANGES = {
-    "20_45": (20.0, 45.0),   # primary (audit-selected)
+    "20_45": (20.0, 45.0),   # primary
     "30_45": (30.0, 45.0),   # literature convention, gamma-contaminated in CA1
     "30_55": (30.0, 55.0),
     "65_90": (65.0, 90.0),

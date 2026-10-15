@@ -1,22 +1,19 @@
 """fig3f_psth_excised.py -- Figure 3f, revised: the branching ratio around barrages, on the ripple-
 and barrage-excised background.
 
-The submitted Fig 3f (generate_branching_ratio_mouse.ipynb cells 15-16) is the full-window BR
-around barrage starts (10 s windows stepped 2 s), so a window around a barrage contains the
+The published Fig 3f (generate_branching_ratio_mouse.ipynb) is the full-window BR around
+barrage starts (10 s windows stepped 2 s), so a window around a barrage contains the
 barrage's own spikes; this excises both ripples and barrages from the background instead.
 
-Reuses fig2g_psth_excised.py's functions unchanged (br_series, changes, psth, random_times),
-adapted to: events = barrage starts in NREM (opto_cck_excised.load_barrage_iv); excised = the
-union of ripple and barrage intervals; windows on the raw NREM epochs with no state guard, as
-the stored barrage series used; sessions = the 12-session barrage cohort
-(barrage_order_kernel_sweep.BARRAGE_SESSIONS), with NN2_day10 and NN2_day10_3 pooled into one
-file mean as the published analysis does.
+Reuses fig2g_psth_excised.py's functions (br_series, changes, psth, random_times), adapted
+to: events = barrage starts in NREM (opto_cck_excised.load_barrage_iv); excised = the
+union of ripple and barrage intervals; windows on the raw NREM epochs with no state guard;
+sessions = the 12-session barrage cohort (barrage_order_kernel_sweep.BARRAGE_SESSIONS), with
+NN2_day10 and NN2_day10_3 pooled into one file mean.
 
-Two window sets for the per-session change: `sliding` (every 2 s window, as published) and
-`disjoint` (the same windows thinned to centres >= 10 s apart within each NREM interval). The
-PSTH uses the sliding series; every test is on per-session means. Validation: the full arm's
-series against the stored branching_ratio/barr/<session>_CA1.pkl (matched centres, r), and its
-per-session sliding change against the stored *_br_changes.pkl mean.
+Two window sets for the per-session change: `sliding` (every 2 s window) and `disjoint`
+(the same windows thinned to centres >= 10 s apart within each NREM interval). The PSTH
+uses the sliding series; every test is on per-session means.
 
     -> data/revision/log/fig3f_psth_sessions.csv   (per session x arm x window set: mean change, barrage / shuffle)
     -> data/revision/log/fig3f_psth_curves.csv     (per session x arm x lag bin: PSTH, barrage / shuffle, SEM)
@@ -96,8 +93,8 @@ def run_session(sess):
     e_spikes = [u for u, c in zip(units, ctype) if "Pyramidal" in str(c)]
     sd = loading.load_SleepState_states(bp)
     nrem_raw = np.asarray(sd["NREMstate"], float)
-    # windows on the RAW NREM epochs, no state guard: how the stored barrage series was made (its first window
-    # starts at the epoch onset, validated against the stored series below). Fig 2f's ripple series used a 5 s guard.
+    # windows on the RAW NREM epochs, no state guard (how the stored barrage series was made; its first window
+    # starts at the epoch onset). Fig 2f's ripple series used a 5 s guard.
     ivs = [tuple(x) for x in nrem_raw]
     rip = loading.load_ripples_events(bp)
     rip_iv = np.column_stack([np.asarray(rip["start"], float), np.asarray(rip["stop"], float)])
@@ -121,7 +118,7 @@ def run_session(sess):
         _, p_s, e_s = psth(cen, br, shuf)
         for ti, a_, b_, ea, eb in zip(t, p_b, p_s, e_b, e_s):
             curves.append(dict(session=sess, arm=arm, lag_s=ti, br_barrage=a_, br_shuffle=b_, sem_barrage=ea, sem_shuffle=eb))
-    # validation of the full arm against the stored series and the stored per-event changes
+    # comparison of the full arm against the stored series and the stored per-event changes
     val = dict(session=sess, n_windows=len(cen))
     f = os.path.join(STORED, f"{sess}_CA1.pkl")
     if os.path.exists(f):
@@ -147,7 +144,7 @@ def run_session(sess):
 
 
 def file_key(sess):
-    return "_".join(sess.split("_")[:2])                    # NN2_day10_3 -> NN2_day10, as the published loader
+    return "_".join(sess.split("_")[:2])                    # NN2_day10_3 -> NN2_day10
 
 
 def report(R):

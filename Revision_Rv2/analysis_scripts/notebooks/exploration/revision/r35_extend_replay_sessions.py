@@ -18,7 +18,7 @@ rolling population rate; EI_ratio is pyramidal over interneuron rate, per unit. 
 `d2_published` from the stored `*_D2_time_resolved_error_bar.mat`, joined on window
 centre; `py_full` and `py_excised` computed in Python (2024 Euclidean, p=20, OLS),
 excision dropping 40 ms bins overlapping a raw ripple and gluing the remainder
-(>= 1 s segments), validated against the MATLAB arms (r35_sham_excision.py).
+(>= 1 s segments).
 
 PPP7_day12 (two maze epochs, non-standard epoch numbering) is kept in the table but excluded
 from the ladder by name (`EXCLUDE`).
@@ -79,7 +79,7 @@ SESSIONS = {
 }
 NEW = ("PPP7_day12",)
 
-# Structural exclusion, verified from the MergePoints epoch table. Every other session
+# Structural exclusion. Every other session
 # runs sleep / maze / sleep / maze / sleep, so the replay file's epoch1/3/5 are the sleep
 # epochs. PPP7_day12 runs presleep / presleep / T_maze2 / midsleep / T_maze1 / postsleep
 # -- six epochs, two mazes, and its "epoch3" is T_maze2, a running epoch, not sleep. Its

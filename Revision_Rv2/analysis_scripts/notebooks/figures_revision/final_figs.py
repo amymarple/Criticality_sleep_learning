@@ -50,7 +50,7 @@ def stem(fig_id):
 
 
 def _retry(fn, *a, **k):
-    for i in range(8):                       # Windows refuses writes while an editor preview holds the file
+    for i in range(8):                       # retry a transient write failure (e.g. a locked file)
         try:
             return fn(*a, **k)
         except OSError:
@@ -96,8 +96,8 @@ def copy(src, fig_id):
 
 
 class retry_savefig:
-    """Context manager: while a producer saves its own figures, retry a write that Windows refuses
-    (OSError 22, e.g. an editor preview holding the file)."""
+    """Context manager: while a producer saves its own figures, retry a write that fails with OSError
+    (e.g. a locked file)."""
 
     def __enter__(self):
         import matplotlib.figure

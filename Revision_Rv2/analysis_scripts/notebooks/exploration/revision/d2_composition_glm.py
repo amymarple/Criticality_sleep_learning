@@ -134,10 +134,9 @@ def add_swr(W, sid, bp):
     W["n_cells"] = window_mean(iv, R["n_cells"].to_numpy(float), c)
     W["ripple_dur"] = window_mean(iv, R["duration"].to_numpy(float), c)
     W["replay_prob"] = window_mean(iv, R["is_replay"].to_numpy(float), c)
-    # Replay labels exist only inside the decoded sleep epochs. Some sessions' replay
-    # files cover only part of the sleep epochs (e.g. PPP7_day8 / PPP8_day8 / PPP21_day4
-    # cover 2 of 3), so outside the span of the decoded candidate events the replay
-    # probability is undefined, not zero.
+    # Replay labels exist only inside the decoded sleep epochs; some sessions' replay
+    # files cover only part of them, so outside that span the replay probability is
+    # undefined, not zero.
     from r35_swr_property_control import load_replay_events
     E = load_replay_events(sid)
     inside = np.zeros(len(W), bool)
@@ -299,8 +298,8 @@ def plot(G, target):
     for i, grp in enumerate(order):
         v = g[g.group == grp].shapley.to_numpy()
         ax.plot(i + rng.uniform(-0.12, 0.12, v.size), v, "o", ms=3.5, color="k", alpha=0.6, mew=0, zorder=3)
-        # one-sided: a star marks a group that helps held-out prediction (Fig2_F_GLM.ipynb's
-        # test). A significantly negative Shapley value (noise under block CV) gets no star.
+        # one-sided: a star marks a group that helps held-out prediction. A significantly
+        # negative Shapley value (noise under block CV) gets no star.
         ax.text(i, v.max() + 0.04 * yr, _stars(stats.wilcoxon(v, alternative="greater").pvalue),
                 ha="center", va="bottom", fontsize=12, fontweight="bold")
     ax.axhline(0, ls="--", lw=1, color="k")

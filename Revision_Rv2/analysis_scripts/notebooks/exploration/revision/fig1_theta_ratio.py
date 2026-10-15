@@ -6,13 +6,12 @@ the 20-45 Hz aperiodic slope and buzcode's slow-wave score (`sw_broadband`), nei
 
 buzcode SleepScoreMaster's own theta metric, stored beside `broadbandSlowWave` in
 <basename>.SleepState.states.mat -> detectorinfo.detectionparms.SleepScoreMetrics.thratio, on the same
-1 s `t_clus` grid (read exactly as fig1_dropin_metrics.load_sleepscore_metrics reads sw_broadband; no
-LFP read, no MATLAB step). Definition (neurocode/brainStates/SleepScoreMaster/ClusterStates_GetMetrics.m,
+1 s `t_clus` grid. Definition (neurocode/brainStates/SleepScoreMaster/ClusterStates_GetMetrics.m,
 lines 153-218, the IRASA branch these sessions use -- LFPparams IRASA = 1, SWweights 'PSS'): on the
 theta channel (THchanID), 2 s windows, the IRASA oscillatory residual of the 2-20 Hz spectrum (the
 aperiodic 1/f part removed), max over 5-10 Hz = theta power above the 1/f background; transients
 removed, smoothed 15 s, min-max normalised to 0..1 within the session. Window value = mean of the
-t_clus samples inside the window, as `sw_broadband_window`.
+t_clus samples inside the window.
 
 SleepScoreMaster scores THETA vs non-THETA wake from this same metric.
 

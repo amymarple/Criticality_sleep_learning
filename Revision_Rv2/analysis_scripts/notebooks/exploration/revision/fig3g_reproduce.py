@@ -1,25 +1,23 @@
-"""fig3g_reproduce.py -- reproducing the manuscript's Figure 3g statistic exactly from its stored
-artifact, then walking one step at a time to the session-level comparison (Stage 2, A-G below).
+"""fig3g_reproduce.py -- Figure 3g statistic (manuscript) and seven model/window-source
+variants, computed from stored artifacts.
 
-Stage 1: the published pipeline, from
-notebooks/figures/Fig3_E_F_G_H_barrage_d2_S2_E_abblate_bar.ipynb cells 6-7:
+Published pipeline, from notebooks/figures/Fig3_E_F_G_H_barrage_d2_S2_E_abblate_bar.ipynb:
   * load data/ripple_barr/manipulation/sncg/*.pkl (7 files; columns epoch, d2) with the
     notebook's load_plot_df, in sorted-glob order;
   * rng = default_rng(0); per file x epoch draw N_target = 1000 rows, with replacement when the
     epoch has fewer;
   * MixedLM d2 ~ C(epoch) + C(animal), groups = animal_day, re_formula "1", lbfgs.
-  This script checks its own run against the stored coefficient, CI and p-value.
 
-Stage 2: the ladder (each row changes one thing relative to the row above):
+Model variants (each row changes one thing relative to the row above):
   A  published: pkl rows, resampled to 1000 per file x epoch, LMM on windows
   B  pkl rows, no resampling (the real windows), same LMM
   C  pkl rows, session-level: median per session x epoch, paired Wilcoxon / sign (n = 7)
   D  pkl's own d2 source (.mat) but all postsleep windows instead of the first N: the 80 ms /
-     60 s CA1+CA2 .mat for six sessions, the CA1 40 ms / 30 s .mat for SNCG06_day27 (what each
-     pkl was cut from -- asserted here), NREM windows whose centre lies in the presleep /
-     postsleep epoch of load_epoch, LMM without resampling
+     60 s CA1+CA2 .mat for six sessions, the CA1 40 ms / 30 s .mat for SNCG06_day27, NREM
+     windows whose centre lies in the presleep / postsleep epoch of load_epoch, LMM without
+     resampling
   E  same as D at the session level
-  F  same as D but resampled to 1000 per file x epoch (isolates the upsampling step)
+  F  same as D but resampled to 1000 per file x epoch
   G  presleep-all vs the last N postsleep windows (mirror of the pkl's first-N truncation)
 
     -> data/revision/log/fig3g_reproduce.csv
@@ -77,7 +75,7 @@ def load_plot_df(pkl_path):
 
 
 def resample(plot_df, seed=0):
-    """cell 6: per file x epoch, N_TARGET rows, with replacement if short; file order = glob order."""
+    """Per file x epoch, N_TARGET rows, with replacement if short; file order = glob order."""
     rng = np.random.default_rng(seed)
     rows = []
     for f, df_f in plot_df.groupby("animal_day", sort=False):
@@ -91,7 +89,7 @@ def resample(plot_df, seed=0):
 
 
 def lmm(df):
-    """cell 7: d2 ~ C(epoch) + C(animal), random intercept per animal_day."""
+    """d2 ~ C(epoch) + C(animal), random intercept per animal_day."""
     import statsmodels.formula.api as smf
     d = df.copy()
     d["animal"] = d["animal"].astype("category")
@@ -115,7 +113,7 @@ def session_level(df):
 
 
 def mat_epoch_series(bp, tag):
-    """The pkl's own d2 source, all NREM windows per epoch (asserted to reproduce the pkl)."""
+    """The pkl's own d2 source, all NREM windows per epoch."""
     if tag == "SNCG06_day27":
         v = load_d2_mat(bp, "").rename(columns={"center": "center_s", "d2_x": "d2"})
         src = "CA1 40 ms / 30 s"
@@ -146,7 +144,7 @@ def frame(series_by_session, mode="all"):
 
 def main():
     out = []
-    # ---------------- Stage 1 ----------------
+    # ---------------- published pipeline ----------------
     pkls = sorted(glob.glob(os.path.join(SN_DIR, "*.pkl")))
     pooled = pd.concat([load_plot_df(p) for p in pkls], ignore_index=True)
     plot_df = pooled[pooled["epoch"].isin(ORDER)].copy()
@@ -162,7 +160,7 @@ def main():
     print(f"  REPRODUCED: {ok}")
     out.append(dict(stage="A", what="published: pkl rows resampled to 1000/file x epoch, window LMM", **A, **session_level(balanced)))
 
-    # ---------------- Stage 2 ----------------
+    # ---------------- model-variant ladder (B-G) ----------------
     B = lmm(plot_df)
     out.append(dict(stage="B", what="pkl rows, no resampling, window LMM", **B, **session_level(plot_df)))
     out.append(dict(stage="C", what="pkl rows, session level (medians, paired)", **session_level(plot_df)))

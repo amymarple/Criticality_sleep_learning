@@ -1,14 +1,8 @@
-"""fig2f_backtrace_model.py -- Figure 2f: rebuilding the GLM producer's input table and
-rerunning its ablation model.
-
-fig2f_backtrace.py established that n_samples equals the number of NREM windows in the
-newest *_CA1_D2_time_resolved_error_bar.mat for all 9 sessions: the producer
-(generate_GLM.ipynb) keeps every NREM window, not only the ones with a ripple. This script
-rebuilds that table from the notebook's own steps and reruns its model, then compares with
-the stored per-session pickles (data/GLM_mice/explore/*_ablation_results_GLM.pkl): fold AUCs
-of the full and reduced models and the three ablation deltas. Folds are
-KFold(5, shuffle=True, random_state=0) on a table sorted by center_s, so an exact rebuild
-gives the stored numbers exactly.
+"""fig2f_backtrace_model.py -- Figure 2f: the GLM producer's (generate_GLM.ipynb) per-window
+input table and ablation model, rebuilt per session and compared against the stored
+per-session pickles (data/GLM_mice/explore/*_ablation_results_GLM.pkl): fold AUCs of the
+full and reduced models and the three ablation deltas. Folds are KFold(5, shuffle=True,
+random_state=0) on a table sorted by center_s.
 
 Features: d2; MUA (40 ms population rate over all CA1 units, 30 s centred rolling mean,
 interpolated to window centres); FR_std (across-neuron SD, ddof=0, of each unit's rate in
@@ -18,11 +12,10 @@ pvalue < .05 (the p_and_r variant also requires rvalue < .05 in that direction).
 windows, tiled into sextiles of ripple_count. The predictive-gain model
 (cv_predictive_gain_logistic) is shared with fig2f_producer_glm.py.
 
-Two choices the stored pickle does not pin down, tried as variants: which decoded
-epoch/template combo(s) feed the replay labels (`epochs`: 'all' uses every combo in the
-session's replay file, 'committed' uses only the epoch3/epoch5 combo named for that
-session), and whether significance requires both a p-value and an r-value threshold or a
-p-value alone (`sig`).
+Two parameters the stored pickle does not record, varied here: which decoded epoch/template
+combo(s) feed the replay labels (`epochs`: 'all' uses every combo in the session's replay
+file, 'committed' uses only the epoch3/epoch5 combo named for that session), and whether
+significance requires both a p-value and an r-value threshold or a p-value alone (`sig`).
 
     -> data/revision/log/fig2f_backtrace_model.csv
 """
@@ -58,7 +51,7 @@ FEATURES = ("d2", "MUA", "FR_std")
 SESS = os.environ.get("SESS", "")            # optional: single session for a quick check
 
 
-# ----------------------------------------------------------------- cells 4-7
+# ----------------------------------------------------------------- population features
 def population_mua(spike_times, centers):
     """40 ms bins over all units, 30 s centred rolling mean/std, interpolated to centres."""
     st = np.sort(np.concatenate([np.asarray(s, float).ravel() for s in spike_times if len(s)]))
@@ -89,7 +82,7 @@ def fr_std_across_neurons(spike_times, centers):
     return rates.std(axis=1, ddof=0)
 
 
-# ----------------------------------------------------------------- cell 11
+# ----------------------------------------------------------------- replay events
 def replay_intervals(sess, epochs="all", sig="p_and_r", which="new"):
     """`epochs`: 'all' | 'committed' | an explicit list of '<epoch>_<template>' combos.
     `which`: 'new' -> <sess>_replay_sequences_new.mat, 'old' -> _replay_sequences.mat."""
@@ -116,7 +109,7 @@ def replay_intervals(sess, epochs="all", sig="p_and_r", which="new"):
     return np.concatenate(out) if out else np.zeros((0, 2)), combos
 
 
-# ----------------------------------------------------------------- cell 13-14
+# ----------------------------------------------------------------- window table
 def overlap_counts(iv, centers, mask=None):
     w0, w1 = centers - WIN_S / 2, centers + WIN_S / 2
     a, b = iv[:, 0], iv[:, 1]
@@ -153,7 +146,7 @@ def build_table(sess, bp, epochs, sig, cache, which="new"):
     has = np.fromiter((np.any((r[0] < S[:, 1]) & (r[1] > S[:, 0])) if len(S) else False
                        for r in riv), bool, len(riv))
     D["replay_count"] = overlap_counts(riv, D["center_s"].to_numpy(float), has)
-    # cell 14: prepare_sextile_df
+    # sextile table (prepare_sextile_df)
     d = D[D["state"].str.upper().eq("NREM")].copy()
     d["replay_present"] = (d["replay_count"].astype(float) > 0).astype(int)
     d = d.dropna(subset=["d2", "MUA", "ripple_count", "replay_present"]).copy()
@@ -189,8 +182,8 @@ def search(sessions):
                           f"max|dfold| {dfull:.4f}{'  <== EXACT' if dfull < 1e-6 else ''}", flush=True)
 
 
-# The epoch/template combos that reproduce each stored pickle's fold AUCs and ablation
-# deltas to within 1e-6 (found via the default run plus the SEARCH mode above).
+# Epoch/template combos that reproduce each stored pickle's fold AUCs and ablation
+# deltas to within 1e-6.
 MATCHED = {
     "PPP4_day11": ["epoch5_template02"],
     "PPP7_day8":  ["epoch5_template02"],
@@ -249,7 +242,7 @@ def coverage():
                 res, det = cv_predictive_gain_logistic(
                     sub, features=FEATURES, tile_col="tile", replay_col="replay_present",
                     n_bins=6, group_col="session", n_splits=5, C=1.0, random_state=0)
-            except ValueError as e:          # a fold with one class: too few negatives
+            except ValueError as e:          # skip: a fold with only one class
                 print(f"    [{sess} {tag}: unfittable -- {str(e)[:60]}]", flush=True)
                 for f in FEATURES:
                     out[f"imp_{f}_{tag}"] = np.nan

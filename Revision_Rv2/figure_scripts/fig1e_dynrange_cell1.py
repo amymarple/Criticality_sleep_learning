@@ -17,7 +17,7 @@ mpl.rcParams['font.sans-serif'] = [
     'Helvetica Neue', 'Helvetica', 'Arial', 'Liberation Sans', 'DejaVu Sans'
 ]
 
-# Mathtext to match (works if those faces exist on your system)
+# Mathtext to match
 mpl.rcParams['mathtext.fontset'] = 'custom'
 mpl.rcParams['mathtext.rm'] = 'Helvetica Neue'   # or 'Helvetica'
 mpl.rcParams['mathtext.it'] = 'Helvetica Neue:italic'

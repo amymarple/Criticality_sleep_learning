@@ -2,15 +2,14 @@
 fig1c_example_traces.py -- Fig. 1c (the PPP20_day5 example) with the other window-level measures
 stacked under the population rate: E/I balance, synchrony, theta power and SWR rate, and d2 last.
 
-REPRODUCES the published panel (`notebooks/figures/Fig1_C_Example_plot_mouse.ipynb`, left untouched):
-its function definitions (bin_spikes, clean_and_reassign_epochs and helpers) and its `corrections`
-list are executed from the notebook's own cells, so the state bar, the state corrections (bridge 2 s),
-the MUA row (all CA1 units, 40 ms, capped at the 99.5th percentile, Gaussian 2 s, shown at 1 s) and
-the d2 row (d2 (2024 Euclidean, p = 20) from *_D2_time_resolved_error_bar_forplot.mat, 30 s windows
-every 2 s, coloured by the .mat state, broken and shaded +-10 s around every transition) are the
-published ones. Range 5200-10000 s.
+The function definitions (bin_spikes, clean_and_reassign_epochs and helpers) and the `corrections`
+list are executed from the cells of `notebooks/figures/Fig1_C_Example_plot_mouse.ipynb`, which gives
+the state bar, the state corrections (bridge 2 s), the MUA row (all CA1 units, 40 ms, capped at the
+99.5th percentile, Gaussian 2 s, shown at 1 s) and the d2 row (d2 (2024 Euclidean, p = 20) from
+*_D2_time_resolved_error_bar_forplot.mat, 30 s windows every 2 s, coloured by the .mat state, broken
+and shaded +-10 s around every transition). Range 5200-10000 s.
 
-NEW ROWS, one value per d2 window (the same 30 s window at the same centre), with the revision
+Added rows, one value per d2 window (the same 30 s window at the same centre), with the revision
 pipeline's definitions (units above MIN_FIRING_RATE, run_fig1_metrics.load_session):
   E/I       log(E rate / I rate), pyramidal vs interneuron spikes over the window (run_fig1_metrics)
   synchrony fraction of E units active per 50 ms, subsampled to 81 E units, median of 20 draws
@@ -141,7 +140,7 @@ def main():
     h = [plt.Rectangle((0, 0), 1, 1, color=STATE_COL[k]) for k in ("WAKE", "NREM", "REM")]
     ax_bar.legend(h, ["Wake", "NREM", "REM"], ncol=3, frameon=False, loc="lower right", bbox_to_anchor=(1, 1.0))
 
-    ax = fig.add_subplot(gs[1], sharex=ax_bar)                     # MUA exactly as the notebook
+    ax = fig.add_subplot(gs[1], sharex=ax_bar)                     # MUA row
     m = (tb >= T0) & (tb <= T1)
     r = np.clip(fr[m], 0, np.percentile(fr, CAP_PCT))
     sm = gaussian_filter1d(r, sigma=max(LONG_S / BIN, 1))

@@ -53,15 +53,9 @@ BARRAGE_SESSIONS = {
     "NN8_day6": r"X:\data\Barrage\NN8\day6",
     "NN8_day7": r"X:\data\Barrage\NN8\day7",
     "PPP7_day7": r"W:\data\PPP\PPP7\day7",
-    # PPP7_day12 is under the CA2 tree, not W:\data\PPP\PPP7\day12.
-    # The two are the SAME 123-unit session curated twice with different region labels:
-    #   W:\data\PPP\PPP7\day12      -> dCA1(100)  vCA(23)          no barrage file
-    #   W:\data\PPP\CA2\PPP7\day12  -> CA1(70) CA2(30) Unknown(23)  501 barrage events
-    # i.e. the CA2 curation splits the 100 "dCA1" units into 70 CA1 + 30 CA2.
+    # PPP7_day12 uses the CA2-curated tree (CA1/CA2 split, with the barrage events file).
     "PPP7_day12": r"W:\data\PPP\CA2\PPP7\day12",
 }
-# Available but not in the Figure 3 set (no file in data/ripple_barr/*/barr*):
-#   PPP7_day8 -> W:\data\PPP\CA2\PPP7\day8  (CA1 210, CA2 93, 201 barrages).
 POPS = {"CA1": ["CA1"], "CA1+CA2": ["CA1", "CA2"]}
 BINS_COVERAGE = (0.040, 0.080, 0.100, 0.200)
 SPIKES_FLOOR = 10

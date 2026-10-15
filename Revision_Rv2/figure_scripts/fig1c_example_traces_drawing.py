@@ -42,27 +42,21 @@ WRITABLE_DRIVES = {"C", "D"}
 
 # --- run_fig1_metrics.py
 def assert_local_path(path):
-    """Raise unless `path` is on a local writable drive.
-
-    The PreToolUse hook cannot see writes made *inside* a running process, so the
-    guarantee that this script never touches the ayadata shares is enforced here.
-    Called before every write.
-    """
+    """Raise unless `path` is on a local writable drive. Called before every write."""
     p = os.path.abspath(str(path))
     if p.startswith("\\\\") or p.startswith("//"):
         raise PermissionError(f"refusing to write to UNC path: {p}")
     drive = os.path.splitdrive(p)[0].rstrip(":").upper()
     if drive not in WRITABLE_DRIVES:
         raise PermissionError(
-            f"refusing to write outside {sorted(WRITABLE_DRIVES)}: {p} "
-            "(raw session data is read-only — see DATA_SAFETY.md)"
+            f"refusing to write outside {sorted(WRITABLE_DRIVES)}: {p}"
         )
     return p
 
 
 # --- fig1c_example_traces.py (a drawing section, as a function)
 def draw_figure(D, iv, tb, fr, fr_cap):
-    """The figure section of main() in fig1c_example_traces.py (from \'edges = np.unique(\' on), drawn from the variables computed before it: D, iv, tb, fr, fr_cap."""
+    """Draw the Fig 1c state bar, population FR and per-panel trace rows from D, iv, tb, fr, fr_cap."""
     edges = np.unique(np.concatenate([x.ravel() for x in iv.values()]))
     edges = edges[(edges >= T0) & (edges <= T1)]
     ROWS = [("EI", "E/I balance\nlog(E / I rate)"), ("synchrony", "synchrony\n(E units active / 50 ms)"),
@@ -82,7 +76,7 @@ def draw_figure(D, iv, tb, fr, fr_cap):
     h = [plt.Rectangle((0, 0), 1, 1, color=STATE_COL[k]) for k in ("WAKE", "NREM", "REM")]
     ax_bar.legend(h, ["Wake", "NREM", "REM"], ncol=3, frameon=False, loc="lower right", bbox_to_anchor=(1, 1.0))
 
-    ax = fig.add_subplot(gs[1], sharex=ax_bar)                     # MUA exactly as the notebook
+    ax = fig.add_subplot(gs[1], sharex=ax_bar)
     m = (tb >= T0) & (tb <= T1)
     r = np.clip(fr[m], 0, fr_cap)   # fr_cap: np.percentile(fr, CAP_PCT) over the whole session; fr here covers the plotted range only
     sm = gaussian_filter1d(r, sigma=max(LONG_S / BIN, 1))
@@ -102,7 +96,7 @@ def draw_figure(D, iv, tb, fr, fr_cap):
         ax = fig.add_subplot(gs[2 + j], sharex=ax_bar); axes.append(ax)
         y = D[col].to_numpy(float).copy()
         if col == "d2":
-            y = np.clip(y, 0, np.nanpercentile(y, 99.5))            # the notebook's d2 cap
+            y = np.clip(y, 0, np.nanpercentile(y, 99.5))
         y[gap] = np.nan
         for e in edges:
             ax.axvspan(max(e - BREAK_PAD, T0), min(e + BREAK_PAD, T1), ymin=0.9, ymax=1.0, facecolor="0.8",

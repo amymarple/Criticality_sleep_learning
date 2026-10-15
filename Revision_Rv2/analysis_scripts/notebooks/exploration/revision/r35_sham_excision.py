@@ -9,8 +9,8 @@ free segment shorter than MIN_FREE_S discarded; excision removes a median 7-9% o
 window), and sham (the same number of intervals and durations as the ripples, placed
 uniformly at random where they overlap neither a ripple nor each other, removed and glued
 the same way, averaged over N_SHAM draws per window). d2 (2024 Euclidean, AR 20) is
-computed in Python on each arm and validated against the stored .mat values (full against
-the published d2, excised against the ripple-ablated d2). Each arm then goes through the
+computed in Python on each arm (full corresponds to the published d2, excised to the
+ripple-ablated d2). Each arm then goes through the
 same per-SWR binomial ladder (d2 alone, + MUA, + MUA + MUA_std, + MUA + MUA_std + SWR
 rate), session as the unit of analysis.
 

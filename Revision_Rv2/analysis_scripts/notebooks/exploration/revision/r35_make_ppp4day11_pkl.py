@@ -10,9 +10,9 @@ used elsewhere in Figure 2 for this animal. This script rebuilds PPP4_day11 in
 table, ripples intersected with NREM, replay intervals from one template per session over
 epochs 1/3/5 with left- and right-significant events appended separately (so `replay_rate`
 matches the pipeline's per-direction counting), and a ripple counted as replay-carrying if
-it overlaps any significant interval. It verifies the rebuilt ripple and replay counts
-against the independently stored per-window counts, window for window, and only then
-writes the new file and moves the old one to `_superseded/` (nothing is deleted).
+it overlaps any significant interval. The new file is written only if the rebuilt ripple
+and replay counts match the stored per-window counts, window for window; the old file
+moves to `_superseded/` (nothing is deleted).
 
 Inputs: data/replay/replay_probality/PPP4_day11.pkl (d2 timeline, ripple_count,
 replay_count); W:\\data\\PPP\\PPP4\\day11 (ripples, sleep state); the R_Project replay
@@ -106,7 +106,7 @@ def main():
     n_rep = count_in_windows(S, c)
     assert np.array_equal(n_all, n_in + n_out), "in+out must partition all"
 
-    # --- verify against the independently computed stored counts ------------
+    # --- counts must match the stored per-window table before writing -------
     exp_all = nrem["ripple_count"].to_numpy(float)
     exp_in = nrem["replay_count"].to_numpy(float)
     ok_all = np.mean(np.isclose(n_all, exp_all))

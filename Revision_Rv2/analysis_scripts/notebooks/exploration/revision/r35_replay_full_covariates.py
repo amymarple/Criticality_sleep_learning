@@ -10,9 +10,8 @@ conditioned on the same things.
 
 Fano, synchrony and E/I are computed on the ripple-excised part of each replay window by
 `r16_event_excised_windows.metrics`, the same routine used for the event-type classifier,
-with the ripple intervals as the events. Its MUA_bg is cross-checked against the replay
-builder's MUA_bg. Windows, sessions and d2 (py_excised, 2024 Euclidean, p=20) are those of
-`r35_extended_windows.csv`.
+with the ripple intervals as the events. Windows, sessions and d2 (py_excised, 2024
+Euclidean, p=20) are those of `r35_extended_windows.csv`.
 
 Model: replay_count of n_swr, binomial, pooled with session fixed effects, predictors
 z-scored within session. Reported for each predictor: drop-one LR chi2, cluster-robust z,

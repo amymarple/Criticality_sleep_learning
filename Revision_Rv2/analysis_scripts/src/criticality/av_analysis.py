@@ -387,7 +387,7 @@ def compute_scaling_with_avg(data_dict, xlabel, ylabel, title, animal_name,day,s
         color = next(color_cycle)
         beta_avg_dict[label]=slope
         plt.loglog(avg_data['Duration'], avg_data['Size'], 'o', markersize=4, label=f"{label}", color=color)
-        # Generate smooth x values across the range of your data
+        # Generate smooth x values across the range of the data
         x_fit = np.linspace(avg_data['Duration'].min(), avg_data['Duration'].max(), 200)
         y_fit = np.exp(intercept) * (x_fit ** slope)
 

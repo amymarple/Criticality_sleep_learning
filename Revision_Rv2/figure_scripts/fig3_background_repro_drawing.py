@@ -35,35 +35,29 @@ WRITABLE_DRIVES = {"C", "D"}
 
 # --- run_fig1_metrics.py
 def assert_local_path(path):
-    """Raise unless `path` is on a local writable drive.
-
-    The PreToolUse hook cannot see writes made *inside* a running process, so the
-    guarantee that this script never touches the ayadata shares is enforced here.
-    Called before every write.
-    """
+    """Raise unless `path` is on a local writable drive. Called before every write."""
     p = os.path.abspath(str(path))
     if p.startswith("\\\\") or p.startswith("//"):
         raise PermissionError(f"refusing to write to UNC path: {p}")
     drive = os.path.splitdrive(p)[0].rstrip(":").upper()
     if drive not in WRITABLE_DRIVES:
         raise PermissionError(
-            f"refusing to write outside {sorted(WRITABLE_DRIVES)}: {p} "
-            "(raw session data is read-only — see DATA_SAFETY.md)"
+            f"refusing to write outside {sorted(WRITABLE_DRIVES)}: {p}"
         )
     return p
 
 
 # --- fig3_background_repro.py (a drawing section, as a function)
 def draw_main(res, pf_f, p_f, up_f, wf, G, up_g, wg, t_h, r_h, p_h, lmm_h):
-    """The figure section of main() in fig3_background_repro.py (from \'# ---- figure\' on), drawn from the variables computed before it: res, pf_f, p_f, up_f, wf, G, up_g, wg, t_h, r_h, p_h, lmm_h."""
+    """Draw Fig 3 panels e-h: d2 vs barrage rate (full window vs background), barrage/shuffle branching ratio,
+    CCK-silencing background d2, and ISI entropy vs barrage rate, from the precomputed inputs."""
     # ---- figure ------------------------------------------------------------------------------
     plt.rcParams.update({"font.family": "Arial", "font.size": 10, "axes.spines.top": False,
                          "axes.spines.right": False, "svg.fonttype": "none"})
     fig, ax = plt.subplots(1, 4, figsize=(15, 3.6))
-    # e: both arms -- grey = full window (the published quantity), tab:blue = background (ripples and
-    # barrages excised); same windows, raw units, session counts per arm
+    # e: both arms -- grey = full window, tab:blue = background (ripples and barrages excised);
+    # same windows, raw units, session counts per arm
     stars = lambda p: "***" if p < .001 else "**" if p < .01 else "*" if p < .05 else "n.s."
-    # colours: background keeps the panel's original tab:blue; the added full-window line is grey
     for k, (lab, col, name) in enumerate((("full window", "#7f7f7f", "full window"),
                                           ("background", "tab:blue", "ripples + barrages excised"))):
         m, e, lr, n, rho, prho = res[lab]

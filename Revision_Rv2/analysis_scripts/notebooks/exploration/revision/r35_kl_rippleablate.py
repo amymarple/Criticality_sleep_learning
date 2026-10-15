@@ -12,7 +12,7 @@ is then the KL-divergence rate to the beta=2 manifold on the glued series. Both 
 and excised arms use the same estimator (Yule-Walker AR) on the same windows, so the
 comparison is paired; this differs from the stored `kl_error_bars.csv`, which used an MLE
 AR fit (needed for its delta-method error bars), so the full-window arm is recomputed here
-too and checked against the stored values.
+too.
 
 Windows are the revision pipeline's own NREM non-overlapping tiling, identical to
 `kl_error_bars.py`, keyed on (animal, day, w).
@@ -112,14 +112,9 @@ def glued_series(sp, segs, bin_s=BIN_MUA_S):
 
 
 def make_d2_fn(dt, num_w=2 ** 14):
-    """KL d2 with the spectral caches built ONCE per worker.
-
-    This is `kl_error_bars.py :: make_d2_fn`, and using it rather than the convenience
-    wrapper `d2_from_timeseries` is worth ~20x: the wrapper constructs a
-    `_SpectralCache(2**14, p)` on EVERY call, which dominates the runtime (measured
-    33 s/eval via the wrapper vs ~1.4 CPU-s per minimisation in the cached driver).
-    Same estimator, same Yule-Walker fit, same objective — only the cache lifetime
-    differs."""
+    """KL d2 with the spectral caches built ONCE per worker (`kl_error_bars.py ::
+    make_d2_fn`). Same estimator, same Yule-Walker fit, same objective as
+    `d2_from_timeseries`; only the cache lifetime differs."""
     from scipy.optimize import minimize
 
     from d2_fast import (_kl_rate_bits_from_AR_cached, _phiB_init_from,

@@ -31,8 +31,7 @@ Each row gives the per-ripple odds that a SWR carries replay as a function of d2
 holding firing rate (and its variability, and E/I) fixed.
 
 Sessions: the replay sessions (SESSIONS in r35_swr_property_control.py). PPP23_day8's
-pickle has no MUA/MUA_std/EI_ratio and is dropped by name rather than reconstructed, as in
-the Fig 2F rebuild.
+pickle has no MUA/MUA_std/EI_ratio and is dropped by name.
 
     -> data/revision/log/r35_binomial_fig2fvars.csv          (b1 per arm x model x session)
     -> data/revision/log/r35_binomial_fig2fvars_windows.csv  (the window table)

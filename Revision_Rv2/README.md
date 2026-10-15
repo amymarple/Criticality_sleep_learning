@@ -81,31 +81,21 @@ below.
 - `../Previous_Rv1`: the first-submission folder of this repository, next to this one (some tables are read from it).
 - First-submission packages: nelpy, neuro_py, mat73, mpmath, scikit-image and pingouin. These notebooks run
   first-submission notebooks from [`figure_scripts/rv1_disjoint/`](figure_scripts/rv1_disjoint).
-- [Inkscape](https://inkscape.org) 1.x, for the panels cut from the submitted figures. Set the environment variable
-  `INKSCAPE` if it is not at `C:\Program Files\Inkscape\bin\inkscape.exe`.
-
-Panels cut from the submitted figures keep only their own region of the source figure.
+- [Inkscape](https://inkscape.org) 1.x. Set the environment variable `INKSCAPE` if it is not at
+  `C:\Program Files\Inkscape\bin\inkscape.exe`.
 
 ## Folders
 
 | folder | what is in it |
 |---|---|
 | [`figure_scripts/`](figure_scripts) | The notebooks that draw the panels, one per figure theme. `*_drawing.py`: drawing functions taken from analysis scripts, so that the notebooks import no analysis code (each names its source). [`rv1_disjoint/`](figure_scripts/rv1_disjoint): first-submission notebooks run on non-overlapping windows for some supplementary panels. [`final_figs.py`](figure_scripts/final_figs.py): shared helpers (print styles, saving, stars, crops). |
-| [`csv/<notebook>/`](csv) | The tables each notebook draws: one row per session, window, bin or tile, with the statistics printed on the panels. No spike times. `assets/` holds the submitted figures and schematics that panels are cut from. |
+| [`csv/<notebook>/`](csv) | The tables each notebook draws: one row per session, window, bin or tile, with the statistics printed on the panels. `assets/`: schematics and source figures. |
 | [`figure_output/`](figure_output) | The panels, as the notebooks save them. |
 | [`analysis_scripts/`](analysis_scripts) | The pipeline from the recordings to the tables. Index: [analysis_scripts/README.md](analysis_scripts/README.md); methods: [METHODS.md](analysis_scripts/METHODS.md). |
 
-### Source of the figure code, and verification
-
 The notebooks in `figure_scripts/` are the lab's figure notebooks
-([`analysis_scripts/notebooks/figures_revision/`](analysis_scripts/notebooks/figures_revision)) with one change:
-wherever a table was loaded from the lab's `data/` folder or computed from the recordings, the notebook reads it from
-`../csv/` instead, under a `# ---- data (../csv) ----` line, and keeps the lab's lines below it as comments. The
-notebooks in `rv1_disjoint/` are the first-submission notebooks reading the non-overlapping tables; lines changed for
-the revision are marked `# (revision patch)` and listed in their first cell.
-
-Each notebook in `figure_scripts/` was run beside its lab version: both save the same panel files (SVG compared
-without matplotlib's random ids, PNG pixel by pixel), identical to the panels of the final figures.
+([`analysis_scripts/notebooks/figures_revision/`](analysis_scripts/notebooks/figures_revision)), reading their
+tables from `../csv/`.
 
 ## From the recordings to the figures
 
@@ -152,7 +142,7 @@ after a notebook is the cell that draws the panel.
 |---|---|---|---|
 | a (top) | [`Fig2_A_prepost`](figure_scripts/Fig2_A_prepost.ipynb) (3) | `assets/fig2a_prepost_schematic_source.png` | illustration |
 | a | [`Fig2_A_prepost`](figure_scripts/Fig2_A_prepost.ipynb) (5) | `fig2a_prepost_sessions_disjoint.csv`: d2 per session, presleep vs postsleep, NREM, non-overlapping windows | the lab's `Fig2_A` notebook: `Previous_Rv1` [`Fig2_A_FigS2_B_FigS3_A`](../Previous_Rv1/figure_scripts/Fig2_A_FigS2_B_FigS3_A.ipynb) run by [`ed_nonoverlap.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap.py) ← [`notebooks/exploration/generate_pre_post.ipynb`](analysis_scripts/notebooks/exploration/generate_pre_post.ipynb) ← d2 .mat, ripples, states |
-| b (events) | [`Fig2_B_replay_examples`](figure_scripts/Fig2_B_replay_examples.ipynb) (3); ridge fit: `fig2b_replay_fit_drawing` | `replay_1731_matrix.csv`, `nonreplay_934_left_matrix.csv`: decoded posteriors; `event_intervals.csv`; `lfp_around_events.csv` (ripple channel, ±0.15 s) | the submitted replay example (`Previous_Rv1` [`Fig2_B_Example_replay`](../Previous_Rv1/figure_scripts/Fig2_B_Example_replay.ipynb)) ← replay decoding ([`notebooks/helper/Getreplaypmatforpython.m`](analysis_scripts/notebooks/helper/Getreplaypmatforpython.m)), LFP |
+| b (events) | [`Fig2_B_replay_examples`](figure_scripts/Fig2_B_replay_examples.ipynb) (3); ridge fit: `fig2b_replay_fit_drawing` | `replay_1731_matrix.csv`, `nonreplay_934_left_matrix.csv`: decoded posteriors; `event_intervals.csv`; `lfp_around_events.csv` (ripple channel, ±0.15 s) | the replay example of the first submission (`Previous_Rv1` [`Fig2_B_Example_replay`](../Previous_Rv1/figure_scripts/Fig2_B_Example_replay.ipynb)) ← replay decoding ([`notebooks/helper/Getreplaypmatforpython.m`](analysis_scripts/notebooks/helper/Getreplaypmatforpython.m)), LFP |
 | b (curve) | [`Fig2_B_replay_examples`](figure_scripts/Fig2_B_replay_examples.ipynb) (5) | `fig2c_example_excised.csv`: PPP8 day 8, 180 s: full and ripple-excised d2, replay probability | [`fig2c_example_excised.py`](analysis_scripts/notebooks/exploration/revision/fig2c_example_excised.py) ← `*_D2_time_resolved.mat`, `*_rippleablate.mat`, [`notebooks/figures/Fig2_C_Example_replayprobalit.ipynb`](analysis_scripts/notebooks/figures/Fig2_C_Example_replayprobalit.ipynb) |
 | c | [`Fig2_CDE_replay_bgd2`](figure_scripts/Fig2_CDE_replay_bgd2.ipynb) (3); [`fig2_new_drawing.panel_replay_rates`](figure_scripts/fig2_new_drawing.py) | `excised_br_entropy_windows.csv`: per non-overlapping 30 s NREM window of the 9 decoded sessions: ripple-excised d2, SWR rate, replay probability | [`excised_br_entropy.py`](analysis_scripts/notebooks/exploration/revision/excised_br_entropy.py) ← W: spikes, ripples, the replay decoding |
 | d | [`Fig2_CDE_replay_bgd2`](figure_scripts/Fig2_CDE_replay_bgd2.ipynb) (5); `panel_ladder` | `fig2f_swr_property_ladder.csv`: d2's replay coefficient per session, alone and with SWR rate, amplitude, duration | [`fig2f_swr_property_ladder.py`](analysis_scripts/notebooks/exploration/revision/fig2f_swr_property_ladder.py) ← [`r35_binomial_replay.py`](analysis_scripts/notebooks/exploration/revision/r35_binomial_replay.py), [`r35_swr_property_control.py`](analysis_scripts/notebooks/exploration/revision/r35_swr_property_control.py) |
@@ -164,7 +154,7 @@ after a notebook is the cell that draws the panel.
 
 | panel | figure notebook (cell) | data | made by |
 |---|---|---|---|
-| a–d, g (example) | [`Fig3_ADG_from_submitted`](figure_scripts/Fig3_ADG_from_submitted.ipynb) (2) | `assets/Figure3_submitted_2026-03-12.svg` | cut unchanged from the submitted Figure 3. The network model of a–d is a colleague's and its code is not in this folder. |
+| a–d, g (example) | [`Fig3_ADG_from_submitted`](figure_scripts/Fig3_ADG_from_submitted.ipynb) (2) | `assets/Figure3_submitted_2026-03-12.svg` | network model (schematic) |
 | e | [`Fig3_EFGH_barrage_bgd2`](figure_scripts/Fig3_EFGH_barrage_bgd2.ipynb) (2); [`fig3_background_repro_drawing.draw_main`](figure_scripts/fig3_background_repro_drawing.py) | `fig3e_sextiles.csv`: d2 (full window and ripples + BARRs excised) by BARR-rate sextile, mean ± SEM over sessions; `fig3e_session_rho.csv`, `fig3e_stats.csv` | [`fig3_background_repro.py`](analysis_scripts/notebooks/exploration/revision/fig3_background_repro.py) (`NONOVERLAP=1`) ← [`r16_glue_control.py`](analysis_scripts/notebooks/exploration/revision/r16_glue_control.py) (per-window d2, full and event-excised, barrage cohort) ← X:\data\Barrage, W:\data\PPP |
 | f | same | `fig3f_psth_curves_PPP7_day7.csv`: BR around BARR starts, ripples + BARRs excised; `fig3f_inset_sessions.csv`, `fig3f_inset_lmm.csv`: per-session ΔBR (full window) | [`fig3f_psth_excised.py`](analysis_scripts/notebooks/exploration/revision/fig3f_psth_excised.py) ← W: spikes; inset: [`fig3_background_repro.panel_f`](analysis_scripts/notebooks/exploration/revision/fig3_background_repro.py) ← [`notebooks/exploration/generate_branching_ratio_mouse.ipynb`](analysis_scripts/notebooks/exploration/generate_branching_ratio_mouse.ipynb) |
 | g | same | `fig3g_sessions.csv`: background d2 per session, baseline vs BARR disruption | [`fig3_background_repro.py`](analysis_scripts/notebooks/exploration/revision/fig3_background_repro.py) ← [`fig3g_background.py`](analysis_scripts/notebooks/exploration/revision/fig3g_background.py) ← [`opto_sncg_metrics.py`](analysis_scripts/notebooks/exploration/revision/opto_sncg_metrics.py) ← X:\data\Barrage\SNCG* |
@@ -178,17 +168,18 @@ after a notebook is the cell that draws the panel.
 |---|---|---|---|
 | a, b, d | [`FigS1_AF_methods`](figure_scripts/FigS1_AF_methods.ipynb) (3) | `figs1_example_window_counts_40ms.csv`: population counts of the example 30 s NREM window (all CA1 units, 40 ms); `figs1_example_kernel.csv`, `figs1_example_s2.csv`: its AR(20) fit | [`r38_hyperplane_explainer.py`](analysis_scripts/notebooks/exploration/revision/r38_hyperplane_explainer.py) ← W:\data\PPP\PPP20\day5 |
 | c | [`FigS1_AF_methods`](figure_scripts/FigS1_AF_methods.ipynb) (3, 9) | `r38_hyperplane_windows.csv`: every non-overlapping NREM window of PPP20 day 5 in kernel space; `figs1_window_kernels.csv`: their kernels | [`r38_hyperplane_explainer.py`](analysis_scripts/notebooks/exploration/revision/r38_hyperplane_explainer.py); β-manifolds: [`euclid_order_sweep.py`](analysis_scripts/notebooks/exploration/revision/euclid_order_sweep.py) (the authors' 2024 code, ported) |
-| e, f | [`FigS1_AF_methods`](figure_scripts/FigS1_AF_methods.ipynb) (5) | `assets/Extended Data Fig1.svg` | cut from the submitted Extended Data Fig. 1a, recoloured |
+| e, f | [`FigS1_AF_methods`](figure_scripts/FigS1_AF_methods.ipynb) (5) | `assets/Extended Data Fig1.svg` | Extended Data Fig. 1a of the first submission |
 
 ## Supplementary Figure 2: d2 robustness and the measures by state
 
-The submitted Extended Data Fig. 1 b–g, drawn by the submitted notebooks (`figure_scripts/rv1_disjoint/`) on non-overlapping windows.
+Extended Data Fig. 1b–g of the first submission on non-overlapping windows, drawn by the notebooks in
+`figure_scripts/rv1_disjoint/`.
 
 | panel | figure notebook (cell) | data | made by |
 |---|---|---|---|
 | a | [`FigS2_AF_robustness`](figure_scripts/FigS2_AF_robustness.ipynb) (3) ← [`rv1_disjoint/FigS1_B_Explain variance_D_statetransition`](figure_scripts/rv1_disjoint/FigS1_B_Explain%20variance_D_statetransition.ipynb) | `rv1_FigS1_B_.../explained_variance_by_window.csv`: AR(20) variance explained per window, each window length thinned at its own length | [`ed_nonoverlap_ed1b.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap_ed1b.py) ← `20250324timebin_grainedmouse.mat` ← [`notebooks/helper/coarse_grain_ddc.m`](analysis_scripts/notebooks/helper/coarse_grain_ddc.m) (from the lab's R_Project repository) |
 | b | same ← [`rv1_disjoint/FigS1_C_SNR_S2C_d2 uncertainty`](figure_scripts/rv1_disjoint/FigS1_C_SNR_S2C_d2%20uncertainty.ipynb) | `rv1_FigS1_C_.../d2_err_30s_60s_18sessions.csv`: d2 and its uncertainty, 30 and 60 s windows | [`ed_nonoverlap_d2err.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap_d2err.py) ← `*_error_bar.mat`, `*_error_bar_60sec.mat` |
-| c | same ← `rv1_disjoint/FigS1_B_...` | `Previous_Rv1/csv/.../d2_windows_state_transition.csv` (all windows, as submitted) | [`notebooks/helper/time_resolved_d2_state_transition.m`](analysis_scripts/notebooks/helper/time_resolved_d2_state_transition.m) |
+| c | same ← `rv1_disjoint/FigS1_B_...` | `Previous_Rv1/csv/.../d2_windows_state_transition.csv` (all windows) | [`notebooks/helper/time_resolved_d2_state_transition.m`](analysis_scripts/notebooks/helper/time_resolved_d2_state_transition.m) |
 | d | same ← [`rv1_disjoint/Fig1_D_histogram_S1_E`](figure_scripts/rv1_disjoint/Fig1_D_histogram_S1_E.ipynb) | `rv1_Fig1_D_.../d2_windows_18sessions.csv` (thinned); `fig1de_nonoverlap_stats.csv` (its bracket) | [`ed_nonoverlap.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap.py); [`fig1de_nonoverlap.py`](analysis_scripts/notebooks/exploration/revision/fig1de_nonoverlap.py) |
 | e | same ← [`rv1_disjoint/FigS1_F_branchingratio_histogram`](figure_scripts/rv1_disjoint/FigS1_F_branchingratio_histogram.ipynb) | `rv1_FigS1_F_.../branching_ratio_by_state.csv`: BR of every 10 s window thinned at 10 s, every wake window | [`ed_nonoverlap_ed2a_ed1f.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap_ed2a_ed1f.py) (runs cell 0 of [`notebooks/manuscript_code/FigS1_F_branchingratio_histogram.ipynb`](analysis_scripts/notebooks/manuscript_code/FigS1_F_branchingratio_histogram.ipynb)) ← [`notebooks/exploration/generate_branching_ratio_mouse.ipynb`](analysis_scripts/notebooks/exploration/generate_branching_ratio_mouse.ipynb) |
 | f (scatter) | [`FigS2_AF_robustness`](figure_scripts/FigS2_AF_robustness.ipynb) (5); [`fig1e_scatter_d2raw_drawing.draw_main`](figure_scripts/fig1e_scatter_d2raw_drawing.py) | `figs2f_scatter_windows.csv`: disjoint windows of the recomputed d2-MUA pairs, task epochs tagged, MUA z per session × Wake/Sleep | [`fig1e_scatter_d2raw.py`](analysis_scripts/notebooks/exploration/revision/fig1e_scatter_d2raw.py) ← `fig1e_pairs_recomputed.csv` ← [`fig1de_nonoverlap.py`](analysis_scripts/notebooks/exploration/revision/fig1de_nonoverlap.py) (each session's own d2) |
@@ -196,17 +187,15 @@ The submitted Extended Data Fig. 1 b–g, drawn by the submitted notebooks (`fig
 
 ## Supplementary Figure 3: task, novelty and avalanches
 
-- `stats.csv` holds every number printed on the panels.
-- `rcparams.json` holds matplotlib's settings at the moment each panel was drawn and saved.
-- Where a panel's drawing lived in another notebook or script, it is pasted into this notebook: d from `Previous_Rv1` [`FigS1_C_SNR_S2C_d2 uncertainty`](../Previous_Rv1/figure_scripts/FigS1_C_SNR_S2C_d2%20uncertainty.ipynb) (`plot_d2_by_rate_tile_pooled`), g from [`fig2_new.panel_dcc`](analysis_scripts/notebooks/exploration/revision/fig2_new.py).
+`stats.csv`: the statistics printed on the panels.
 
 | panel | figure notebook (cell) | data | made by |
 |---|---|---|---|
 | a | [`FigS3_AG_task_novelty_avalanches`](figure_scripts/FigS3_AG_task_novelty_avalanches.ipynb) (3) | `a_tmaze_sessions.csv`: T-maze fraction correct per session | [`m25_tmaze_box.py`](analysis_scripts/notebooks/exploration/revision/m25_tmaze_box.py) ← [`m25_task_performance.py`](analysis_scripts/notebooks/exploration/revision/m25_task_performance.py) ← W:\...\<basename>.animal.behavior.mat (`behavior.trialcorrect`) and the epoch tables |
 | b | same (5) | `assets/Extended Data Fig2.svg` (schematic); `b_sessions.csv`: one row per session, control vs novel. Columns `mid` and `post` hold the median d2 relative to presleep in each phase, and `delta` = post − mid. The star is the mixed model S2 × novel (`stats.csv`). | [`ed2a_novel_vs_control.py`](analysis_scripts/notebooks/exploration/revision/ed2a_novel_vs_control.py) ← [`ed_nonoverlap_ed2a_ed1f.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap_ed2a_ed1f.py) (runs [`notebooks/exploration/MUA_sleepstage.ipynb`](analysis_scripts/notebooks/exploration/MUA_sleepstage.ipynb) cells 8, 15), [`ed2a_ppp8_day14_rebuild.py`](analysis_scripts/notebooks/exploration/revision/ed2a_ppp8_day14_rebuild.py) ← `*_CA1_D2_time_resolved_error_bar.mat` |
-| c | same (7) | `c_swr_rate_sessions.csv`: SWR rate, presleep vs postsleep, per session; the star is that notebook's mixed model on the session means (`stats.csv`; from [`ed_nonoverlap.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap.py)'s run log) | as Fig 2a |
+| c | same (7) | `c_swr_rate_sessions.csv`: SWR rate, presleep vs postsleep, per session; the star is that notebook's mixed model on the session means (`stats.csv`) | as Fig 2a |
 | d | same (7) | `d_sextiles.csv`: d2 (z) by SWR-rate sextile: mean, SD and the uncertainty band; R² and p in `stats.csv` | [`ed_nonoverlap_d2err.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap_d2err.py) ← `data/ripple_barr/d2_uncertainty/*_CA1.pkl` ← [`notebooks/exploration/MUA_sleepstage.ipynb`](analysis_scripts/notebooks/exploration/MUA_sleepstage.ipynb) ← `*_D2_time_resolved_error_bar.mat` |
-| e | same (9) | `e_points.csv`: PPP20 day 4, low vs high SWR rate. Holds the drawn CCDF points, the fit lines and the mean size by duration. | the lab's `FigS3` notebook (cell 9) runs `run_session` of [`ripple_criticality_batch.ipynb`](analysis_scripts/notebooks/exploration/revision/ripple_criticality_batch.ipynb) (its cells 1, 3; fits by [`mixture_proof.py`](analysis_scripts/notebooks/exploration/revision/mixture_proof.py)) on W:\data\PPP\PPP20\day4. It caches `figs3e_example_PPP20_day4_avalanches.npz`. |
+| e | same (9) | `e_points.csv`: PPP20 day 4, low vs high SWR rate. Holds the drawn CCDF points, the fit lines and the mean size by duration. | the lab's `FigS3` notebook (cell 9) runs `run_session` of [`ripple_criticality_batch.ipynb`](analysis_scripts/notebooks/exploration/revision/ripple_criticality_batch.ipynb) (its cells 1, 3; fits by [`mixture_proof.py`](analysis_scripts/notebooks/exploration/revision/mixture_proof.py)) on W:\data\PPP\PPP20\day4. |
 | f | same (9) | `f_dcc_sessions.csv`, `f_ks_sessions.csv`: DCC and KS distance per session, low vs high SWR rate | [`ripple_criticality_batch.ipynb`](analysis_scripts/notebooks/exploration/revision/ripple_criticality_batch.ipynb) (`ripple_criticality_all_sessions.csv`), [`ks_xmin_convention.py`](analysis_scripts/notebooks/exploration/revision/ks_xmin_convention.py) ([`avalanche_ripple.py`](analysis_scripts/notebooks/exploration/revision/avalanche_ripple.py)) ← 16 sessions on W: |
 | g | same (9) | `g_dcc_terciles.csv`: DCC by SWR-rate tercile, per session | [`ripple_criticality_batch.ipynb`](analysis_scripts/notebooks/exploration/revision/ripple_criticality_batch.ipynb) |
 
@@ -222,31 +211,29 @@ The submitted Extended Data Fig. 1 b–g, drawn by the submitted notebooks (`fig
 
 ## Supplementary Figure 6: d2 as an indicator of the NREM CA1 regime
 
-The bootstraps are drawn from these tables; the notebook runs no analysis script.
-
 | panel | figure notebook (cell) | data | made by |
 |---|---|---|---|
 | a | [`FigS6_AC_regime_indicator`](figure_scripts/FigS6_AC_regime_indicator.ipynb) (3) | `a_session_coefficients.csv`, `a_summary.csv`: per-session coefficient of each measure on the BARR share of the window's events | [`r16_block_level_dissociation.py`](analysis_scripts/notebooks/exploration/revision/r16_block_level_dissociation.py) ← [`r16_event_excised_windows.py`](analysis_scripts/notebooks/exploration/revision/r16_event_excised_windows.py) ← barrage cohort (spikes, SWRs, BARRs) |
-| b, c | same (3) | `b_estimates.csv`, `c_estimates.csv`: point estimates. `b_bootstrap.csv`, `c_bootstrap.csv`: the 2 000 session bootstraps per box. `bracket_tests.csv`: the paired session bootstrap of the lab's FigS6 notebook (2 000 resamples, Holm); the brackets are drawn on b only, c has none. | [`r16_robustness_index.py`](analysis_scripts/notebooks/exploration/revision/r16_robustness_index.py) (boot_A / boot_B), [`r16_predictor_heterogeneity.py`](analysis_scripts/notebooks/exploration/revision/r16_predictor_heterogeneity.py) (`r16_event_type_classifier_ortho.csv`) ← same chain as a |
+| b, c | same (3) | `b_estimates.csv`, `c_estimates.csv`: point estimates. `b_bootstrap.csv`, `c_bootstrap.csv`: the 2 000 session bootstraps per box. `bracket_tests.csv`: the paired session bootstrap of the lab's FigS6 notebook (2 000 resamples, Holm). | [`r16_robustness_index.py`](analysis_scripts/notebooks/exploration/revision/r16_robustness_index.py) (boot_A / boot_B), [`r16_predictor_heterogeneity.py`](analysis_scripts/notebooks/exploration/revision/r16_predictor_heterogeneity.py) (`r16_event_type_classifier_ortho.csv`) ← same chain as a |
 
 ## Supplementary Figure 7: rats
 
 | panel | figure notebook (cell) | data | made by |
 |---|---|---|---|
-| a | [`FigS7_AD_rats`](figure_scripts/FigS7_AD_rats.ipynb) (5) | `assets/Extended Data Fig5.svg` | cut from the submitted Extended Data Fig. 5 |
+| a | [`FigS7_AD_rats`](figure_scripts/FigS7_AD_rats.ipynb) (5) | `assets/Extended Data Fig5.svg` | Extended Data Fig. 5 of the first submission |
 | b | [`FigS7_AD_rats`](figure_scripts/FigS7_AD_rats.ipynb) (3, 5) | `figs7b_rat_d2_windows_30s_disjoint.csv`: every non-overlapping 30 s rat d2 window with state, environment and manipulation | the lab's `FigS7` notebook: `Previous_Rv1` [`FigS5_S6_rats`](../Previous_Rv1/figure_scripts/FigS5_S6_rats.ipynb) by [`ed_nonoverlap.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap.py) ← [`notebooks/exploration/MUA_sleepstage_rat.ipynb`](analysis_scripts/notebooks/exploration/MUA_sleepstage_rat.ipynb) ← rat d2 .mat (V:, S:, U:) |
 | c | same ← [`rv1_disjoint/FigS5_S6_rats_runA`](figure_scripts/rv1_disjoint/FigS5_S6_rats_runA.ipynb) | `figs7c_rat_scatter_pairs_disjoint.csv` (the pairs the pooled r is computed from); `rv1_FigS5_S6_rats_runA/rat_d2_mua_pairs.csv` (thinned; the drawing) | as b; [`fig1e_scatter_d2raw.meta_r`](analysis_scripts/notebooks/exploration/revision/fig1e_scatter_d2raw.py) ([`fig1e_scatter_d2raw_drawing.py`](figure_scripts/fig1e_scatter_d2raw_drawing.py)) |
 | d | same ← [`rv1_disjoint/FigS5_S6_rats_runB`](figure_scripts/rv1_disjoint/FigS5_S6_rats_runB.ipynb) | the notebook's pairs, all windows (`Previous_Rv1/csv`); its Stouffer test (stars) | as b |
 
 ## Supplementary Figure 8: rats, SWRs, replay and BARRs
 
-`stats.csv` and `rcparams.json` as in Supplementary Fig 3. Statistics are computed in cell 3 and the panels drawn in cell 5. The drawing of c, d and f is pasted from `Previous_Rv1` [`FigS5_S6_rats`](../Previous_Rv1/figure_scripts/FigS5_S6_rats.ipynb) (its cells 28, 9, 11 and 13). Rat sessions keep their own bin sizes and window lengths, as submitted.
+`stats.csv`: the statistics printed on the panels.
 
 | panel | data | made by |
 |---|---|---|
 | a | `assets/Extended Data Fig6.svg` (schematic); `a_prepost_sessions.csv`: d2 presleep vs postsleep per session | `Previous_Rv1` [`FigS5_S6_rats`](../Previous_Rv1/figure_scripts/FigS5_S6_rats.ipynb) (its `summary_df`) by [`ed_nonoverlap.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap.py) ← `Previous_Rv1/csv/FigS5_S6_rats/rat_d2_windows_by_state.csv` ← [`notebooks/exploration/MUA_sleepstage_rat.ipynb`](analysis_scripts/notebooks/exploration/MUA_sleepstage_rat.ipynb) |
-| b, e | `assets/Extended Data Fig6.svg` (cut). `be_inset_sessions.csv`: per-session mean ΔBR around SWRs / BARRs vs shuffle, the inset stars (paired signed-rank). It is computed from `Previous_Rv1/csv/FigS5_S6_rats/rat_br_change_per_swr.csv` and `rat_br_change_per_event_nonoverlap.csv`, event level, not thinned. In the cut copy of e, the y tick reads 0.85. | [`notebooks/exploration/generate_branching_ratio_rats.ipynb`](analysis_scripts/notebooks/exploration/generate_branching_ratio_rats.ipynb) |
-| c | `c_sextiles.csv`: d2 by replay / non-replay SWR-rate sextile; slopes in `stats.csv` | [`ed_nonoverlap_rats_tiles.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap_rats_tiles.py) (runs [`notebooks/exploration/MUA_sleepstage_rat_replay.ipynb`](analysis_scripts/notebooks/exploration/MUA_sleepstage_rat_replay.ipynb) cells 7, 8) ← `data/rats/replay_nonreplay/*_CA1.pkl`, the share's SWR and state files (December 2025 state, `ED6C_SESSIONS`), `data/replay/<session>_sig_replay.csv` |
+| b, e | `assets/Extended Data Fig6.svg`; `be_inset_sessions.csv`: per-session mean ΔBR around SWRs / BARRs vs shuffle (inset stars, paired signed-rank) | [`notebooks/exploration/generate_branching_ratio_rats.ipynb`](analysis_scripts/notebooks/exploration/generate_branching_ratio_rats.ipynb) |
+| c | `c_sextiles.csv`: d2 by replay / non-replay SWR-rate sextile; slopes in `stats.csv` | [`ed_nonoverlap_rats_tiles.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap_rats_tiles.py) (runs [`notebooks/exploration/MUA_sleepstage_rat_replay.ipynb`](analysis_scripts/notebooks/exploration/MUA_sleepstage_rat_replay.ipynb) cells 7, 8) ← `data/rats/replay_nonreplay/*_CA1.pkl`, the sessions' SWR and state files (`ED6C_SESSIONS`), `data/replay/<session>_sig_replay.csv` |
 | d | `d_sextiles.csv`: ISI entropy by SWR-rate sextile; `d_session_rho.csv`: per-session ρ (the star) | [`ed_nonoverlap.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap.py) (thinned, row-aligned with `rat_d2_windows_by_state.csv`) ← [`notebooks/exploration/MUA_sleepstage_rat.ipynb`](analysis_scripts/notebooks/exploration/MUA_sleepstage_rat.ipynb) |
 | f | `f_sextiles.csv`: d2 and ISI entropy by BARR-rate sextile | [`ed_nonoverlap_rats_tiles.py`](analysis_scripts/notebooks/exploration/revision/ed_nonoverlap_rats_tiles.py) ← `data/rats/ripple_barr/isi/*.pkl` (per window) ← rat barrage sessions (AB4, AYA6, AYA7, AYA10) |
 

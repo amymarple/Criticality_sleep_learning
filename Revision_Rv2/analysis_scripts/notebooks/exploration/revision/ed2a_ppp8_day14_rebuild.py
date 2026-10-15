@@ -10,7 +10,7 @@ Method: the producer's own code, as reproduced exactly for all 18 stored pickles
 ed_nonoverlap_ed2a_ed1f.py (MUA_sleepstage cell 8 load_d2_timeline_complete -> newest
 `*_CA1_D2_time_resolved_error_bar.mat`; cell 15 annotate_epochs, NREM, first 1200 rows per epoch group,
 m_pre = mean presleep d2, d2_rel = (d2 - m_pre) / (d2 + m_pre)), run on W:\data\PPP\PPP8\day14 with its
-own epochs. Check: its d2 equals the Fig 1d table's PPP8 day14 windows (the same .mat). Then:
+own epochs. Then:
   * all windows: the table with PPP8_day14's rows replaced;
   * disjoint: the ed_nonoverlap override table plus PPP8_day14 thinned the same way.
 FigS2_A_novel_familar's own cells are run on both (LMM S2 - S1 paired by file). PPP7_day14 is kept as in
@@ -66,7 +66,6 @@ def rebuild():
     epoch_df = loading.load_epoch(os.path.join(PPP, ANIMAL, DAY))
     first_n = lambda d: ns["first_n_per_epoch"](d, n=CAP_N)  # noqa: E731
     d_all, rel_all, m_all = run_cell94(ns, block, ns["annotate_epochs"](ca1, epoch_df), first_n)
-    # check: these are PPP8 day14's own windows, as Fig 1d reads them
     F = pd.read_csv(FIG1D, float_precision="round_trip")
     F = F[(F.animal == ANIMAL) & (F.day.astype(str) == "14")]
     m = ca1.merge(F[["center_s", "d2"]], on="center_s", suffixes=("", "_fig1d"))
@@ -74,7 +73,7 @@ def rebuild():
     old = pd.read_pickle(os.path.join(REPO, "data", "novel_familiar", "novel", f"{STEM}.pkl"))
     print(f"PPP8_day14 own d2: {os.path.basename(meta['path'])}, {len(ca1)} windows (= Fig 1d's {len(F)}); "
           f"ED2a rows {len(rel_all)} (shipped {len(old)}), m_pre {m_all:.5f}", flush=True)
-    # disjoint, exactly as ed_nonoverlap_ed2a_ed1f.py does for every other session
+    # disjoint mask, matching ed_nonoverlap_ed2a_ed1f.py
     keep = disjoint_mask(ca1["center_s"].to_numpy(float), L_D2)
     span = set(d_all["center_s"].to_numpy(float))
     in_span = lambda d: d[d["center_s"].isin(span)].sort_values("center_s")  # noqa: E731

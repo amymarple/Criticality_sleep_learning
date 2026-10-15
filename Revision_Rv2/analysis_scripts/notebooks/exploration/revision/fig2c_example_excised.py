@@ -1,13 +1,13 @@
-"""fig2c_example_excised.py -- Figure 2c example trace: the submitted panel plus the ripple-excised d2.
+"""fig2c_example_excised.py -- Figure 2c example trace: full-window d2 plus the ripple-excised d2.
 
-Reruns the submitted example-trace notebook as-is, every cell except the final plotting cell, to
-get the same window_df: d2 (2024 Euclidean, AR order 20), MUA smoothed over 30 s, and replay
+Executes Previous_Rv1/figure_scripts/Fig2_C_Example_replayprobalit.ipynb up to the final plotting
+cell to get window_df: d2 (2024 Euclidean, AR order 20), MUA smoothed over 30 s, and replay
 probability (share of SWRs in a centred 30 s window with a replay event within +-80 ms of the
-ripple peak). The ripple-excised d2 for the same window comes from the published
+ripple peak). The ripple-excised d2 for the same window comes from
 day8_CA1_D2_time_resolved_rippleablate.mat (same 30 s / 2 s grid, NREM only, read via
-fig1_d2_vs_mua_2x2.nrem_mat), joined on window centre; the full-window .mat read the same way is
-checked against the notebook's own d2. Each line is z-scored within the plotted window; x axis in
-seconds (3 min window). Example window: PPP8 day8, NREM epoch 16, 180 s from 14350.6 s.
+fig1_d2_vs_mua_2x2.nrem_mat), joined on window centre. Each line is z-scored within the plotted
+window; x axis in seconds (3 min window). Example window: PPP8 day8, NREM epoch 16, 180 s from
+14350.6 s.
 
 Inputs: Previous_Rv1/figure_scripts/Fig2_C_Example_replayprobalit.ipynb and its CSV inputs;
 day8_CA1_D2_time_resolved.mat and its _rippleablate variant.
@@ -51,7 +51,7 @@ def run_notebook_until_plot():
     cwd = os.getcwd()
     os.chdir(NB_DIR)                                                  # the notebook reads ../csv/
     try:
-        np.random.seed(0)                                             # exploration cells draw; the plotted window is fixed
+        np.random.seed(0)                                             # fixed seed; plotted window is deterministic
         for c in cells[:-1]:
             src = "\n".join(l for l in "".join(c["source"]).splitlines()
                             if not l.lstrip().startswith(("%", "!")))
@@ -87,7 +87,7 @@ def main():
           f"(replay prob, MUA) {r.loc['replay_prob', 'MUA']:+.2f}  [one 3-min example; descriptive only]")
     print(f"raw d2: full {W.d2.mean():.4f}, excised {W.d2_excised.mean():.4f} (window means)")
 
-    # ---- figure: the original panel's style, plus the excised line; axis in seconds
+    # ---- figure: full-window and excised d2, plus replay probability; axis in seconds
     import matplotlib as mpl
     import matplotlib.pyplot as plt
     mpl.rcParams.update({"svg.fonttype": "none", "text.usetex": False, "font.family": "sans-serif",

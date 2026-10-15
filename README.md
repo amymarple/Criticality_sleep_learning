@@ -15,8 +15,8 @@ manuscript; its [quick start](Revision_Rv2/README.md#quick-start) draws a panel 
 
 | folder | figures | relation |
 |---|---|---|
-| [`Revision_Rv2/`](Revision_Rv2) | Revised Figures 1-3 and Supplementary Figures 1-4, 6-8 | The current figures. Several supplementary panels are first-submission panels redrawn on non-overlapping windows, so some notebooks here read tables from, or run notebooks of, `Previous_Rv1`. Keep the two folders side by side. |
-| [`Previous_Rv1/`](Previous_Rv1) | First submission: Figures 1-3, Extended Data 1-3, 5, 6 and 10 | The figures as first submitted, with their own tables and analysis code. |
+| [`Revision_Rv2/`](Revision_Rv2) | Revised Figures 1-3 and Supplementary Figures 1-4, 6-8 | The current figures. Some notebooks read tables from `Previous_Rv1`; keep the two folders side by side. |
+| [`Previous_Rv1/`](Previous_Rv1) | First submission: Figures 1-3, Extended Data 1-3, 5, 6 and 10 | The figures of the first submission, with their tables and analysis code. |
 
 Both folders have the same layout:
 

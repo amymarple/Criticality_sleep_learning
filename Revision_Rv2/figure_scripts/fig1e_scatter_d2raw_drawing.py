@@ -119,20 +119,14 @@ WRITABLE_DRIVES = {"C", "D"}
 
 # --- run_fig1_metrics.py
 def assert_local_path(path):
-    """Raise unless `path` is on a local writable drive.
-
-    The PreToolUse hook cannot see writes made *inside* a running process, so the
-    guarantee that this script never touches the ayadata shares is enforced here.
-    Called before every write.
-    """
+    """Raise unless `path` is on a local writable drive. Called before every write."""
     p = os.path.abspath(str(path))
     if p.startswith("\\\\") or p.startswith("//"):
         raise PermissionError(f"refusing to write to UNC path: {p}")
     drive = os.path.splitdrive(p)[0].rstrip(":").upper()
     if drive not in WRITABLE_DRIVES:
         raise PermissionError(
-            f"refusing to write outside {sorted(WRITABLE_DRIVES)}: {p} "
-            "(raw session data is read-only — see DATA_SAFETY.md)"
+            f"refusing to write outside {sorted(WRITABLE_DRIVES)}: {p}"
         )
     return p
 
@@ -144,7 +138,7 @@ NONOVL_NOTE = ("disjoint windows: per session, a window is kept only if its cent
 
 # --- fig1e_scatter_d2raw.py (a drawing section, as a function)
 def draw_main(T):
-    """The figure section of main() in fig1e_scatter_d2raw.py (from \'task = WAKE != "all"\' on), drawn from the variables computed before it: T."""
+    """Draw the Fig 1e d2-vs-MUA scatter (wake theta/non-theta, NREM, REM) with per-session slopes, from table T."""
     task = WAKE != "all"
     wake = (lambda st: T[(T.group == st) & T.epoch_name.notna()]) if task else (lambda st: T[T.group == st])
     panels = [(("Task wake (T-maze)" if task else "Wake (all)") + "\nWake θ + Wake non-θ", [
@@ -169,11 +163,8 @@ def draw_main(T):
             s = summarise(st, d, P)
             stats.append(s)
             persess.append(P.assign(state=st))
-            # Line = the median WITHIN-session slope through the state's centroid (descriptive). The pooled OLS
-            # line is not drawn: MUA is z-scored over all wake, so theta / non-theta keep between-session
-            # offsets and the pooled slope overstates the within-session slope.
-            # REM: points only (125 disjoint windows, 1-14 per session, too few per session for a reliable
-            # within-session slope), no trend line.
+            # Line = the median within-session slope through the state's centroid (descriptive).
+            # REM: points only (125 disjoint windows, 1-14 per session) -- no trend line.
             if st != "REM":
                 lo, hi = local_limits(d.mua_z, pad)
                 xs = np.linspace(lo, hi, 200)
@@ -200,7 +191,7 @@ def draw_main(T):
             f"dashed = median within-session slope through the state centroid (descriptive); r = per-session Pearson, "
             f"Fisher mean, sessions with >= {MIN_WIN} windows, signed-rank; {NONOVL_NOTE}")
     fig.text(0.01, -0.02, textwrap.fill(note, 170), fontsize=7, color="0.35", ha="left", va="top")
-    sfx = "" if task else "_allwake"                    # the default (task wake) outputs keep their names
+    sfx = "" if task else "_allwake"
     out = os.path.join(FIGDIR, "fig1e_scatter_d2raw_muaz_nonoverlap" + sfx)
     fig.savefig(assert_local_path(out + ".svg"), dpi=300, bbox_inches="tight")
     fig.savefig(assert_local_path(out + ".png"), dpi=200, bbox_inches="tight")

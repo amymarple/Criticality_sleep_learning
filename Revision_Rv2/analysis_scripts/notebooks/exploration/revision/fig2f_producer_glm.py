@@ -1,20 +1,13 @@
-"""fig2f_producer_glm.py -- Figure 2f: the GLM model function, extracted unchanged from its
-producer notebook.
+"""fig2f_producer_glm.py -- Figure 2f: the replay GLM model (slope_divergence_bootstrap,
+_build_design, cv_predictive_gain_logistic), shared with fig2f_backtrace_model.py; default
+feature set (d2, MUA, FR_std).
 
-Source: the cell of the first submission's replay-GLM notebook that defines
-slope_divergence_bootstrap, _build_design and cv_predictive_gain_logistic; the same functions are in
-notebooks/exploration/generate_GLM.ipynb (cell 15), where the default feature set is (d2, MUA, FR_std).
-They are reproduced without modification, so downstream scripts run the panel's own model rather than a
-reimplementation.
+Model: L2 logistic regression (C=1, liblinear), predictors z-scored, within-fold
+StandardScaler, state = quantile tiles of the tile_col passed in, reduced = state + main
+effects, full = + feature x state interactions, 5-fold CV (GroupKFold if a group column is
+given, else shuffled KFold), AUC and log-loss, then each interaction ablated one at a time.
 
-Model as the code specifies it: L2 logistic regression (C=1, liblinear), predictors
-z-scored, within-fold StandardScaler, state = quantile tiles of the tile_col passed in,
-reduced = state + main effects, full = + feature x state interactions, 5-fold CV
-(GroupKFold if a group column is given, else shuffled KFold), AUC and log-loss, then each
-interaction ablated one at a time.
-
-The producer bins the tile on ripple_count (SWR rate), not on d2; this rebuild follows the
-code.
+The tile bins ripple_count (SWR rate), not d2.
 """
 # --- imports used by the functions below ---
 import numpy as np
@@ -84,7 +77,7 @@ def slope_divergence_bootstrap(
                 if (b, 0) in grouped.index:
                     val_out = grouped.loc[(b, 0), f"{f}_z"]
                 else:
-                    # fallback anchor
+                    # anchor value when this bin has no replay=0 rows
                     val_out = 0.0
 
                 deltas.append(val_in - val_out)
@@ -176,7 +169,7 @@ def cv_predictive_gain_logistic(
     # ---------- preprocess (same robust tiles + zscores) ----------
     summ_df, raw_df, df = slope_divergence_bootstrap(
         d, features=features, tile_col=tile_col, replay_col=replay_col, n_bins=n_bins,
-        n_boot=50,  # quick sanity check only; not used for prediction
+        n_boot=50,  # not used for prediction
         random_state=random_state,
         strict_require_both=False
     )
@@ -196,7 +189,7 @@ def cv_predictive_gain_logistic(
         splits = list(splitter.split(df, y))
 
     # models
-    # Use liblinear for smaller datasets; saga works too.
+    # liblinear solver (small dataset)
     def fit_eval(X, y, splits):
         aucs, lls = [], []
         for tr, te in splits:
@@ -274,7 +267,7 @@ def cv_predictive_gain_logistic(
     results_df = pd.DataFrame(rows)
 
     details = {
-        "slope_divergence_summary_quick": summ_df,   # quick check only
+        "slope_divergence_summary_quick": summ_df,
         "reduced": {"cols": red_cols, "auc": auc_red, "logloss": ll_red},
         "full":    {"cols": full_cols, "auc": auc_full, "logloss": ll_full},
         "splits": splits,

@@ -51,8 +51,7 @@ def assert_local_path(path):
     drive = os.path.splitdrive(p)[0].rstrip(":").upper()
     if drive not in WRITABLE_DRIVES:
         raise PermissionError(
-            f"refusing to write outside {sorted(WRITABLE_DRIVES)}: {p} "
-            "(raw session data is read-only — see DATA_SAFETY.md)"
+            f"refusing to write outside {sorted(WRITABLE_DRIVES)}: {p}"
         )
     return p
 
@@ -77,14 +76,12 @@ def session_id(basepath):
 
 
 # Per-state window caps, applied to the non-overlapping set.
-#   NREM   — uncapped. Figs 2 and 3 are NREM analyses, so capping it now
-#            would force a full recompute later; it is 66 % of the windows and most of
-#            the runtime.
-#   THETA / REM — uncapped because they are already scarce (median 7 and 15 windows per
-#            session) and only 7/18 and 12/18 sessions clear the 10-window threshold a
-#            within-session correlation needs. Any thinning here deletes the state.
-#   nonTHETA — the only state thinned. 150 windows is far more than any within-session
-#            statistic requires, and it is the cheapest 25 % of runtime to give up.
+#   NREM   — uncapped (Figs 2 and 3 are NREM analyses).
+#   THETA / REM — uncapped: already scarce (median 7 and 15 windows per session), and
+#            only 7/18 and 12/18 sessions clear the 10-window threshold a within-session
+#            correlation needs. Any thinning here deletes the state.
+#   nonTHETA — the only state thinned, to 150 windows (far more than any within-session
+#            statistic requires).
 STATE_WINDOW_CAP = {"THETA": None, "nonTHETA": 150, "REM": None, "NREM": None}
 
 

@@ -21,7 +21,7 @@ FEATURES = [
     "isi_entropy_pooled",
     "psd_slope_20_45", "sw_broadband",
     "theta_ratio",                     # theta power above 1/f
-    "ripple_rate", "ripple_amp_mean",  # drop the 2 sessions without ripple files
+    "ripple_rate", "ripple_amp_mean",
 ]
 
 

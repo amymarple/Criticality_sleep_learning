@@ -15,8 +15,8 @@ surviving sub-windows are used together, nothing crosses a gap):
                    no lag regression crosses an excised gap), fit_m at k_max = 200
     isi_excised  : pooled log10(ISI) entropy, 20-bin auto-ranged (fig1_metrics.isi_entropy's
                    histogram), ISIs taken within each sub-window only
-The un-excised versions are recomputed the same way (single segment) and checked against
-the Fig-1 pickle's BR_pyr_k200 / isi_entropy_pooled, so the excision is the only change.
+The un-excised versions are recomputed the same way (single segment), so the excision is
+the only change from the Fig-1 pickle's BR_pyr_k200 / isi_entropy_pooled.
 
 Windows: Fig 1's non-overlapping NREM tiles, 8 decoded sessions (d2_composition_glm.load_session
 + add_swr for SWR rate and replay probability). Output feeds br_ripple_replay.sextile_curves.

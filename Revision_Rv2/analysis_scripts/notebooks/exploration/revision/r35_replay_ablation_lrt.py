@@ -2,15 +2,11 @@
 r35_replay_ablation_lrt.py -- replay ablation by nested likelihood-ratio test
 on a single pooled GLM, with the same covariates computed on the ripple-excised background.
 
-Cross-validated ablation of the replay model (held-out predictive gain) is null for d2
-under every binning scheme and outcome tried: the per-coefficient cost of
-cross-validation exceeds d2's unique (semi-partial) share of the outcome however many
-sessions are added. The classical GLM
-ablation test is instead a nested likelihood ratio, which uses all the data rather than
-holding a fifth out and refitting. Two changes restore power: (1) one pooled binomial GLM
-with session fixed effects, so a coefficient is estimated from every session's windows at
-once rather than one session at a time; (2) a likelihood-ratio test (chi2, 1 df) in place
-of held-out deviance.
+The classical GLM ablation test is a nested likelihood ratio, which uses all the data
+rather than holding a fifth out and refitting: (1) one pooled binomial GLM with session
+fixed effects, so a coefficient is estimated from every session's windows at once rather
+than one session at a time; (2) a likelihood-ratio test (chi2, 1 df) in place of held-out
+deviance.
 
 Covariates are Fig. 2f's own three features -- d2, MUA, FR_std (the across-neuron SD of
 the per-neuron rate in the window, not MUA_std, the temporal SD) -- plus E/I ratio, taken
@@ -173,8 +169,8 @@ def cluster_bootstrap(W, PRED, B, seed=0):
     whose denominator is the SE), but it does have a sampling distribution over session
     sets; resampling sessions (the unit of analysis) and refitting gives a percentile
     interval for it and for the full-minus-ablated deviance, neither of which has a closed
-    form otherwise. The coefficient's bootstrap interval is also computed, as a check
-    against the analytic cluster-robust one.
+    form otherwise. The coefficient's bootstrap interval is also computed, alongside the
+    analytic cluster-robust one.
 
     Duplicated sessions are relabelled so the session fixed effects stay one per draw.
     Returns {predictor: {stat: (lo, hi)}} at the 2.5/97.5 percentiles.
@@ -314,8 +310,7 @@ def plot(R):
     the full-minus-ablated deviance alike, so both quantities get an interval.
 
     (a) EFFECT SIZE -- pooled coefficient, log-odds per within-session SD, with its 95%
-        cluster-robust CI (the bootstrap CI is also computed and stored, as a check that
-        the two agree).
+        cluster-robust CI (the bootstrap CI is also computed and stored).
     (b) CONTRIBUTION -- full minus ablated deviance explained, with its 95% bootstrap CI;
         the cluster-robust z and its stars are annotated here rather than given a panel.
 
@@ -472,7 +467,7 @@ def plot(R):
                  + pair_txt + ".",
                  fontsize=8, color="0.3", ha="left", va="bottom")
         fig.tight_layout(rect=(0, 0.19, 1, 0.93))
-        out = os.path.join(FIGDIR, "backup")   # GLM ablation figures are saved here; the panel is fig2f_standalone.py
+        out = os.path.join(FIGDIR, "backup")   # the main panel is fig2f_standalone.py
         os.makedirs(out, exist_ok=True)
         for ext in ("png", "svg"):
             fig.savefig(os.path.join(out, f"{stem}.{ext}"), dpi=300)

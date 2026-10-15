@@ -12,10 +12,8 @@ Two views of the fitted exponents against ripple rate:
      ripple rate and the local CCDF slope;
   B. tercile fit -- splits time into LOW/MID/HIGH local-ripple-rate terciles
      (duration-matched) and refits tau, alpha, beta and DCC in each.
-Both the tercile split (B) and the mixture test (A) are run in NREM only: ripples run
-far sparser in WAKE, so WAKE ripple-rate terciles are mostly ties at zero; WAKE is
-still fit as a whole state for the state contrast. Restricting the rate analysis to
-NREM holds state fixed while ripple rate varies.
+The tercile split (B) and the mixture test (A) are run in NREM only, holding state
+fixed while ripple rate varies; WAKE is fit as a whole state for the state contrast.
 
     python avalanche_ripple.py --basepath "W:\\data\\PPP\\PPP20\\day4" --session PPP20_day4
 Writes data/revision/log/avalanche_ripple_<session>.csv  and  _mixture_<session>.csv
@@ -37,18 +35,12 @@ from run_fig1_metrics import assert_local_path  # noqa: E402
 
 LOG = os.path.join(r"D:\Documents\GitHub\Sleep_criticaltiy", "data", "revision", "log")
 THRESHOLDS = (20, 30, 40)
-RIPPLE_SMOOTH_S = 10.0      # window for the local ripple-rate estimate. 10 s not 1 s:
-                            # NREM ripples run ~0.95 Hz and WAKE ~0.07 Hz, so a 1 s
-                            # window returns 0 or 1 for nearly every avalanche and the
-                            # terciles collapse. 10 s gives a graded rate in NREM; WAKE
-                            # ripple rate stays near 0/1 at this window.
+RIPPLE_SMOOTH_S = 10.0      # window for the local ripple-rate estimate (graded in NREM, ~0.95 Hz)
 N_RIPPLE_BINS = 3           # terciles
 MIN_AVAL = 200
-N_FIT_MAX = 100_000         # powerlaw's KS xmin search scales badly; NREM at the mean-IEI
-                            # bin yields ~1.2 M avalanches and the search does not finish.
-                            # Exponent SE ~ 1/sqrt(n), so 100 k is already saturated
-                            # (SE ~ 0.003). Subsample only for FITTING; all avalanches are
-                            # still used for counts, ripple assignment and the mixture test.
+N_FIT_MAX = 100_000         # cap for the KS xmin search; exponent SE ~1/sqrt(n) is already
+                            # saturated at this count. Subsampled only for fitting -- counts,
+                            # ripple assignment and the mixture test use all avalanches.
 
 
 def detect(all_spk, intervals, bin_s, pct):
@@ -175,10 +167,8 @@ def main():
                              bin_ms=mean_iei * 1000, ripple_group="ALL",
                              ripple_rate_mean=float(rr.mean()), **f))
 
-            # ---- B. terciles of local ripple rate. NREM ONLY: WAKE ripple rate is
-            #         0.069 Hz, so its terciles are mostly ties at zero (see docstring).
-            #         Equal-count terciles => equal avalanche counts per group, which is
-            #         the matching that matters for exponent fits.
+            # ---- B. terciles of local ripple rate (NREM only). Equal-count terciles
+            #         match avalanche counts per group for the exponent fits.
             if state != "NREM":
                 print(f"  [skip] {state} ripple terciles: rate too sparse to grade")
                 continue

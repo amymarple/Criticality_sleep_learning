@@ -10,8 +10,8 @@ of barrage count on five predictors (d2, MUA, MUA Fano, synchrony, E/I), z-score
 block so a coefficient is per SD of local variation. Inference is run at session level: the block
 coefficients are averaged within session and a one-sample t-test runs over the session means;
 block-level sign counts are reported descriptively. A block contributes to a target only if it holds
-at least MIN_EVENTS of that type, which drops NN8_day6 from the barrage side (6 barrages total,
-cannot support a barrage-rate model). MINW = 60 windows (30 min of NREM) is primary; 40 and 90
+at least MIN_EVENTS of that type, which drops NN8_day6 from the barrage side (6 barrages total).
+MINW = 60 windows (30 min of NREM) is primary; 40 and 90
 are printed as a robustness check. classify_blocks/classify_sessions recast the same question as
 a single binomial classifier (barrage vs SWR) per block or per session.
 
@@ -52,43 +52,26 @@ from run_fig1_metrics import assert_local_path                        # noqa: E4
 REPO = os.path.abspath(os.path.join(_HERE, "..", "..", ".."))
 LOGDIR = os.path.join(REPO, "data", "revision", "log")
 FIGDIR = os.path.join(REPO, "reports", "revision_figs")
-# Variant outputs (a non-empty tag: _intact, _coef) are supporting exploration, not the headline
-# panel; they go to reports/revision_figs/backup/. Of the whole event-classification family only
-# the session-level classifier figure stays at the top level -- `r16_event_type_classifier_session.png`,
-# produced by the default run of this script (`classify_sessions` + `plot_sessions`, predictors
-# from r16_event_excised_windows.csv). The block-level classifier, the two-target Poisson panel,
-# the marginal-vs-unique panel and the pooled GLM are supporting analyses and are written to
-# backup/ unconditionally. `r16_robustness_index.png` (r16_robustness_index.py) is a companion
-# panel and stays at the top level.
+# Only the session-level classifier figure (`r16_event_type_classifier_session.png`, from
+# classify_sessions + plot_sessions) stays at the top level; the block-level classifier, the
+# two-target Poisson panel, the marginal-vs-unique panel and the pooled GLM go to backup/.
 BACKUP = os.path.join(FIGDIR, "backup")
 os.makedirs(BACKUP, exist_ok=True)
-# EVENT-EXCISED BY DEFAULT. The intact predictor set (barrage_burst_metrics_windows.csv) takes d2
-# from the intact-window `d2_real` and computes every burst metric over the whole window, so each
-# predictor includes the classified events within its own window.
-# `r16_event_excised_windows.py` rebuilds the same windows with every predictor computed
-# on the bins that overlap NEITHER a ripple NOR a barrage (median 92% of a window
-# survives), and carries the intact recompute alongside for comparison against the
-# intact pipeline, isolating the excision.
-# Set PRED_SET=intact to use the intact version instead.
+# PRED_SET=excised (default): every predictor computed on the bins that overlap neither a
+# ripple nor a barrage (median 92% of a window survives). PRED_SET=intact: d2 from the
+# intact-window `d2_real` and every burst metric over the whole window.
 SRC = os.path.join(LOGDIR, "r16_event_excised_windows.csv")
 PRED_SET = os.environ.get("PRED_SET", "excised")
 SUF = "_bg" if PRED_SET == "excised" else ""
 TAG = "" if PRED_SET == "excised" else "_intact"
-# Optional reduced predictor set, PREDS=d2,MUA,fano,EI. Given the other four, synchrony is
-# collinear with MUA and Fano on the same bins; without it every block's VIF stays modest.
-# A PREDS run writes under its own tag to backup/, and main() runs the block classifier only
-# (per-block gives more usable statistics than per-session here).
+# Optional reduced predictor set, PREDS=d2,MUA,fano,EI (drops synchrony, collinear with MUA
+# and Fano). A PREDS run writes under its own tag to backup/ and runs the block classifier only.
 PREDS = [x.strip() for x in os.environ.get("PREDS", "").split(",") if x.strip()]
-# ORTHO=1: nothing is dropped. Within each block the competitors are
-# residualised on one another in sequence -- MUA raw, E/I on MUA, Fano on MUA + E/I,
-# synchrony on MUA + E/I + Fano -- and d2 stays raw. The residualised set spans the SAME
-# column space as the raw five, so the joint fit, its deviance and d2's coefficient are
-# IDENTICAL to the five-predictor panel (checked numerically in main()); what changes is
-# that the competitors' coefficients are no longer variance-inflated (VIF ~ 1): each is
-# what that variable adds beyond the ones before it in the sequence. The sequence goes
-# from the most elementary rate measure to the most derived (synchrony), i.e. the
-# burstiness measures are read AFTER controlling for rate and balance. A run with both
-# PREDS and ORTHO residualises within the reduced set.
+# ORTHO=1: within each block the competitors are residualised on one another in sequence --
+# MUA raw, E/I on MUA, Fano on MUA + E/I, synchrony on MUA + E/I + Fano -- and d2 stays raw.
+# Same column space as the raw five, so the joint fit, its deviance and d2's coefficient are
+# identical to the five-predictor panel; only the competitors' coefficients change (VIF ~ 1).
+# A run with both PREDS and ORTHO residualises within the reduced set.
 ORTHO = os.environ.get("ORTHO", "") == "1"
 ORDER = ["MUA", "EI", "fano", "sync"]
 LABEL_ORTHO = {"d2": "d2", "MUA": "MUA", "EI": "E/I\n| MUA", "fano": "MUA Fano\n| MUA, E/I",
@@ -114,13 +97,10 @@ _BASECOLOR = {"d2": "#7b3294", "MUA": "#fdb863", "fano": "#fee0b6",
 COLOR = {f"{k}{SUF}": v for k, v in _BASECOLOR.items()}
 
 
-# Optional exclusion by name, EXCLUDE=a,b. Default is NONE: this is the barrage cohort,
-# a different dataset from the replay sessions, so the replay builder's exclusion of
-# PPP7_day12 (two-maze epoch structure) does not carry over. The
-# cohort is 12 sessions; NN8_day6 (6 barrages, below MIN_EVENTS) drops out of the
-# SESSION-level fit on its own, leaving 11 at both levels. A zero-trial-window guard in
-# classify_sessions / classify_blocks skips windows with no event of either kind before
-# fitting (see classify_blocks).
+# Optional exclusion by name, EXCLUDE=a,b. Default is NONE. The cohort is 12 sessions;
+# NN8_day6 (6 barrages, below MIN_EVENTS) drops out of the SESSION-level fit on its own,
+# leaving 11 at both levels. A zero-trial-window guard in classify_sessions / classify_blocks
+# skips windows with no event of either kind before fitting (see classify_blocks).
 _env = os.environ.get("EXCLUDE", "")
 EXCLUDE = {s.strip(): "EXCLUDE env" for s in _env.split(",") if s.strip()}
 
@@ -396,10 +376,8 @@ def classify_blocks(W, minw):
                 h = orthogonalise(h, cols)
             Z = ((h[cols] - h[cols].mean()) / (h[cols].std(ddof=0) + 1e-12)).to_numpy(float)
             endog = np.column_stack([h.n_barr, h.n_rip])
-            # A window with no event of either kind is a binomial row with 0 trials: it adds nothing to the
-            # likelihood but makes statsmodels' deviance nan, which silently drops every fit that holds one
-            # (e.g. NN2_day24). Predictors stay z-scored over
-            # ALL windows; only the fit skips the 0-trial rows, which leaves the MLE unchanged.
+            # windows with no event of either kind (0 binomial trials, e.g. NN2_day24) are
+            # skipped before the fit; predictors stay z-scored over all windows
             keep = endog.sum(1) > 0
             Z, endog = Z[keep], endog[keep]
             try:
@@ -589,8 +567,8 @@ def classify_sessions(W):
             continue
         Z = ((g[cols] - g[cols].mean()) / (g[cols].std(ddof=0) + 1e-12)).to_numpy(float)
         endog = np.column_stack([g.n_barr, g.n_rip])
-        # 0-trial windows give a nan deviance (see classify_blocks); NN2_day24 has 9 such
-        # windows. The fit converges once they are skipped, leaving a session count of 11.
+        # 0-trial windows are skipped (see classify_blocks); NN2_day24 has 9 such windows,
+        # leaving a session count of 11.
         keep = endog.sum(1) > 0
         Z, endog = Z[keep], endog[keep]
         try:

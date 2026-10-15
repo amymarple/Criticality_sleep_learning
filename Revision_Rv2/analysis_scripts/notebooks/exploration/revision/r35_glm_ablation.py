@@ -99,8 +99,7 @@ def build(session, extra_centers=None):
     `extra_centers` additionally keeps the Fig. 2d rows nearest to those times (within
     1 s). Used to bring the **d2 (2025 KL)** window grid into the same table: KL windows
     come from the revision pipeline's own tiling and do not coincide with every 15th
-    window of the Fig. 2d grid, so without this they would be dropped. Default None
-    reproduces the original behaviour exactly."""
+    window of the Fig. 2d grid, so without this they would be dropped."""
     import nelpy as nel
     from neuro_py.io import loading
 
@@ -139,8 +138,7 @@ def build(session, extra_centers=None):
         ncell += (np.searchsorted(u, riv[:, 1]) - np.searchsorted(u, riv[:, 0])) > 0
 
     # MUA is computed here rather than read from the pickle: PPP23_day8's
-    # replay_probality pickle has no MUA column, and taking it from the pickle would
-    # silently drop that session from an n=9 analysis. Population rate over all CA1
+    # replay_probality pickle has no MUA column. Population rate over all CA1
     # units in the window.
     allsp = np.sort(np.concatenate(units)) if units else np.array([])
     mua = ((np.searchsorted(allsp, c + WIN_S / 2)

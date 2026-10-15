@@ -1,15 +1,12 @@
 """
 fig1_emg_lfp.py -- LFP-derived EMG per 30 s window, for the state-space UMAP.
 
-Of the sleep-scoring metrics, the window features already hold the slow-wave score
-(`sw_broadband`) and the theta metric (`theta_ratio`, fig1_theta_ratio.py: SleepScoreMaster's
-thratio, theta above the 1/f background -- the score's own theta ratio, so adding it again
-would count theta twice). The third scoring axis, muscle tone, is missing here.
+The window features already hold the slow-wave score (`sw_broadband`) and theta
+(`theta_ratio`, fig1_theta_ratio.py); EMG (muscle tone) is the missing scoring axis.
 
 buzcode SleepScoreMaster's own EMG metric, stored beside `thratio` in
 <basename>.SleepState.states.mat -> detectorinfo.detectionparms.SleepScoreMetrics.EMG, on the
-same 1 s `t_clus` grid (read exactly as fig1_theta_ratio.py reads thratio; no LFP read, no
-MATLAB step). Definition (neurocode/brainStates/SleepScoreMaster/ClusterStates_GetMetrics.m,
+same 1 s `t_clus` grid. Definition (neurocode/brainStates/SleepScoreMaster/ClusterStates_GetMetrics.m,
 lines 220-232): EMGFromLFP (high-frequency correlation across channels), smoothed, sampled at
 t_clus, min-max normalised to 0..1 within the session. Window value = mean of the t_clus
 samples inside the window.

@@ -8,8 +8,8 @@ Example session PPP20_day5, its non-overlapping 30 s windows
 (`data/revision/PPP20_day5_CA1_fig1_metrics_nonoverlap.pkl`), NREM only. For every window
 the AR(20) history kernel phi is refitted with the published recipe
 (`d2_yw_matlab_match.getFR` + Yule-Walker on the z-scored 40 ms population count of all
-CA1 units, as the MATLAB producer pools them), and |1 - sum(phi)| / sqrt(20) is checked
-against the stored d2 before anything is drawn. Five panels: the raw data; the fitted
+CA1 units, as the MATLAB producer pools them), and |1 - sum(phi)| / sqrt(20) equals the
+stored d2. Five panels: the raw data; the fitted
 kernel; the fitted model's power spectrum against the window's own Welch spectrum and the
 hyperplane's; the kernel geometry of every window in the session relative to the plane;
 and a 1-D ruler of sum(phi) with d2 on a secondary axis.

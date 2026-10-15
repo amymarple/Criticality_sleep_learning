@@ -107,7 +107,7 @@ def classify(W, cols):
         Z = ((h[cols] - h[cols].mean()) / (h[cols].std(ddof=0) + 1e-12)).to_numpy(float)
         try:
             endog = np.column_stack([h.n_barr, h.n_rip])
-            keep = endog.sum(1) > 0     # 0-trial windows: nan deviance (r16_block_level_dissociation)
+            keep = endog.sum(1) > 0     # 0-trial windows skipped (see r16_block_level_dissociation)
             f = sm.GLM(endog[keep], sm.add_constant(Z[keep]),
                        family=sm.families.Binomial()).fit()
         except Exception:

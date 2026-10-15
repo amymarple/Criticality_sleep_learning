@@ -24,9 +24,9 @@ correlation of d2 with mean decoded trajectory span, and of rate_in with d2 cont
 for it.
 
 Session is the unit of analysis. Within-session correlations are computed on the
-non-overlapping window subset (every 15th window, 30 s apart); the all-window value is
-reported alongside only to show it reproduces the published grid. Across sessions,
-correlations are averaged with Fisher z and compared with a paired Wilcoxon on z.
+non-overlapping window subset (every 15th window, 30 s apart); the all-window value
+(published 2 s-step grid) is reported alongside. Across sessions, correlations are
+averaged with Fisher z and compared with a paired Wilcoxon on z.
 
 Inputs: SESSIONS (session -> raw data path); SESSION_TEMPLATE / NOTEBOOK_EPOCHS (below,
 per-session replay-event selection); data/ripple_barr/replay_non_replay/<session>_CA1.pkl
@@ -97,16 +97,13 @@ def assert_local_path(path):
 # ---------------------------------------------------------------------------
 # Per-session template actually used by `generate_replay_non_replay.ipynb`'s cell 9, which
 # hardcodes `epochs = ['epoch1','epoch3','epoch5']` and a single `template` set by hand per
-# session, so the notebook itself preserves only the last one used; this mapping records it
-# per session and is not recoverable from the notebook code. With it, this loader
-# reproduces the published ripple_rate_in / _out / _all and replay_rate at 100% of windows
-# on 8 of the 9 sessions.
+# session; the notebook itself preserves only the last one used, so this mapping records it
+# per session and is not recoverable from the notebook code.
 #
-# Using every epoch/template combination present in the .mat file instead reproduces the
-# same window rates (the extra combinations exist only for PPP4_day11, and duplicate
-# intervals do not change a boolean overlap), but it silently changes which events the
-# per-event property measures are computed over, so the per-session template below is
-# used throughout rather than the full combination set.
+# Using every epoch/template combination present in the .mat file instead changes which
+# events the per-event property measures are computed over (the extra combinations exist
+# only for PPP4_day11), so the per-session template below is used throughout rather than
+# the full combination set.
 SESSION_TEMPLATE = {
     "PPP20_day4": "template04", "PPP20_day5": "template04",
     "PPP21_day4": "template04", "PPP21_day5": "template04",
@@ -116,11 +113,9 @@ SESSION_TEMPLATE = {
 }
 NOTEBOOK_EPOCHS = ("epoch1", "epoch3", "epoch5")
 
-# Which sleep epochs each session ACTUALLY contributes, verified by counting significant
-# events that fall inside that session's d2 NREM window range. The d2 timeline covers only
-# part of most recordings, so events outside it are inert and the epoch list is mostly a
-# no-op -- taking epochs 1/3/5 and letting the time range do the filtering reproduces the
-# published replay_count at 100% on all 9 sessions.
+# Which sleep epochs each session ACTUALLY contributes. The d2 timeline covers only part
+# of most recordings, so events outside it are inert and the epoch list is mostly a no-op
+# -- epochs 1/3/5, with the time range doing the filtering.
 #
 #   session      d2 NREM span (s)   sig events by epoch (1/3/5)   effective epochs
 #   PPP20_day4        624-29933          619 /  828 / 1225            1,3,5
@@ -140,12 +135,11 @@ NOTEBOOK_EPOCHS = ("epoch1", "epoch3", "epoch5")
 def load_replay_events(sess, strict=True):
     """-> DataFrame of every decoded CANDIDATE event with its significance and
     decoded-trajectory geometry. The posterior is (nPos, 2*nTime): the two template
-    directions concatenated along time, confirmed by the posterior column count relative
-    to the event duration at the ~10 ms decoding bin.
+    directions concatenated along time.
 
     strict=True restricts to the session's own (epoch, template) selection above, which
-    is what the published rates were built from. Sessions with no recorded template fall
-    back to every combo in the file and say so."""
+    is what the published rates were built from. Sessions with no recorded template use
+    every combo in the file."""
     f = os.path.join(RES, f"{sess}_replay_sequences.mat")
     d = scipy.io.loadmat(f)
     present = sorted({re.match(r"(epoch\d+_template\d+)", k).group(1)
@@ -169,8 +163,7 @@ def load_replay_events(sess, strict=True):
         pv = np.squeeze(d[k + "_pvalue"]).reshape(n, -1)[:, :2]
         rv = np.squeeze(d[k + "_rvalues"]).reshape(n, -1)[:, :2]
         # Goodfit / slope are absent in some sessions (e.g. PPP4_day11 stores only
-        # eventtimes / pvalue / rvalues / posterior) -- fall back to NaN rather than
-        # dropping the whole session.
+        # eventtimes / pvalue / rvalues / posterior); recorded as NaN.
         if k + "_Goodfit" in d:
             gof = np.squeeze(d[k + "_Goodfit"]).reshape(n, -1)[:, :2]
         else:

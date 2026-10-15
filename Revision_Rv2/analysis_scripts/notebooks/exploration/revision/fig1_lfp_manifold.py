@@ -24,7 +24,7 @@ z-scored five-feature inputs used elsewhere here -- the time-column comparison.
 
 GEOMETRY=unified (default): the UMAP is fitted on the same z-scored features the SI is computed on,
 Euclidean, so picture and statistic share one geometry. GEOMETRY=published: raw features, cosine -- the
-pupil Fig. 1d setting, kept for the reproduction (output suffix _published). In both, SI lives in the
+pupil Fig. 1d setting (output suffix _published). In both, SI lives in the
 5-D feature space, not on the 2-D embedding. Consecutive 1-s samples carry the label of the same 30 s /
 2 s window and are not independent, so the time-preserving test is done on the 30 s window features
 (fig1_nrem_feature_gradient.py) rather than label permutation.

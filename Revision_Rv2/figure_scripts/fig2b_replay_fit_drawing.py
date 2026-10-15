@@ -1,4 +1,4 @@
-"""fit_replay_ridge_line, from Previous_Rv1/figure_scripts/Fig2_B_Example_replay.ipynb (code cell 9)."""
+"""fit_replay_ridge_line, from Previous_Rv1/figure_scripts/Fig2_B_Example_replay.ipynb."""
 import matplotlib as mpl
 import numpy as np
 

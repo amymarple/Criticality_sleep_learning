@@ -7,13 +7,11 @@ guard, 4 ms bins, active-unit counts, MR estimator k_max = 200; meta of
 branching_ratio_allstates_win10s_step2s_guard5s_*.pkl) aligned to every NREM ripple peak;
 per ripple, change = (mean BR within +/-2.5 s - mean BR in [-20,-17.5] u [17.5,20]) /
 baseline; the same for 5x as many random NREM times excluding [start-1, stop+1] of every
-ripple; the two per-session means compared paired across sessions. Its session set
-included PPP7_day10 (no replay decoding); here Fig 2 is unified on the decoded nine
-sessions (PPP7_day8 instead), so this recomputes the BR series for all nine.
+ripple; the two per-session means compared paired across sessions. Fig 2's nine decoded
+sessions (PPP7_day8) are used here; the BR series is recomputed for all nine.
 
-Arms. full: the published recipe, recomputed (validated against the stored pickle where
-one exists). excised: every 10 s window's BR from its ripple-free sub-windows (raw
-ripple intervals removed; r_k pooled across sub-windows, no lag crosses a gap;
+Arms. full: the published recipe, recomputed. excised: every 10 s window's BR from its
+ripple-free sub-windows (raw ripple intervals removed; r_k pooled across sub-windows, no lag crosses a gap;
 state_level_br.rk_curve_multi), so the PSTH shows what the background does around a
 ripple once the ripples themselves -- the triggering one included -- are out.
 
@@ -100,7 +98,7 @@ def psth(cen, br, events):
             m = (rel >= edges[j]) & (rel < edges[j + 1]) & np.isfinite(br)
             if m.any():
                 M[i, j] = br[m].mean()
-    # mean over events, and the SEM over events (the submitted panel's shade: per-ripple)
+    # mean over events, and the SEM over events (plotted as the shaded band)
     return edges[:-1] + PSTH[2] / 2, np.nanmean(M, 0), np.nanstd(M, 0, ddof=1) / np.sqrt(np.sum(np.isfinite(M), 0))
 
 
@@ -110,10 +108,7 @@ EXCLUDE = bool(os.environ.get("EXCLUDE_RIPPLES"))   # default False: see below
 def random_times(nrem_iv, r0, r1, ripples, rng):
     """N_SHUF x as many random NREM times as ripples per interval.
 
-    The producer's generate_random_points builds an exclusion window [start-1, stop+1]
-    around every ripple with np.arange(ex_start, ex_end) at 1 s steps on a 0.01 s grid, so
-    no grid points fall inside it: the published shuffle draws from random NREM times with
-    no exclusion applied. Default reproduces the published behaviour; EXCLUDE_RIPPLES=1
+    Default: no exclusion window around ripples (the published shuffle). EXCLUDE_RIPPLES=1
     excludes [start-1, stop+1] around every ripple from the draw."""
     out = []
     for a, b in nrem_iv:
@@ -157,7 +152,7 @@ def main():
         ripples = peaks[in_nrem]
         cen, full, exc = br_series(e_spikes, ivs, r0, r1)
         shuf = random_times(nrem_raw, r0, r1, ripples, rng)
-        # validation against the stored series where one exists
+        # compare against the stored series where available
         f = os.path.join(STORED, f"branching_ratio_allstates_win10s_step2s_guard5s_{sess}_CA1.pkl")
         note = ""
         if os.path.exists(f):

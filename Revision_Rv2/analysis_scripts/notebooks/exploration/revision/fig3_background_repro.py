@@ -1,17 +1,17 @@
-"""fig3_background_repro.py -- Figure 3e-h: panels e, f, h of the submitted Figure 3 reproduced from their
-stored inputs with the figure notebook's own functions; panel e redrawn with the background d2 beside the
-full-window d2, and panel g (CCK silencing) with the background d2 as session means.
+"""fig3_background_repro.py -- Figure 3e-h: panels e, f, h reproduced from their stored
+inputs with the figure notebook's own functions; panel e redrawn with the background d2
+beside the full-window d2, and panel g (CCK silencing) with the background d2 as session
+means.
 
 Fig. 3e relates d2 to barrage rate; with the full window, the spikes of the barrages and ripples inside
 the window are part of the d2 being correlated. The background d2 (2024 Euclidean, AR 20, 40 ms bins)
 excises every ripple and barrage interval and accumulates the autocovariance within each event-free
 segment (d2_yw_matlab_match.d2_yw_segments); CA1 NREM, non-overlapping 30 s windows, 12 barrage sessions.
-Panels f (branching ratio) and h (ISI entropy) carry no d2 and are reproduced as published. Stage 1
-recomputes the published panel statistics from the stored inputs before anything is redrawn.
+Panels f (branching ratio) and h (ISI entropy) carry no d2.
 
 Inputs: r16_glue_control_windows.csv (column d2_segments); the Fig. 3g rows written by fig3g_background.py
-(run it first); function definitions from notebooks/figures/Fig3_E_F_G_H_barrage_d2_S2_E_abblate_bar.ipynb
-(cells 1 and 9, executed via ast; the notebook itself is not run).
+(run it first); function definitions from notebooks/figures/Fig3_E_F_G_H_barrage_d2_S2_E_abblate_bar.ipynb,
+executed via ast (the notebook itself is not run).
 
 NONOVERLAP=1 draws every panel on non-overlapping data (f: the *_br_changes_non_overlap.pkl files;
 g: rows with centres >= one window apart; h: windows >= 30 s apart, SEM over sessions).
@@ -51,10 +51,8 @@ NB = os.path.join(REPO, "notebooks", "figures", "Fig3_E_F_G_H_barrage_d2_S2_E_ab
 RB = os.path.join(REPO, "data", "ripple_barr")
 LOG = os.path.join(REPO, "data", "revision", "log")
 NONOVERLAP = os.environ.get("NONOVERLAP", "0") == "1"
-# BINS=width: e and h binned into 6 equal-width bins of each session's barrage-rate range [0, max]
-# instead of rank sextiles, so the zero-rate windows all sit in bin 1 instead of being split by time
-# order (most windows have no barrage, so rank sextiles split the zero-rate windows across bins by
-# time order for a session with few events).
+# BINS=width: bin e and h into 6 equal-width bins of each session's barrage-rate range [0, max]
+# instead of rank sextiles, so zero-rate windows all sit in bin 1 rather than split by time order.
 # Per-panel default: e rank sextiles, h equal-width bins; BINS=width puts both panels on equal width
 # (the _equalwidth variant).
 WIDTH = os.environ.get("BINS", "rank") == "width"
@@ -169,7 +167,7 @@ def panel_h(nonoverlap_windows=False, rank_tiles=False, raw=False):
         d = add_session_tiles(d, by="barrage", k=6)                                               # noqa: F821
     d = add_session_zscores(d, "isi_entropy", robust=False)                                       # noqa: F821
     if raw:                                    # ISI entropy without z-score either, as in panel e
-        d["isi_entropy_z"] = d["isi_entropy"]  # column name kept so the notebook aggregator is unchanged
+        d["isi_entropy_z"] = d["isi_entropy"]  # column name kept for the notebook aggregator
     t = aggregate_from_precomputed_tiles(d, "tile_barrage_sess", "isi_entropy_z", "barrage_rate",  # noqa: F821
                                          error_mode="sessions" if nonoverlap_windows else "windows")
     r, p = stats.pearsonr(t.tile_barrage_sess, t.isi_entropy_z_mean)
@@ -179,7 +177,7 @@ def panel_h(nonoverlap_windows=False, rank_tiles=False, raw=False):
 
 def main():
     out = []
-    # ---- stage 1: the published numbers -------------------------------------------------------
+    # ---- published panel statistics -----------------------------------------------------------
     lr_e, n_e = panel_e_published()
     pf_f, p_f, diff_f = panel_f()
     t_h, r_h, p_h, rho_h, prho_h, n_h = panel_h()
@@ -255,7 +253,7 @@ def main():
     # e: both arms -- grey = full window (the published quantity), tab:blue = background (ripples and
     # barrages excised); same windows, raw units, session counts per arm
     stars = lambda p: "***" if p < .001 else "**" if p < .01 else "*" if p < .05 else "n.s."
-    # colours: background keeps the panel's original tab:blue; the added full-window line is grey
+    # colours: background keeps the panel's tab:blue; the added full-window line is grey
     for k, (lab, col, name) in enumerate((("full window", "#7f7f7f", "full window"),
                                           ("background", "tab:blue", "ripples + barrages excised"))):
         m, e, lr, n, rho, prho = res[lab]

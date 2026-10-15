@@ -245,7 +245,7 @@ def plot(res, W):
              fontsize=8, color="0.3", ha="left", va="bottom")
     fig.tight_layout(rect=(0, 0.13, 1, 0.93))
     assert_local_path(FIGDIR)
-    os.makedirs(os.path.join(FIGDIR, "backup"), exist_ok=True)   # GLM ablation figures are saved here; the panel is fig2f_standalone.py
+    os.makedirs(os.path.join(FIGDIR, "backup"), exist_ok=True)   # the main panel is fig2f_standalone.py
     for ext in ("png", "svg"):
         fig.savefig(os.path.join(FIGDIR, "backup", f"fig2d_replay_lmm.{ext}"), dpi=300)
     plt.close(fig)

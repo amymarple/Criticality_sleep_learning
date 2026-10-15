@@ -22,15 +22,14 @@ Non-overlapping = `select_disjoint`: within each session, windows of every state
 kept only if its centre is >= 30 s after the last kept one, so no two kept windows share any data;
 values are the published ones, subsetted, not recomputed.
   A second, coarser selection (`fig1_nonoverlap_contrasts.select_nonoverlap`, every 15th window of
-  each contiguous same-state run) is NOT disjoint for wake: with centre labelling, theta / non-theta
-  runs are short and each run restarts the count, so a sizeable fraction of its THETA and nonTHETA
-  windows lie < 30 s from another kept window of the same state (NREM, REM: none). It is kept here as
-  arm C only to show what changes.
-Arms: A stored inputs, all windows (must reproduce the notebook's printout); B rebuilt inputs, all
-windows (1e: PPP7_day14 rebuilt from its own d2; PPP7_day7 rebuilt with every theta bout, as the other
-sessions -- its stored pairs were made with bouts <= 10 s dropped); C the every-15th-window selection;
-D disjoint (the panels). 1d also gets the paired session-level contrasts and the paper's ranked
-session LMM. REUSE_PAIRS=1 reads fig1e_pairs_recomputed.csv instead of rebuilding from spikes.
+  each contiguous same-state run, arm C below) is NOT disjoint for wake: with centre labelling, theta /
+  non-theta runs are short and each run restarts the count, so a sizeable fraction of its THETA and
+  nonTHETA windows lie < 30 s from another kept window of the same state (NREM, REM: none).
+Arms: A stored inputs, all windows; B rebuilt inputs, all windows (1e: PPP7_day14 rebuilt from its own
+d2; PPP7_day7 rebuilt with every theta bout, matching the other sessions' treatment); C the
+every-15th-window selection; D disjoint (the panels). 1d also gets the paired session-level contrasts
+and the paper's ranked session LMM. REUSE_PAIRS=1 reads fig1e_pairs_recomputed.csv instead of
+rebuilding from spikes.
 
     -> reports/revision_figs/fig1d_nonoverlap{,_boxplots}.{svg,png}
     -> reports/revision_figs/fig1e_nonoverlap_{NREM_vs_REM,THETA_vs_nonTHETA}_dyn_by_d2_minmax_norm.{svg,png}
@@ -135,8 +134,7 @@ SAVE_NOTE = {"text": ""}
 
 
 def savefig_retry(fig, path, tries=8, **kw):
-    """Windows refuses the write (OSError 22) while another process, e.g. an editor preview, holds the
-    file open; retry for up to ~30 s instead of losing the rest of the run."""
+    """Retries the save for up to ~30 s in case another process holds the file open."""
     import time
     for i in range(tries):
         try:
@@ -363,8 +361,8 @@ def stats_pearson(x, y):
 
 
 def run_1e_scatter(stored, N):
-    """Fig1_E cell 3 (figS1_D_MUA_d2_scatter): A on the stored pairs (must reproduce the printout),
-    D on the rebuilt, disjoint pairs (the panel)."""
+    """Fig1_E cell 3 (figS1_D_MUA_d2_scatter): A on the stored pairs, D on the rebuilt,
+    disjoint pairs (the panel)."""
     print("\n=== Fig 1e scatter (notebook cell 3): d2_z vs MUA_z, z within session x Wake/Sleep ===", flush=True)
     print("  published: Wake non-θ n 9 078 r -0.5248 | Wake θ n 1 372 r +0.1495 | NREM n 78 517 r +0.2253 | REM n 1 312 r +0.1210")
     c3 = cell(NB_1E, 3)

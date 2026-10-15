@@ -86,7 +86,7 @@ for epoch = 1:size(NREM, 1)
                 check_fit = false;
           end
         % Compute branching deviation for this window
-        % Assuming 'st' is your spike times and 'curr_window' is [start, stop]
+        % 'st': spike times; 'curr_window': [start, stop]
         spike_times = st(st >= curr_window(1) & st < curr_window(2));
         
         % Bin into spike rate

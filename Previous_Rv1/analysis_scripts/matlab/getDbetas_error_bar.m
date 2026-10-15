@@ -1,13 +1,13 @@
 function [beta, d_beta, closest_models, explained_variance, d_beta_error] = getDbetas_error_bar(st, windows, deltaT, order, check_fit, quant)
 % d_beta + error bars using FULL observed Hessian covariance and Euclidean gradient.
-% - varphi estimated by your myYuleWalker (unchanged)
+% - varphi estimated by myYuleWalker
 % - Cov(phi) ≈ (-H)^{-1}, H from profiled Gaussian/CLS objective
-% - d_beta is Euclidean distance to the beta-manifold (your 2024 definition)
+% - d_beta is Euclidean distance to the beta-manifold (2024 definition)
 
     %#ok<*NASGU>
     if nargin < 6, quant = []; end
 
-    % --- Fit (your Yule–Walker) ---
+    % --- Fit (Yule-Walker) ---
     [varphi, varNoise, sigAll] = myYuleWalker(st, windows, deltaT, order);
 
     % varNoise from myYuleWalker is normalized (r0=1)
@@ -57,7 +57,7 @@ function cov_fac = cov_factor_full_hessian_euclid(st, windows, deltaT, p, varphi
 %   windows    : [nW x 2] sample indices, 1-based inclusive [start end]
 %   deltaT     : sampling period (sec); used when binning spike times
 %   p          : AR order
-%   varphi     : (optional) coefficient vector where you might evaluate the
+%   varphi     : (optional) coefficient vector at which to evaluate the
 %                observed Hessian; not used in 'ols'/'expected' modes
 %   mean_mode  : 'global' (one mean across all rows) or 'window' (demean per window)
 %   cov_mode   : 'ols'      -> Cov(φ) = σ̂² (X'X)^{-1}       [RECOMMENDED]

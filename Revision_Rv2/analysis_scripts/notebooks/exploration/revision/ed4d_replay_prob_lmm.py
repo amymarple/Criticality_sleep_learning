@@ -15,8 +15,7 @@ session (pd.qcut on d2, duplicates dropped); one row per window; replay_prob_z ~
 sextile_centered with a random intercept per session, and with a random intercept +
 slope (the model the submitted result comes from); ML fits (lbfgs). Windows: ED 4d's
 own, the non-overlapping decoded NREM tiles of excised_br_entropy_windows.csv with >= 1
-SWR (fig2_new.panel_replay_prob's filter). The submitted sliding-window rows are
-refitted as a reproduction check.
+SWR; the submitted sliding-window rows are refitted alongside.
 
 Reads only local CSVs; writes only to D:.
     -> data/revision/log/ed4d_replay_prob_lmm.csv   (data, arm, model, beta, se, p, n_windows, n_sessions)
@@ -68,7 +67,7 @@ def fit(L, data, arm):
 def nonoverlap_rows(W, col):
     out = []
     for s, g in W.dropna(subset=[col]).groupby("session"):
-        z = (g.replay_prob - g.replay_prob.mean()) / g.replay_prob.std(ddof=0)       # the submitted zscore_nan
+        z = (g.replay_prob - g.replay_prob.mean()) / g.replay_prob.std(ddof=0)
         sx = pd.qcut(g[col].astype(float), q=6, labels=False, duplicates="drop") + 1
         out.append(pd.DataFrame({"file_id": s, "d2_sextile": sx.astype(int), "replay_prob_z": z}))
     return pd.concat(out, ignore_index=True)
@@ -77,7 +76,7 @@ def nonoverlap_rows(W, col):
 def main():
     rows = fit(pd.read_csv(SUBMITTED), "submitted (sliding windows)", "full window")
     W = pd.read_csv(WINDOWS).dropna(subset=["replay_prob"])
-    W = W[W.ripple_rate * 30 >= 1]                                        # fig2_new.panel_replay_prob's filter
+    W = W[W.ripple_rate * 30 >= 1]
     for arm, col in ARMS:
         rows += fit(nonoverlap_rows(W, col), "non-overlapping (ED 4d)", arm)
     pd.DataFrame(rows).to_csv(assert_local_path(OUT), index=False)

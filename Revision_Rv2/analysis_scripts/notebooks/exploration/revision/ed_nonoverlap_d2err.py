@@ -19,9 +19,9 @@ disjoint windows rather than filtered by dropping rows.
 
 The producer functions are exec'd from the figure notebook itself
 (Previous_Rv1/figure_scripts/FigS1_C_SNR_S2C_d2 uncertainty.ipynb; identical in
-notebooks/figures/). Each table is built twice, once on all windows (must equal the
-shipped CSV) and once with the disjoint rule injected at load, so the producer's own
-state filter, z-score and tiling then run on what is left.
+notebooks/figures/). Each table is built twice: once on all windows, once with the
+disjoint rule injected at load, so the producer's own state filter, z-score and tiling
+then run on what is left.
 
 Reads W: and Previous_Rv1 read-only; writes only the two tables below.
 

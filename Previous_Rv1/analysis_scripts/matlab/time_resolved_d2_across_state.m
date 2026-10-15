@@ -7,7 +7,7 @@
 clear; clc;
 
 %% ---------------- User parameters ----------------
-window_size = 30;     % seconds (use 30s if your AR fits are stable)
+window_size = 30;     % seconds, length of each sliding window
 step_size   = 2;      % seconds hop between adjacent windows
 guard_sec   = 5;      % seconds shaved off each end of scored intervals
 deltaT      = 0.04;   % bin size used inside getDbetas (s)
@@ -74,12 +74,12 @@ T = sortrows(T, 'start');
 %% ---------------- Slide windows within each state ----------------
 % We generate windows that are guaranteed to be fully inside a single state interval.
 labels = {'NREM','REM','WAKE'};% ---------------- Slide windows within each state ----------------
-results = struct('state',{},'center',{},'d2',{},'d2_err',{});   % <-- added d2_err
+results = struct('state',{},'center',{},'d2',{},'d2_err',{});
 
 
 rng(0);  % reproducibility for any later resampling
 
-check_every = 500;   % visualize fit occasionally if you wish
+check_every = 500;   % visualize the fit occasionally
 wcount = 0;
 
 for s = 1:numel(labels)
@@ -101,7 +101,7 @@ for s = 1:numel(labels)
             % Compute D-betas; we only keep the first (β=2) distance as D²
             [~, d_beta, ~,d_beta_error] = getDbetas(st', curr_win, deltaT, order, check_fit, quant);
             d2_vals(w) = d_beta(1);
-            d2_err_vals(w) = d_beta_error(1);   % <-- store its error
+            d2_err_vals(w) = d_beta_error(1);   % store the corresponding error
             % Optionally save a snapshot of fit diagnostics
             if check_fit
                 figfile = fullfile(save_dir, sprintf('fitcheck_%06d_%s.png', wcount, lab));
@@ -120,26 +120,26 @@ for s = 1:numel(labels)
     results(end+1).state  = lab;        %#ok<SAGROW>
     results(end).center   = centers;
     results(end).d2       = d2_vals;
-    results(end).d2_err   = d2_err_vals;    % <-- new
+    results(end).d2_err   = d2_err_vals;
 end
 
 %% ---------------- Stitch into a single time series ----------------
 % We keep them separate by state for stats, but we can also make a global timeline.
 all_centers = [];
 all_d2      = [];
-all_d2_error= [];              % <-- new
+all_d2_error= [];          
 all_state   = [];
 
 for s = 1:numel(results)
     all_centers = [all_centers; results(s).center(:)];
     all_d2      = [all_d2;      results(s).d2(:)];
-    all_d2_error= [all_d2_error;results(s).d2_err(:)];   % <-- new
+    all_d2_error= [all_d2_error;results(s).d2_err(:)];
     all_state   = [all_state;   repmat(string(results(s).state), numel(results(s).center), 1)];
 end
 
 [all_centers, ord] = sort(all_centers);
 all_d2       = all_d2(ord);
-all_d2_error = all_d2_error(ord);    % <-- keep aligned
+all_d2_error = all_d2_error(ord);    % stays aligned with the sort order
 all_state    = all_state(ord);
 
 
@@ -173,10 +173,10 @@ for s = 1:numel(labels)
     for k = 1:numel(runs_start)
         idx = runs_start(k):runs_end(k);
         h = plot(all_centers(idx), all_d2(idx), '-', 'Color', col, 'LineWidth', 1.5);
-        % After drawing the colored line segments, you can overlay faint error bars:
+        % Faint error bars over the colored line segments:
         hold on;
         mask = isfinite(all_d2) & isfinite(all_d2_error) & (all_d2 > 0);
-        yneg = min(all_d2_error(mask), 0.99*all_d2(mask));  % guard for log-scale if you switch to it
+        yneg = min(all_d2_error(mask), 0.99*all_d2(mask));  % guard for a log scale
         errorbar(all_centers(mask), all_d2(mask), yneg, all_d2_error(mask), ...
                  'k.', 'MarkerSize', 6, 'LineStyle', 'none', 'HandleVisibility','off');
 

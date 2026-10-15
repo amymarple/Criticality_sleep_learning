@@ -1,22 +1,15 @@
-"""fig2f_backtrace.py -- Figure 2f: reconstructing the per-window input table behind the GLM's
-stored per-session summary.
-
-generate_GLM.ipynb (the Fig 2F producer) saves only a summary per session: n_samples, fold
-AUCs, the ablation table; the per-window input table itself is not saved. This script
-reconstructs the window set from the producer's own recipe and checks it against n_samples,
-an exact integer per session:
+"""fig2f_backtrace.py -- Figure 2f: the per-window input table behind the GLM's per-session
+summary. generate_GLM.ipynb stores only n_samples, fold AUCs and the ablation table per
+session; the per-window table itself is not saved.
 
     d2 file    : newest *_CA1_D2_time_resolved_error_bar.mat / *_CA1_D2_time_error_bar.mat
-                 in complex_system (the most recently modified candidate), all states
-                 loaded, then filtered to state == NREM
+                 in complex_system, all states loaded, then filtered to state == NREM
     ripples    : load_ripples_events intersected with NREM
     window     : 30 s centred on center_s, ripple in window if start < c+15 and stop > c-15
     rows kept  : ripple_count > 0 and finite MUA / d2 / replay_prob
 
-For every candidate d2 .mat in each session, counts the NREM windows with >= 1 NREM ripple
-and compares with n_samples. A match identifies the d2 file and the state/ripple masks the
-producer used; a mismatch on every candidate means the recipe above is not what ran. The same
-count is reported for the per-center replay-probability table, to show where it diverges.
+For each candidate d2 .mat per session, counts the NREM windows with >= 1 NREM ripple
+against n_samples, alongside the same count from the per-center replay-probability table.
 
     -> data/revision/log/fig2f_backtrace_windows.csv
 """
@@ -49,7 +42,7 @@ PATS = ["*_CA1_D2_time_resolved_error_bar.mat", "*_CA1_D2_time_error_bar.mat"]
 
 
 def load_all_states(f):
-    """center / d2 / state for every state in the file (cell 2 loads all, cell 14 filters)."""
+    """center / d2 / state for every state in the file."""
     m = loadmat(f, squeeze_me=True, struct_as_record=False, simplify_cells=True)
     res = m["results"]
     res = list(res.values()) if isinstance(res, dict) else list(np.atleast_1d(res))

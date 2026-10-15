@@ -240,11 +240,7 @@ def plot(D):
             x, y = g["MUA_z"].to_numpy(float), g[col + "_z"].to_numpy(float)
             ax.scatter(x, y, s=5, alpha=0.13, color=COLORS[st], linewidths=0,
                        rasterized=True)
-            # One pooled fit per state: both axes are z-scored WITHIN SESSION first,
-            # which removes the between-session offsets in MUA and d2 that can
-            # otherwise invert the pooled sign relative to the per-session estimate
-            # when windows are pooled (a Simpson's paradox). After within-session
-            # z-scoring, the pooled estimate agrees with the per-session one.
+            # One pooled fit per state, on the within-session z-scores (zscore_within_session).
             b = np.polyfit(x, y, 1)
             xs = np.linspace(np.percentile(x, 1), np.percentile(x, 99), 50)
             r = stats.spearmanr(x, y).statistic

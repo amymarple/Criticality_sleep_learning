@@ -63,9 +63,8 @@ LOGCSV = REPO / "data" / "revision" / "log" / "ed_nonoverlap_thinning.csv"
 
 OVERRIDE_DIR = REPO / "data" / "revision" / "log" / "ed_nonoverlap_tables"
 # Tables with no window time are rebuilt from their producer pickles on disjoint windows by
-# ed_nonoverlap_d2err.py, ed_nonoverlap_ed2a_ed1f.py and ed_nonoverlap_rats_tiles.py (each first
-# reproduces the shipped table exactly on all windows); a file of the shipped name in OVERRIDE_DIR is
-# read instead of the shipped CSV.
+# ed_nonoverlap_d2err.py, ed_nonoverlap_ed2a_ed1f.py and ed_nonoverlap_rats_tiles.py; a file of
+# the shipped name in OVERRIDE_DIR is read instead of the shipped CSV.
 
 # spacing for window lengths other than 30 s (the disjoint rule uses L = window length)
 SPACING = {"branching_ratio_windows.csv": 20.0}
@@ -88,8 +87,8 @@ ROW_ALIGNED = {"rat_isi_entropy_by_swr_rate.csv": ("rat_d2_windows_by_state.csv"
 
 
 def retile_rat_isi_swr(d):
-    """ED6d's precomputed columns, reproduced exactly from the producer: isi_entropy_norm
-    = per-file z (ddof 0) of the window's ISI entropy, tile = per-file
+    """ED6d's precomputed columns, from the producer: isi_entropy_norm = per-file z
+    (ddof 0) of the window's ISI entropy, tile = per-file
     qcut(ripple_rate, 6, duplicates='drop') + 1. Recomputed on the thinned rows."""
     d = d.copy()
     g = d.groupby("file_id")
@@ -124,7 +123,7 @@ NEEDS_OVERRIDE = {"figS6_C_": "rat_replay_nonreplay_tiles.csv", "figS6_F_": "rat
                   "figS2_A_": "d2_rel_novel_familiar.csv", "S1_F_": "branching_ratio_by_state.csv",
                   "figS1B_explain_variance": "explained_variance_by_window.csv"}
 # panels that are not window statistics (example traces, transition snippets, avalanche fits, event-level
-# BR changes) or have no window times anywhere (ED1b): saved as submitted, in <notebook>/_as_submitted/
+# BR changes) or have no window times anywhere (ED1b): saved without thinning, in <notebook>/_as_submitted/
 AS_SUBMITTED = {
     "FigS1_B_Explain variance_D_statetransition": ["figS1B_explain_variance", "S1_D_nrem_d2_transition"],
     "FigS2_D_E_F_low_avalanche_example_avalanche_sizeduradcc_": ["figS2_E_", "S2_E_", "S2_F_"],
@@ -234,7 +233,7 @@ def guarded_savefig(self, fname, *args, **kw):
     kw.pop("format", None)
     import time
     for target, kws in ((p, kw), (assert_local_path(str(out / (stem + ".png"))), dict(dpi=200, bbox_inches="tight"))):
-        for i in range(8):                       # OSError 22 while an editor preview holds the file: retry
+        for i in range(8):                       # retry on a transient OSError
             try:
                 _orig_savefig(self, target, *args, **kws)
                 break

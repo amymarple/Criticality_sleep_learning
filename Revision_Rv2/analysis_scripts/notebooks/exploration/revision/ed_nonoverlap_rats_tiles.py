@@ -80,25 +80,24 @@ ED6C, ED6F, ED6G = "rat_replay_nonreplay_tiles.csv", "rat_d2_by_barrage_rate.csv
 
 M80, M60, M40 = "_CA1_D2_time_resolved_error_bar_80ms.mat", "_CA1_D2_time_resolved_error_bar_60ms.mat", \
     "_CA1_D2_time_resolved_error_bar.mat"
-# ED6c sessions: d2 .mat the stored windows came from (d2 equal at every window), replay-interval folder, and the
-# state of the SWR inputs when the tiles were made. `added` / `flagged` = indices into the CURRENT ripples.added /
-# ripples.flagged lists that were in effect then (None = all, i.e. neuro_py's loader as it reads the file today).
+# ED6c sessions: d2 .mat file, replay-interval folder, and the SWR inputs of the tiles. `added` / `flagged` =
+# indices into ripples.added / ripples.flagged that are included (None = all, as neuro_py's loader reads the file).
 ED6C_SESSIONS = {
     "hp15_day31_20250130": dict(mat=M80, sig=SIG_TOP),
     "hp15_day35_20250205": dict(mat=M80, sig=SIG_TOP),
     "hp17_day23_20250507": dict(mat=M80),
     "hp17_day40_20250526": dict(mat=M80),
-    "hp18_day13_20250417": dict(mat=M60, added=[]),                      # 13 manual SWRs added later (11 in NREM sleep)
-    "hp18_day17_20250421": dict(mat=M60, added=[0]),                     # 25 of 26 manual SWRs added later
-    "hp18_day36_20250510": dict(mat=M60, states=".SleepState.states_old.mat"),   # states re-scored since
+    "hp18_day13_20250417": dict(mat=M60, added=[]),                      # none of the 13 manual SWRs
+    "hp18_day17_20250421": dict(mat=M60, added=[0]),                     # 1 of 26 manual SWRs
+    "hp18_day36_20250510": dict(mat=M60, states=".SleepState.states_old.mat"),
     "hp18_day48_20250522": dict(mat=M40),
-    "hp18_day49_20250523": dict(mat=M60, added=list(range(2, 47)),       # manual SWRs 0, 1 added later;
-                                flagged=[2] + list(range(5, 18))),       # flags 0, 1, 3, 4 set later
+    "hp18_day49_20250523": dict(mat=M60, added=list(range(2, 47)),       # manual SWRs 2-46;
+                                flagged=[2] + list(range(5, 18))),       # flags 2, 5-17
     "hp18_day52_20250526": dict(mat=M80, sig=SIG_TOP, ripples=".oldripples.events.mat", added=[], flagged=[]),
     "rm10_day10_20250814": dict(mat=M40),
     "rm10_day11_20250815": dict(mat=M40),
     "rm10_day12_20250817": dict(mat=M40),
-    "rm10_day5_20250809": dict(mat=M40, added=[5, 9, 15]),              # 13 of 16 manual SWRs added later
+    "rm10_day5_20250809": dict(mat=M40, added=[5, 9, 15]),              # 3 of 16 manual SWRs
     "rm10_day6_20250810": dict(mat=M40),
 }
 # ED6f / g sessions (file_id = pickle stem): d2 .mat on Z: whose d2 equals per_center's at every window
@@ -138,7 +137,7 @@ def quiet(fn, *a, **k):
 # ---------------------------------------------------------------- windows and the disjoint rule
 def mat_grid(path):
     """Every window of a MATLAB d2 (2024 Euclidean) file, all states -- the producers' load_d2_timeline_complete
-    (per state: centre / d2 / d2_err truncated to their common length), without the prints."""
+    (per state: centre / d2 / d2_err truncated to their common length)."""
     try:
         m = loadmat(path, squeeze_me=True, struct_as_record=False, simplify_cells=True)
     except NotImplementedError:
@@ -320,7 +319,6 @@ def session_inputs(sess, cfg):
     an = sess.split("_")[0]
     bp = os.path.join(r"S:\data\latentseq\RM10", sess) if an == "rm10" else \
         os.path.join(r"V:\data\hpc_ctx_project", an.upper(), sess)
-    # MUA_sleepstage_rat_replay.ipynb cell 0 (states, epochs) and cell 5 (SWR epochs)
     if "states" in cfg:
         nrem = load_mat(os.path.join(bp, os.path.basename(bp) + cfg["states"]))["SleepState"]["ints"]["NREMstate"]
     else:
@@ -347,7 +345,7 @@ def replay_tiles(bp, ripple_epochs, w, sig_dir):
 
 
 def long_table(tiles):
-    """FigS5_S6_rats cell 28 load_all_tile_pkls, run on a folder of the given tile frames."""
+    """load_all_tile_pkls (FigS5_S6_rats), run on a folder of the given tile frames."""
     with tempfile.TemporaryDirectory(dir=TMP_ROOT) as tmp:
         for fname, t in tiles.items():
             t.to_pickle(assert_local_path(os.path.join(tmp, fname)))
@@ -364,7 +362,7 @@ def ed6c():
         t_stored = pd.read_pickle(WIN_DIR / f"{stem}_tile.pkl")
         bp, rep = session_inputs(sess, cfg)
         sig = cfg.get("sig", SIG_RNR)
-        # 1) all windows: must give the stored windows and tiles back
+        # 1) rebuild on all windows
         dfw, dft = replay_tiles(bp, rep, w, sig)
         if len(dfw) == len(w) and len(dft) == len(t_stored):
             chk = {c: float(np.max(np.abs(fl64(dfw[c]) - fl64(w[c]))))

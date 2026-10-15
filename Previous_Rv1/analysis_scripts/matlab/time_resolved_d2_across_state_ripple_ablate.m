@@ -7,7 +7,7 @@
 clear; clc;
 
 %% ---------------- User parameters ----------------
-window_size = 30;     % seconds (use 30s if your AR fits are stable)
+window_size = 30;     % seconds, length of each sliding window
 step_size   = 2;      % seconds hop between adjacent windows
 guard_sec   = 5;      % seconds shaved off each end of scored intervals
 deltaT      = 0.04;   % bin size used inside getDbetas (s)
@@ -79,7 +79,7 @@ results = repmat(struct('state','','center',[],'d2',[],'d2_err',[]), numel(label
 
 rng(0);  % reproducibility
 
-% If you want: minimum total ripple-free duration (in seconds) required
+% Minimum total ripple-free duration (in seconds) required
 MIN_FREE_SEC = 1.0;   % tune if needed (e.g., 0.5, 1.0, 2.0)
 
 %% --- Check / start Parallel Pool ---
@@ -111,7 +111,7 @@ for s = 1:numel(labels)
     isNREM = strcmp(lab,'NREM');
 
     % Use Parallel Loop
-    % NOTE: check_fit (diagnostic plotting) is disabled here for speed.
+    % Diagnostic plotting (check_fit) is disabled in the parallel loop.
     parfor w = 1:nW
         curr_win = wins(w,:);      % [start, end] of this 30 s window
 
@@ -153,7 +153,7 @@ for s = 1:numel(labels)
             end
 
             % ----- Compute D-betas (no diagnostics in parfor) -----
-            % IMPORTANT: 'false' disables plotting/check_fit inside getDbetas
+            % 'false' disables plotting/check_fit inside getDbetas
             [~, d_beta, ~, d_beta_err] = getDbetas(st', win_use, deltaT, order, false, quant);
 
             local_d2     = d_beta(1);       % use β = 2 as D²
@@ -163,7 +163,7 @@ for s = 1:numel(labels)
             d2_err_vals(w) = local_d2_err;
 
         catch
-            % Silently fail for this window: leave NaN
+            % On failure, leave NaN for this window.
             d2_vals(w)     = local_d2;
             d2_err_vals(w) = local_d2_err;
         end
@@ -181,7 +181,7 @@ end
 %% ---------------- Stitch into a single time series ----------------
 % We keep them separate by state for stats, but we can also make a global timeline.
 all_centers = [];
-all_d2      = [];         % <-- new
+all_d2      = [];
 all_state   = [];
 
 for s = 1:numel(results)
@@ -225,7 +225,7 @@ for s = 1:numel(labels)
     for k = 1:numel(runs_start)
         idx = runs_start(k):runs_end(k);
         h = plot(all_centers(idx), all_d2(idx), '-', 'Color', col, 'LineWidth', 1.5);
-        % After drawing the colored line segments, you can overlay faint error bars:
+        % Faint error bars over the colored line segments:
         hold on;
 
 

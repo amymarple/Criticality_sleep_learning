@@ -14,7 +14,7 @@ day8), so the cohort is restricted below.
 Parameters (MIN_BOUT, OFFSET) are fixed from the observed NREM bout-length distribution and the
 within-bout d2 autocorrelation (written to the _bouts table) before the test is run:
   cohort    Fig-1 sessions (run_fig1_metrics.FIG1_SESSIONS) that have SWR detection: 16 of 18. PPP20 day9
-            and PPP21 day8 have no ripple file (missing data, not zero ripples) and are excluded.
+            and PPP21 day8 have no ripple file and are excluded.
   missing   ripple_amp_mean is undefined in a zero-ripple window; inside a cohort session it is set to the
             session mean, which places those windows at z = 0 on that axis; the 9- and 8-feature sets
             omit ripple_amp_mean (and ripple_rate) to assess its effect.

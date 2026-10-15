@@ -6,7 +6,7 @@ A linear trend inside a 30 s NREM window depresses d2 and correlates with d2 wit
 This script computes the two event-rate relationships (d2 rises with ripple rate, falls with
 barrage rate) on the same windows, with session as the unit, under four arms:
 
-  arms   real        d2 (2024 Euclidean, p=20, 40 ms, OLS) as published
+  arms   real        d2 (2024 Euclidean, p=20, 40 ms, OLS)
          detrended   the same window with its linear trend removed before fitting
          partial     Spearman r(d2, rate) after residualising both on |trend| (rank-based)
          low-drift   windows with |trend| < 0.5 SD end-to-end only
@@ -191,8 +191,7 @@ def report(R):
 def window_length_panel(ax, rng, title):
     """d: the ripple-rate relation at shorter (and longer) windows, computed on the window
     table in window_length_sweep_windows.csv (NREM, non-overlapping, d2 (2024 Euclidean,
-    p = 20, 40 ms) by Yule-Walker, all CA1 units), per-session Spearman as panels a-c; its
-    30 s value reproduces panel a's 'as published' value."""
+    p = 20, 40 ms) by Yule-Walker, all CA1 units), per-session Spearman as panels a-c."""
     W = pd.read_csv(os.path.join(LOGDIR, "window_length_sweep_windows.csv"))
     W = W[W.state == "NREM"].dropna(subset=["d2ex", "ripple_rate"])
     lengths = sorted(W.window_s.unique())
@@ -235,8 +234,7 @@ def plot(R, full=False):
     """a = SWR-rate relation by window length, b = SWR-rate relation under drift control
     (Fig-1 cohort), c = barrage-rate relation under drift control (barrage cohort); the
     barrage cohort's SWR-rate panel is dropped. full=True redraws the four-panel
-    version (a-c drift control incl. that panel, d window length) as the spare in
-    backup/."""
+    version (a-c drift control incl. that panel, d window length) to backup/."""
     import matplotlib as mpl
     mpl.use("Agg")
     import matplotlib.pyplot as plt

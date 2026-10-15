@@ -11,9 +11,8 @@ FigS1_F_branchingratio_histogram.ipynb for ED1f) with the disjoint rule applied 
 the per-session reference (ED2a: the pre-task-sleep mean) and the weights (ED1f).
 
 The producers' own cells are executed from the notebook source, with asserted
-one-line patches that insert the thinning; each table is first rebuilt on all
-windows and checked against the shipped CSV row by row before the
-disjoint table is written. A third ED1f variant keeps THETA/nonTHETA windows that fall
+one-line patches that insert the thinning; each table is rebuilt on all windows,
+then on disjoint windows. A third ED1f variant keeps THETA/nonTHETA windows that fall
 in a sleep-labelled epoch (the producer otherwise drops them), since the adjacent panels
 use every wake window; it is written to its own output folder.
 
@@ -191,7 +190,7 @@ def ed2a():
             assert os.path.basename(meta["path"]).endswith("_CA1_D2_time_resolved_error_bar.mat"), meta["path"]
             epoch_df = loading.load_epoch(os.path.join(PPP, animal, day))
 
-            # all windows: must be the stored pickle, value for value
+            # rebuild on all windows
             d_all, rel_all, m_all = run_cell15(ns, block, ns["annotate_epochs"](ca1, epoch_df), first_n)
             ref = pd.read_pickle(pkl)
             assert len(ref) == len(rel_all), f"{stem}: {len(rel_all)} rows vs {len(ref)} in the stored pickle"
@@ -262,7 +261,7 @@ def thin_payload(payload, L):
     cen = [np.asarray(payload[st]["centers"], float) for st in states]
     for st, c in zip(states, cen):
         b = np.asarray(payload[st]["branching_ratios"], float)
-        # the producer filters non-finite br and centres separately, then truncates: aligned only if none
+        # aligned only if centres and branching ratios are both finite (checked below)
         assert c.size == b.size and np.isfinite(c).all() and np.isfinite(b).all(), st
     allc = np.concatenate(cen)
     lab = np.concatenate([np.full(c.size, i) for i, c in enumerate(cen)])
@@ -358,7 +357,7 @@ def main():
               f"all wake {b_wake.loc[b_wake.state == st, 'br'].median():.3f}   "
               f"windows m > 1: {int((b_wake.loc[b_wake.state == st, 'br'] > 1).sum())}")
 
-    # read-back: what ed_nonoverlap.py will read must be what was built
+    # confirm the written files round-trip to what was built
     built_all = ([] if args.ed1f_only else [(OUT_DIR, ED2A_NAME, a_dis)]) + [(OUT_DIR, ED1F_NAME, b_dis),
                                                                                (OUT_DIR_ALLWAKE, ED1F_NAME, b_wake)]
     for d_, name, built in built_all:

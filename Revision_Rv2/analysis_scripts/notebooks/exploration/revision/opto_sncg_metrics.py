@@ -15,9 +15,8 @@ windowing and metric code:
   * d2 (2024 Euclidean, p=20, 40 ms): joined from the session's own
     complex_system/<day>_CA1_D2_time_resolved.mat (the Fig. 3g source; deltaT 0.04 in all seven),
     nearest centre within 1 s, never refitted;
-  * units: CA1, firingRate > 0.2 Hz. SNCG06_day27 has 1 such unit and SNCG08_day17 has 4 (no
-    pyramidal cells pass), so their BR / entropy rows are NaN or meaningless and the contrasts are
-    reported with and without them (QC set = the other five).
+  * units: CA1, firingRate > 0.2 Hz. SNCG06_day27 has 1 such unit and SNCG08_day17 has 4; contrasts
+    are reported with and without these two (QC set = the other five).
 
 Conditions are stored as base (presleep) / stim (postsleep) with phase = "sleep" so that
 opto_cck_metrics.contrasts / figure run unchanged; the paired unit is the session.
