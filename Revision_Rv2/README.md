@@ -252,9 +252,4 @@ The bootstraps are drawn from these tables; the notebook runs no analysis script
 
 f is drawn as submitted, on rank sextiles of BARR rate; the stars are the trend over the 6 sextile means (n = 6).
 
-## Not included
 
-- the code of the Fig 3a-d network model (a colleague's);
-- the replay decoding itself (the lab's R_Project pipeline; its outputs are read by the producers);
-- Supplementary Fig 5;
-- the assembly of panels into figures.
