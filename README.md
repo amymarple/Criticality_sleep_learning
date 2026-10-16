@@ -24,7 +24,7 @@ Both folders have the same layout:
 |---|---|
 | `figure_scripts/` | The notebooks that draw the panels. Run them from inside this folder. |
 | `csv/` | The tables each notebook draws, one sub-folder per notebook. No spike times. |
-| `figure_output/` | The panels, as the notebooks save them. |
+| `figure_output/` | Where the notebooks save the panels (created when they run). |
 | `analysis_scripts/` | The code that made the tables from the recordings (MATLAB and Python). |
 
 The analysis scripts read the recordings at their paths on the lab servers; the figure notebooks need only the tables

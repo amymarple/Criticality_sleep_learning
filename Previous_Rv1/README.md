@@ -12,7 +12,7 @@ consolidation* — the version first submitted to Nature Neuroscience
 | [`figure_scripts/`](figure_scripts) | The notebooks that draw the panels. Each reads `../csv/<notebook name>/` and saves to `../figure_output/`. |
 | [`csv/`](csv) | The tables each notebook draws, one sub-folder per notebook. |
 | [`analysis_scripts/`](analysis_scripts) | The code that made the tables from the recordings. |
-| [`figure_output/`](figure_output) | The panels, as the notebooks save them. |
+| `figure_output/` | Where the notebooks save the panels (created when they run). |
 
 
 ## Quick start
@@ -77,7 +77,6 @@ Each notebook in `figure_scripts/` is the lab's figure notebook, reading its tab
 
 | panel | figure notebook | data ([`csv/Fig3_E_F_G_H_barrage_d2_S2_E_abblate_bar/`](csv/Fig3_E_F_G_H_barrage_d2_S2_E_abblate_bar/)) | made by ([`analysis_scripts/`](analysis_scripts/)) |
 |---|---|---|---|
-| 3a–d | network model | — | not included |
 | 3e | [`Fig3_E_F_G_H_barrage_d2_S2_E_abblate_bar.ipynb`](figure_scripts/Fig3_E_F_G_H_barrage_d2_S2_E_abblate_bar.ipynb) (cell "Fig3_E") | `d2_by_barrage_rate_sextile.csv`: d2 windows of the barrage sessions (z within session) with their barrage-rate sextile | [`MUA_sleepstage.ipynb`](analysis_scripts/MUA_sleepstage.ipynb) (from the [`matlab/`](analysis_scripts/matlab/) d2) |
 | 3f | same notebook ("Fig3 F") | `br_change_per_barrage.csv`: branching-ratio change around every barrage and at shuffled times | [`generate_branching_ratio_mouse.ipynb`](analysis_scripts/generate_branching_ratio_mouse.ipynb) (uses [`criticality/WiltingPriesemann.py`](analysis_scripts/criticality/WiltingPriesemann.py)) |
 | 3g | same notebook ("Fig3_G") | `d2_windows_sncg.csv`: d2 windows of the CCK-silencing (Sncg) sessions, pre- and post-task sleep | [`generate_barr_manipulation.ipynb`](analysis_scripts/generate_barr_manipulation.ipynb) (d2 from [`matlab/time_resolved_d2_across_state_error_bar.m`](analysis_scripts/matlab/time_resolved_d2_across_state_error_bar.m) run on CA1+CA2 with 80 ms bins and 60 s windows) |
@@ -105,8 +104,3 @@ The `FigS*` notebook names follow an older numbering; the table gives the panels
 | 5a | [`FigS5_A_Example_plot_rat.ipynb`](figure_scripts/FigS5_A_Example_plot_rat.ipynb) | example rat session HP18 day 36: states, epochs, `mua_40ms.csv`, `d2_timeline_CA1.csv` | [`matlab/`](analysis_scripts/matlab/) (d2) |
 | 5b–d, 6a–g | [`FigS5_S6_rats.ipynb`](figure_scripts/FigS5_S6_rats.ipynb) | rat versions of the Figure 1–3 tables: `rat_d2_windows.csv`, `rat_d2_windows_by_state.csv`, `rat_d2_mua_pairs.csv`, `rat_br_change_per_swr.csv`, `rat_br_change_per_event_nonoverlap.csv`, `rat_replay_nonreplay_tiles.csv`, `rat_d2_by_barrage_rate.csv`, `rat_isi_entropy_by_swr_rate.csv`, `rat_isi_entropy_by_barrage_rate.csv`; epoch tables of the sessions used (`rat_epoch_tables_ED5c/ED6a.csv`, `rat_sessions_presleep_first.csv`) | [`MUA_sleepstage_rat.ipynb`](analysis_scripts/MUA_sleepstage_rat.ipynb) (per-session window tables), [`MUA_sleepstage_rat_replay.ipynb`](analysis_scripts/MUA_sleepstage_rat_replay.ipynb) (replay / non-replay), [`generate_branching_ratio_rats.ipynb`](analysis_scripts/generate_branching_ratio_rats.ipynb) (branching ratio) |
 | 10 | [`FigS10_eplipsy.ipynb`](figure_scripts/FigS10_eplipsy.ipynb) | epilepsy session AYA9 day 28: `unit_groups.csv` (unit indices per region and cell type); `avalanches_epileptic_control.csv`; `branching_ratio_windows.csv`: branching ratio (MR estimator; CA1 population counts in 10 ms bins, k_max = 100, i.e. lags up to 1 s) of every 20 s window, stepped 2 s, in the epileptic (108–118 min) and control (14–24 min) epochs | the notebook itself ([`criticality/`](analysis_scripts/criticality/)) |
-
-## Not included
-
-Main Figure 3a–d and Extended Data 4 (network model), main Figures 4 and 5, and Extended Data 7–9
-(behaviour, cross-regional coordination).

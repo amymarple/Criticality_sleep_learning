@@ -52,7 +52,7 @@ Draw Figure 1e from its table.
 
 3. After about 10 seconds the panel is in `figure_output/Fig1/Fig1_E_d2_histogram_nonoverlap.svg` and `.png`: the
    d2 distribution of every non-overlapping window by state. The notebook prints the statistics given in the figure
-   legend. The panels shipped in [`figure_output/`](figure_output) are what every notebook produces.
+   legend.
 
 ## What each figure notebook needs
 
@@ -90,7 +90,7 @@ below.
 |---|---|
 | [`figure_scripts/`](figure_scripts) | The notebooks that draw the panels, one per figure theme. `*_drawing.py`: drawing functions taken from analysis scripts, so that the notebooks import no analysis code (each names its source). [`rv1_disjoint/`](figure_scripts/rv1_disjoint): first-submission notebooks run on non-overlapping windows for some supplementary panels. [`final_figs.py`](figure_scripts/final_figs.py): shared helpers (print styles, saving, stars, crops). |
 | [`csv/<notebook>/`](csv) | The tables each notebook draws: one row per session, window, bin or tile, with the statistics printed on the panels. `assets/`: schematics and source figures. |
-| [`figure_output/`](figure_output) | The panels, as the notebooks save them. |
+| `figure_output/` | Where the notebooks save the panels (created when they run). |
 | [`analysis_scripts/`](analysis_scripts) | The pipeline from the recordings to the tables. Index: [analysis_scripts/README.md](analysis_scripts/README.md); methods: [METHODS.md](analysis_scripts/METHODS.md). |
 
 The notebooks in `figure_scripts/` are the lab's figure notebooks
