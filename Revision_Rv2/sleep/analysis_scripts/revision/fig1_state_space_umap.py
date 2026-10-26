@@ -49,7 +49,7 @@ FEATURES = [
     "isi_entropy_pooled",
     "psd_slope_20_45", "sw_broadband",
     "theta_ratio",                     # buzcode theta above 1/f
-    "ripple_rate", "ripple_amp_mean",  # drop the 2 sessions without ripple files
+    "ripple_rate", "ripple_amp_mean",  # sessions with SWR detection
 ]
 STATES = ["THETA", "nonTHETA", "REM", "NREM"]
 STATE_LABEL = {"THETA": "Wake \u03b8", "nonTHETA": "Wake non-\u03b8",
@@ -101,8 +101,8 @@ def main():
 
     # ripple_amp_mean is undefined (NaN) in windows with zero ripples. For
     # sessions that HAVE ripple data, impute those windows with the session
-    # mean (=> z-score 0: neutral, keeps the window in the map). Sessions
-    # without ripple files stay NaN and drop with ripple_rate.
+    # mean (=> z-score 0: neutral, keeps the window in the map). Outside the
+    # SWR-detected sessions both ripple columns stay NaN.
     if "ripple_amp_mean" in feats and "ripple_rate" in df.columns:
         n_imp = 0
         for s, idx in df.groupby("session").groups.items():
@@ -191,7 +191,7 @@ def main():
         fin = np.isfinite(v)
         vmin, vmax = np.nanpercentile(v[fin], [5, 95])
         ax.scatter(df.UMAP1[~fin], df.UMAP2[~fin], s=3, c="0.85",
-                   alpha=0.5, linewidths=0)     # sessions without ripple files
+                   alpha=0.5, linewidths=0)     # no SWR rate (grey)
         sc = ax.scatter(df.UMAP1[fin], df.UMAP2[fin], s=3, c=v[fin],
                         cmap="magma", vmin=vmin, vmax=vmax, alpha=0.8,
                         linewidths=0)

@@ -209,7 +209,7 @@ trajectory length.
 
 Replay / SWR counts, MUA, MUA_std, FR_std (across-neuron SD of firing rates) and EI_ratio per non-overlapping 30 s
 NREM window, for the ten sessions with decoded replay; MUA_std and FR_std also on the ripple-excised window.
-PPP7_day12 is excluded from the replay models (`EXCLUDE`).
+The replay models use the nine with one maze epoch between sleep epochs (`EXCLUDE`).
 
 ### r35_make_ppp4day11_pkl.py
 

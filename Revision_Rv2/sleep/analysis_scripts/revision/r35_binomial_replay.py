@@ -104,9 +104,8 @@ def load(d2_source="euclid", kl_order=20):
                          Those windows come from the revision pipeline and are ALREADY
                          non-overlapping 30 s windows, so instead of subsampling they are
                          joined onto the full Fig. 2d grid by nearest centre within 1 s
-                         (KL window centre = w + 15). Covers 8 of the 9 sessions --
-                         PPP7_day8 is not in the Fig-1 18-session set, so it has no KL
-                         windows.
+                         (KL window centre = w + 15). Covers the 8 sessions that are
+                         also in the Fig-1 18-session set.
 
     Everything else -- NREM, ripple_count > 0, the replay counts -- is identical, so the
     two arms are directly comparable.
@@ -314,8 +313,7 @@ def plot(R, D, tag='', d2src='euclid'):
     ax.legend(frameon=False, fontsize=8)
 
     ax = axes[1]
-    # NB: do not name this loop variable `tag` -- it would shadow the `tag` argument and
-    # every figure would be written as ..._M3 regardless of the caller's suffix.
+    # `mtag`, so the caller's `tag` argument (the figure-name suffix) is not shadowed
     for i, (mtag, cols, lbl) in enumerate(MODELS):
         P = R[(R.model == mtag) & (R.session != "__pooled__")]
         if not len(P):

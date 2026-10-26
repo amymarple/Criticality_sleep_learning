@@ -41,9 +41,7 @@ WRITABLE_DRIVES = {"C", "D"}
 def assert_local_path(path):
     """Raise unless `path` is on a local writable drive.
 
-    The PreToolUse hook cannot see writes made *inside* a running process, so the
-    guarantee that this script never touches the ayadata shares is enforced here.
-    Called before every write.
+    Called before every write, so that the script never writes to the raw-data shares.
     """
     p = os.path.abspath(str(path))
     if p.startswith("\\\\") or p.startswith("//"):

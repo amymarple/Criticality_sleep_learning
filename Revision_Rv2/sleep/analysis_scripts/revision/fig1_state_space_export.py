@@ -40,8 +40,7 @@ FEATURES = [
     "isi_entropy_pooled",
     "psd_slope_20_45", "sw_broadband",
     "theta_ratio",                     # buzcode theta above 1/f (fig1_theta_ratio.py)
-    # ripple features drop PPP20_day9 and PPP21_day8 from the map -- 
-    # they have no *.ripples.events.mat on the share.
+    # ripple features: the sessions with a *.ripples.events.mat
     "ripple_rate", "ripple_amp_mean",
 ]
 OVERLAYS = ["d2", "BR_pyr_k200", "tau_ms_pyr_k200"]   # d2 = 2024 Euclidean

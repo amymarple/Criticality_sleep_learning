@@ -5,7 +5,7 @@ on disjoint windows, schema unchanged, so that ed_nonoverlap.py can hand them to
 unchanged figure notebook in place of the shipped CSVs.
 
 ed_nonoverlap.py thins every shipped table that has a window-time column (the 30 s / 2 s
-grid overlaps ~93%). These three cannot be thinned as read: ED6c
+grid overlaps ~93%). These three are computed from all windows: ED6c
 (rat_replay_nonreplay_tiles.csv) is already a session x SWR-rate-tile aggregate, and
 ED6f / ED6g (rat_d2_by_barrage_rate.csv, rat_isi_entropy_by_barrage_rate.csv) carry a
 per-file z and a per-file rate tile computed on all windows. They are rebuilt from the
@@ -73,7 +73,7 @@ OUTDIR = REPO / "data" / "revision" / "log" / "ed_nonoverlap_tables"
 ISI_DIR = REPO / "data" / "rats" / "ripple_barr" / "isi"
 WIN_DIR = REPO / "data" / "rats" / "replay_nonreplay"
 SIG_RNR = REPO / "data" / "replay" / "replay_nonreplay"     # the producer's SIG_DIR
-SIG_TOP = REPO / "data" / "replay"                          # holds the only copies for hp15 day31/35, hp18 day52
+SIG_TOP = REPO / "data" / "replay"                          # also holds hp15 day31/35, hp18 day52
 TMP_ROOT = os.environ.get("ED_TMP") or tempfile.gettempdir()
 TOL = 1e-9
 ED6C, ED6F, ED6G = "rat_replay_nonreplay_tiles.csv", "rat_d2_by_barrage_rate.csv", "rat_isi_entropy_by_barrage_rate.csv"

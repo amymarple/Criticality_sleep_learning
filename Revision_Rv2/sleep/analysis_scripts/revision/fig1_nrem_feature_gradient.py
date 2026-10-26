@@ -6,15 +6,14 @@ The state-space figures (fig1_state_space_umap.py, fig1_state_space_umap_session
 fig1_lfp_manifold.py) colour the embedding by d2 and quote a structure index (SI) against a
 label-permutation null. Across states this SI largely re-states the state partition; d2 and the
 features are both autocorrelated in time, so consecutive windows are not independent samples for a
-label-permutation null. This script instead locks the cohort and the missing-value rule in advance,
+label-permutation null. This script fixes the cohort and the missing-value rule before the test,
 uses one geometry for the picture and the statistic, and tests against a time-preserving null (circular
 shift within each NREM bout). The feature table holds more sessions than the Fig-1 set (e.g. PPP7
 day8), so the cohort is restricted below.
 
 Parameters (MIN_BOUT, OFFSET) are fixed from the observed NREM bout-length distribution and the
 within-bout d2 autocorrelation (written to the _bouts table) before the test is run:
-  cohort    Fig-1 sessions (run_fig1_metrics.FIG1_SESSIONS) that have SWR detection: 16 of 18. PPP20 day9
-            and PPP21 day8 have no ripple file and are excluded.
+  cohort    Fig-1 sessions (run_fig1_metrics.FIG1_SESSIONS) with SWR detection: 16 of 18.
   missing   ripple_amp_mean is undefined in a zero-ripple window; inside a cohort session it is set to the
             session mean, which places those windows at z = 0 on that axis; the 9- and 8-feature sets
             omit ripple_amp_mean (and ripple_rate) to assess its effect.

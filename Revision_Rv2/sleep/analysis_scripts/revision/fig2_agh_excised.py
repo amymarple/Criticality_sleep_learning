@@ -2,8 +2,7 @@
 fig2_agh_excised.py -- Fig 2a / 2g / 2h on the replay-decoded nine sessions, non-overlapping windows,
 full-window and ripple-excised -- d2, branching ratio and ISI entropy against SWR-rate sextile.
 
-The published Fig 2a/g/h used PPP7_day10 while Fig 2d/e/f used PPP7_day8 (day10 has no replay
-decoding). Fig 2 is unified here on the decoded nine sessions, and the ripple-excised arm is drawn
+All Fig 2 panels use the decoded nine sessions here, and the ripple-excised arm is drawn
 alongside the full-window one; windows are non-overlapping and the metrics are raw units, not
 z-scores.
 

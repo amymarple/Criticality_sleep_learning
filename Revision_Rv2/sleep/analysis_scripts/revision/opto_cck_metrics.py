@@ -5,8 +5,8 @@ stimulation block (baseline vs stimulation).
 Conditions come from <basename>.uLEDtimes_HC.mat block boundaries ({pre,post}_{base,stim}; the
 short *_stepStim_* calibration blocks are excluded), verified against
 <basename>.uLEDPulses.events.mat (pulses present inside every stim block, none inside baseline
-blocks). 5/6 sessions carry four blocks with counterbalanced order (stim-first or base-first);
-NN13_day23 has pre only. Windows: NREM (SleepState, 5 s guard) intersected with each block, 30 s
+blocks). Five of the six sessions carry four blocks with counterbalanced order (stim-first or
+base-first), and NN13_day23 the two pre-sleep blocks. Windows: NREM (SleepState, 5 s guard) intersected with each block, 30 s
 non-overlapping (make_windows + nonoverlap flag), so no window straddles a block boundary. Metrics
 per window: MUA (40 ms), branching ratio m via fig1_metrics.fit_m (4 ms bins, k_max 200 = 800 ms
 kernel, pyramidal primary + all-unit), tau, ISI entropy (pooled, 20 bins of log10 ISI,

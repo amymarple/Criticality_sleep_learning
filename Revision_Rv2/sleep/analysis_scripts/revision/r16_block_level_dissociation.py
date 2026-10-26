@@ -10,7 +10,7 @@ of barrage count on five predictors (d2, MUA, MUA Fano, synchrony, E/I), z-score
 block so a coefficient is per SD of local variation. Inference is run at session level: the block
 coefficients are averaged within session and a one-sample t-test runs over the session means;
 block-level sign counts are reported descriptively. A block contributes to a target only if it holds
-at least MIN_EVENTS of that type, which drops NN8_day6 from the barrage side (6 barrages total).
+at least MIN_EVENTS of that type.
 MINW = 60 windows (30 min of NREM) is primary; 40 and 90
 are printed as a robustness check. classify_blocks/classify_sessions recast the same question as
 a single binomial classifier (barrage vs SWR) per block or per session.
@@ -97,9 +97,8 @@ _BASECOLOR = {"d2": "#7b3294", "MUA": "#fdb863", "fano": "#fee0b6",
 COLOR = {f"{k}{SUF}": v for k, v in _BASECOLOR.items()}
 
 
-# Optional exclusion by name, EXCLUDE=a,b. Default is NONE. The cohort is 12 sessions;
-# NN8_day6 (6 barrages, below MIN_EVENTS) drops out of the SESSION-level fit on its own,
-# leaving 11 at both levels. A zero-trial-window guard in classify_sessions / classify_blocks
+# Optional exclusion by name, EXCLUDE=a,b. Default is none. The cohort is 12 sessions, 11 of
+# them with at least MIN_EVENTS barrages. A zero-trial-window guard in classify_sessions / classify_blocks
 # skips windows with no event of either kind before fitting (see classify_blocks).
 _env = os.environ.get("EXCLUDE", "")
 EXCLUDE = {s.strip(): "EXCLUDE env" for s in _env.split(",") if s.strip()}
@@ -376,7 +375,7 @@ def classify_blocks(W, minw):
                 h = orthogonalise(h, cols)
             Z = ((h[cols] - h[cols].mean()) / (h[cols].std(ddof=0) + 1e-12)).to_numpy(float)
             endog = np.column_stack([h.n_barr, h.n_rip])
-            # windows with no event of either kind (0 binomial trials, e.g. NN2_day24) are
+            # windows with no event of either kind (0 binomial trials) are
             # skipped before the fit; predictors stay z-scored over all windows
             keep = endog.sum(1) > 0
             Z, endog = Z[keep], endog[keep]
@@ -567,8 +566,7 @@ def classify_sessions(W):
             continue
         Z = ((g[cols] - g[cols].mean()) / (g[cols].std(ddof=0) + 1e-12)).to_numpy(float)
         endog = np.column_stack([g.n_barr, g.n_rip])
-        # 0-trial windows are skipped (see classify_blocks); NN2_day24 has 9 such windows,
-        # leaving a session count of 11.
+        # 0-trial windows are skipped (see classify_blocks).
         keep = endog.sum(1) > 0
         Z, endog = Z[keep], endog[keep]
         try:

@@ -16,8 +16,8 @@ durations >= that xmin, 16 sessions.
 Panel b: `ks_xmin_convention.py` (same 16 sessions, `avalanche_ripple.detect`, 1x IEI, NREM only,
 median split of local SWR rate), KS distance D of the discrete power-law fit to avalanche sizes with
 xmin chosen separately for each group by the Clauset KS search (the `free` rule). Panel a keeps one
-xmin per session on the pooled avalanches, because per-group xmin makes the DCC unstable at 1x IEI
-(m22_dcc_automin.csv):
+xmin per session on the pooled avalanches, so both groups are fitted above the same xmin (the per-group
+variant is m22_dcc_automin.csv). Panel b reads:
     ks_xmin_convention.csv  (bin_mult == 1, column ks_free)
 
     -> reports/revision_figs/m22_dcc_threshold_box.png / .svg

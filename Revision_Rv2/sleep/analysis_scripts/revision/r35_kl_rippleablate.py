@@ -57,7 +57,7 @@ MIN_FREE_SEC = 1.0          # the .m's own threshold
 ORDER = 20
 MIN_BINS = ORDER + 20       # same guard kl_error_bars.py applies
 
-# the Fig. 2d sessions that also have KL windows (PPP7_day8 is not in the Fig-1 18)
+# the Fig. 2d sessions in the Fig-1 18-session set (the sessions with KL windows)
 SESSIONS = {
     "PPP7_day7":   r"W:\data\PPP\PPP7\day7",
     "PPP7_day10":  r"W:\data\PPP\PPP7\day10",

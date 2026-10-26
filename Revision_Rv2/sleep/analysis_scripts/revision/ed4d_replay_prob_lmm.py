@@ -4,7 +4,7 @@ linear mixed model, run on non-overlapping windows.
 
 ED 4d (replay probability by within-session d2 sextile, full-window and ripple-excised
 d2 (2024 Euclidean, AR order 20, 40 ms)) is tested per session with Spearman and a
-signed-rank test across the decoded sessions. The submitted Fig. 2d instead used a
+signed-rank test across the decoded sessions. The submitted Fig. 2d used a
 window-level LMM on overlapping sliding windows; the same LMM, conditioned on session,
 is also valid on non-overlapping windows, so this script refits it there.
 

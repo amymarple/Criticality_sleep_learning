@@ -109,9 +109,8 @@ ARMS = [("d2_std", "Euclidean, full"), ("d2_ablate", "Euclidean, ripple-excised"
 
 
 def kl_centers(session):
-    """KL window centres for a session (w + 15) plus both KL arms, or (None, None) if
-    the session has no KL windows -- only the Fig-1 18-session set does, so PPP7_day8
-    returns None."""
+    """KL window centres for a session (w + 15) plus both KL arms, or (None, None) for
+    a session outside the Fig-1 18-session set (the sessions with KL windows)."""
     if not os.path.exists(KL_CSV):
         return None, None
     K = pd.read_csv(KL_CSV)

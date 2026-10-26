@@ -8,7 +8,7 @@ state, so a session whose theta bouts are shorter than a window has no theta-wak
 Euclidean, AR order 20) is a label, not a feature; ripple rate is one of the features.
 
 Cohort, missing values and geometry are those of the within-NREM test, `fig1_nrem_feature_gradient.py`:
-Fig-1 sessions with SWR detection only (16 of 18; PPP20 day9 and PPP21 day8 have no ripple file),
+Fig-1 sessions with SWR detection (16 of 18),
 ripple_amp_mean set to the session mean in zero-ripple windows, features z-scored per session over all
 of the session's windows, and the UMAP fitted with Euclidean distance on the same z-scored features the
 structure index (SI) is computed on. SI (PridaLab `structure_index`, n_bins 10, n_neighbors 20, all

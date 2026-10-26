@@ -1,18 +1,16 @@
 """
 r35_make_ppp4day11_pkl.py -- writes PPP4_day11 into the replay/non-replay input
-directory of the submitted Fig. 2e notebook, in place of PPP4_day10, and retires the file it replaces.
+directory of the submitted Fig. 2e notebook, in place of PPP4_day10.
 
 `Fig2_E_replay_non_replay.ipynb` reads every file in `data/ripple_barr/replay_non_replay/`.
-That directory holds PPP4_day10, which has only one epoch decoded (`epoch5_template02`),
-giving far fewer replay SWRs than the other sessions in this set; PPP4_day11 is the session
-used elsewhere in Figure 2 for this animal. This script rebuilds PPP4_day11 in
+PPP4_day11 is the session used for this animal in the rest of Figure 2. This script rebuilds PPP4_day11 in
 `generate_replay_non_replay.ipynb`'s own schema: d2 timeline from the stored per-window
 table, ripples intersected with NREM, replay intervals from one template per session over
 epochs 1/3/5 with left- and right-significant events appended separately (so `replay_rate`
 matches the pipeline's per-direction counting), and a ripple counted as replay-carrying if
 it overlaps any significant interval. The new file is written only if the rebuilt ripple
-and replay counts match the stored per-window counts, window for window; the old file
-moves to `_superseded/` (nothing is deleted).
+and replay counts match the stored per-window counts, window for window; the PPP4_day10
+file moves to `_superseded/`.
 
 Inputs: data/replay/replay_probality/PPP4_day11.pkl (d2 timeline, ripple_count,
 replay_count); W:\\data\\PPP\\PPP4\\day11 (ripples, sleep state); the R_Project replay
@@ -134,7 +132,7 @@ def main():
     df.to_pickle(dst)
     print(f"\n  wrote {dst}  {df.shape}")
 
-    # --- retire, do not delete ----------------------------------------------
+    # --- move the replaced file to _superseded/ ------------------------------
     src = os.path.join(OUT_DIR, RETIRE)
     if os.path.exists(src):
         sup = assert_local_path(os.path.join(OUT_DIR, "_superseded"))

@@ -63,14 +63,10 @@ SIG_P = 0.05
 PROPS = ["duration", "amplitude", "frequency", "peakNormedPower", "n_cells", "n_spikes"]
 MATCH_ON = ["log_duration", "amplitude", "n_cells"]
 
-# The Fig. 2e session set is whatever is in data/ripple_barr/replay_non_replay/ --
-# the figure notebook globs the directory. This differs from the 9 sessions in
-# Fig. 2a/g/h: it swaps PPP4_day11 -> PPP4_day10 and PPP7_day10 -> PPP7_day8, and it
-# pools one rat (HP18_day16) into an otherwise mouse panel. See the docstring of
-# report_session_set().
+# The submitted Fig. 2e notebook globs data/ripple_barr/replay_non_replay/, so its
+# session set is the file list there (report_session_set() prints it).
 SESSIONS = {
-    # PPP4_day11, not day10 -- day10 has only one epoch decoded and is retired to
-    # replay_non_replay/_superseded/ by r35_make_ppp4day11_pkl.py.
+    # PPP4_day11, as in the rest of Figure 2 (r35_make_ppp4day11_pkl.py)
     "PPP4_day11":  r"W:\data\PPP\PPP4\day11",
     "PPP7_day8":   r"W:\data\PPP\PPP7\day8",
     "PPP8_day8":   r"W:\data\PPP\PPP8\day8",
@@ -95,15 +91,10 @@ def assert_local_path(path):
 # ---------------------------------------------------------------------------
 # per-session event table
 # ---------------------------------------------------------------------------
-# Per-session template actually used by `generate_replay_non_replay.ipynb`'s cell 9, which
-# hardcodes `epochs = ['epoch1','epoch3','epoch5']` and a single `template` set by hand per
-# session; the notebook itself preserves only the last one used, so this mapping records it
-# per session and is not recoverable from the notebook code.
-#
-# Using every epoch/template combination present in the .mat file instead changes which
-# events the per-event property measures are computed over (the extra combinations exist
-# only for PPP4_day11), so the per-session template below is used throughout rather than
-# the full combination set.
+# Per-session template of `generate_replay_non_replay.ipynb`'s cell 9, which uses
+# `epochs = ['epoch1','epoch3','epoch5']` and one `template` per session, set in the cell;
+# the mapping is recorded here for every session. The per-event property measures use this
+# template in every session.
 SESSION_TEMPLATE = {
     "PPP20_day4": "template04", "PPP20_day5": "template04",
     "PPP21_day4": "template04", "PPP21_day5": "template04",
@@ -113,7 +104,7 @@ SESSION_TEMPLATE = {
 }
 NOTEBOOK_EPOCHS = ("epoch1", "epoch3", "epoch5")
 
-# Which sleep epochs each session ACTUALLY contributes. The d2 timeline covers only part
+# Which sleep epochs each session contributes. The d2 timeline covers only part
 # of most recordings, so events outside it are inert and the epoch list is mostly a no-op
 # -- epochs 1/3/5, with the time range doing the filtering.
 #
@@ -122,14 +113,13 @@ NOTEBOOK_EPOCHS = ("epoch1", "epoch3", "epoch5")
 #   PPP20_day5        897-29144          714 /  934 / 1198            1,3,5
 #   PPP21_day4        230-17218          575 / 1080 /   --            1,3
 #   PPP21_day5        853-28338          872 /  847 /  908            1,3,5
-#   PPP23_day7      20253-26928            0 /    0 / 1015            5      <- post-task only
-#   PPP23_day8      18036-25717            0 /    0 / 1328            5      <- post-task only
+#   PPP23_day7      20253-26928            0 /    0 / 1015            5
+#   PPP23_day8      18036-25717            0 /    0 / 1328            5
 #   PPP8_day8       10314-26220           -- /  855 / 1041            3,5
 #   PPP4_day11       9455-23157            0 /  953 /  445            3,5
 #   PPP7_day8        9982-25578           -- /  556 /  560            3,5
 #
-# PPP23_day7 and PPP23_day8 contribute ONLY the final sleep epoch, so they are post-task
-# sleep alone; any pre/post-learning contrast must account for that.
+# PPP23_day7 and PPP23_day8 contribute the final (post-task) sleep epoch.
 
 
 def load_replay_events(sess, strict=True):
@@ -162,8 +152,8 @@ def load_replay_events(sess, strict=True):
         n = len(ev)
         pv = np.squeeze(d[k + "_pvalue"]).reshape(n, -1)[:, :2]
         rv = np.squeeze(d[k + "_rvalues"]).reshape(n, -1)[:, :2]
-        # Goodfit / slope are absent in some sessions (e.g. PPP4_day11 stores only
-        # eventtimes / pvalue / rvalues / posterior); recorded as NaN.
+        # Goodfit / slope are read where stored, else NaN (some files hold only
+        # eventtimes / pvalue / rvalues / posterior).
         if k + "_Goodfit" in d:
             gof = np.squeeze(d[k + "_Goodfit"]).reshape(n, -1)[:, :2]
         else:
@@ -429,10 +419,8 @@ def analyse(R, pub, sess):
 
 
 def report_session_set():
-    """Fig. 2e globs data/ripple_barr/replay_non_replay/, so its N is the file count
-    there -- 9 mouse + 1 rat. That set differs from the Fig. 2a/g/h set (PPP4_day11 and
-    PPP7_day10 in place of PPP4_day10 and PPP7_day8, and no rat); the difference is
-    printed below."""
+    """The submitted Fig. 2e notebook globs data/ripple_barr/replay_non_replay/, so its N is
+    the file count there (9 mouse + 1 rat); prints that set beside the Fig. 2a/g/h set."""
     have = sorted(os.path.basename(f)[:-4].replace("_CA1", "")
                   for f in os.listdir(PUB) if f.endswith(".pkl"))
     fig2agh = {"PPP4_day11", "PPP7_day10", "PPP8_day8", "PPP20_day4", "PPP20_day5",

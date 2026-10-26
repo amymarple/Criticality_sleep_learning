@@ -5,9 +5,8 @@ binomial ladder, each with one recipe so provenance does not differ by session; 
 sessions that already have a window table are validated against their stored columns.
 
 Windows: 30 s stepped 2 s inside guarded NREM intervals (`make_windows`), the
-non-overlapping subset, restricted to the time span of the session's decoded epochs (a
-window outside that span has no replay label because it was never decoded, not because no
-replay occurred there). Events: ripple_count / replay_count by interval overlap; an event
+non-overlapping subset, restricted to the time span of the session's decoded epochs, where
+every window has a replay label. Events: ripple_count / replay_count by interval overlap; an event
 is replay if either decoded direction has p < 0.05 (the `_new` replay file where it
 exists, else the original). Covariates: FR_std (across-neuron SD of the per-neuron rate in
 the window, ddof=0) and MUA_std (temporal SD of the 40 ms population rate over a centred
@@ -20,8 +19,8 @@ centre; `py_full` and `py_excised` computed in Python (2024 Euclidean, p=20, OLS
 excision dropping 40 ms bins overlapping a raw ripple and gluing the remainder
 (>= 1 s segments).
 
-PPP7_day12 (two maze epochs, non-standard epoch numbering) is kept in the table but excluded
-from the ladder by name (`EXCLUDE`).
+All ten sessions are in the window table; the ladder uses those with one maze epoch between
+sleep epochs (`EXCLUDE`).
 
 Reads the shares read-only; writes only to D:.
     -> data/revision/log/r35_extended_windows.csv
@@ -79,14 +78,10 @@ SESSIONS = {
 }
 NEW = ("PPP7_day12",)
 
-# Structural exclusion. Every other session
-# runs sleep / maze / sleep / maze / sleep, so the replay file's epoch1/3/5 are the sleep
-# epochs. PPP7_day12 runs presleep / presleep / T_maze2 / midsleep / T_maze1 / postsleep
-# -- six epochs, two mazes, and its "epoch3" is T_maze2, a running epoch, not sleep. Its
-# replay file also carries only template04 although two different mazes were run, and it
-# is the only session with no regenerated `_new` file, so its decoded labels do not mean
-# what they mean elsewhere. Kept in the window table and excluded from the
-# ladder by name.
+# Epoch sequence. The ladder sessions run sleep / maze / sleep / maze / sleep, so the replay
+# file's epoch1/3/5 are the sleep epochs. PPP7_day12 runs presleep / presleep / T_maze2 /
+# midsleep / T_maze1 / postsleep (six epochs, two mazes, one template); it stays in the
+# window table and is not in the ladder.
 EXCLUDE = {"PPP7_day12": "epoch numbering differs: its epoch3 is T_maze2 (a running "
                          "epoch), two mazes share one template, no _new replay file"}
 

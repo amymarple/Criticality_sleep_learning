@@ -2,7 +2,7 @@
 fig1_emg_lfp.py -- LFP-derived EMG per 30 s window, for the state-space UMAP.
 
 The window features already hold the slow-wave score (`sw_broadband`) and theta
-(`theta_ratio`, fig1_theta_ratio.py); EMG (muscle tone) is the missing scoring axis.
+(`theta_ratio`, fig1_theta_ratio.py); this script adds EMG (muscle tone), the third scoring axis.
 
 buzcode SleepScoreMaster's own EMG metric, stored beside `thratio` in
 <basename>.SleepState.states.mat -> detectorinfo.detectionparms.SleepScoreMetrics.EMG, on the

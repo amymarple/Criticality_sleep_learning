@@ -1,5 +1,5 @@
 """fig3g_reproduce.py -- Figure 3g statistic (manuscript) and seven model/window-source
-variants, computed from stored artifacts.
+variants, computed from the stored tables and .mat files.
 
 Published pipeline, from first_submission_figures/Fig3_E_F_G_H_barrage_d2_S2_E_abblate_bar.ipynb:
   * load data/ripple_barr/manipulation/sncg/*.pkl (7 files; columns epoch, d2) with the

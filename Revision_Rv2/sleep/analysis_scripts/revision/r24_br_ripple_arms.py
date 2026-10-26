@@ -7,7 +7,7 @@ Both m arms are computed on the 16 Fig-1 sessions with a ripple file, on the win
 which holds both d2 arms for these sessions.
 
 WINDOWS. `d2_arms_raw_windows.csv`, state NREM: Fig 1's non-overlapping 30 s tiles, 16 sessions
-(PPP20_day9 and PPP21_day8 have no ripple file), 5 404 windows, with d2_full / d2_excised (all CA1
+(those with a ripple file), 5 404 windows, with d2_full / d2_excised (all CA1
 units, 40 ms, AR(20); validated there against the pickle and *_rippleablate.mat) and ripple_rate.
   m   `excised_br_entropy.window_metrics` as is: MR estimator (fit_m), pyramidal active-unit
       counts (rate > 0.2 Hz), 4 ms, k_max = 200 (800 ms); full = one segment, excised = the ripple-

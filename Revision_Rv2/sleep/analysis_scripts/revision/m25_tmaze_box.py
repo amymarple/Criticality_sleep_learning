@@ -2,9 +2,7 @@
 trials, against chance.
 
 Reads m25_task_performance.csv (m25_task_performance.py: fraction of behavior.trialcorrect == 1 per task block).
-Sessions: every row with scored trials -- 17 PPP sessions, 6 mice. Not included: PPP7_day7 (forced T-maze, no
-choice), PPP7_day10, NN16_day13 and NN8_day7 (T-maze epochs without trial scoring), and the box / sleep-only NN
-sessions. Per session, all T-maze trials of the day pooled (both blocks; two-maze days included).
+Sessions: every row with scored free-choice trials -- 17 PPP sessions, 6 mice. Per session, all T-maze trials of the day pooled (both blocks; two-maze days included).
 Chance = 0.5 (two-arm choice). Tests: one-sample Wilcoxon signed-rank of the session fractions against 0.5
 (session = unit), and a one-sided binomial test of k correct out of n per session.
 

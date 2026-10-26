@@ -9,9 +9,8 @@ Bouts here are state EPISODES: the scored interval a window was cut from (`iv_id
 pickles; for NREM identical to the 30 s-adjacency bouts of fig1_nrem_feature_gradient). Episode length
 differs sharply by state: NREM episodes are long and few per session, while nonTHETA, THETA and REM
 episodes are short and more numerous, with THETA and REM windows also far fewer overall (nonTHETA is
-further thinned evenly per session by run_fig1_metrics.STATE_WINDOW_CAP). The NREM per-session episode
-and shift thresholds would therefore delete most wake and REM windows, and THETA and REM are too few per
-session for a per-session statistic. Hence:
+further thinned evenly per session by run_fig1_metrics.STATE_WINDOW_CAP). The episode and shift
+thresholds are therefore set per state, and THETA and REM are tested pooled across sessions:
   per session  NREM (episodes >= 6, shift 2..L-2; reproduces fig1_nrem_feature_gradient) and nonTHETA (episodes
                >= 3, shift 1..L-1), neighbours within the session, as fig1_nrem_feature_gradient.
   pooled       every state (episodes >= 3, shift 1..L-1): the 16 sessions in one feature space (features z-scored

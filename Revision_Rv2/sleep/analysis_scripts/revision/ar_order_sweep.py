@@ -4,7 +4,7 @@ ar_order_sweep.py -- AR order sweep for d2 (2025 KL, d2_fast.d2_from_timeseries)
 d2 uses an AR(p) fit with p = 20 at 40 ms bins. Two questions:
 
   1. ROBUSTNESS -- does the STATE ORDERING survive the choice of p? Absolute d2 must
-     move with p (more parameters -> different KL rate); the claim is the ordering, and
+     move with p (more parameters -> different KL rate); the result is the ordering, and
      that is what has to be stable. Same logic as the k_max sweep.
 
   2. PRINCIPLE -- Ljung-Box on the AR residuals: the smallest p that whitens the residuals.

@@ -5,7 +5,7 @@ windows, for ed_nonoverlap.py to read in place of the shipped ones.
 
 ed_nonoverlap.py thins every window-level table a Previous_Rv1 figure notebook reads,
 but the two tables behind ED2a (d2_rel_novel_familiar.csv) and ED1f
-(branching_ratio_by_state.csv) carry no window time, so the driver cannot thin them.
+(branching_ratio_by_state.csv) carry no window time.
 They are rebuilt here from their producers (MUA_sleepstage.ipynb for ED2a,
 FigS1_F_branchingratio_histogram.ipynb for ED1f) with the disjoint rule applied before
 the per-session reference (ED2a: the pre-task-sleep mean) and the weights (ED1f).

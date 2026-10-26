@@ -5,14 +5,14 @@ and familiar-control sessions, rather than a within-arm post-mid change.
 FigS2_A_novel_familar tests each arm separately: LMM d2_rel ~ S2 vs S1 within the novel
 days, and within the control days. On a novel day S1 (midsleep) follows a familiar task
 and S2 (postsleep) the novel task; on a control day both phases follow familiar tasks.
-The contrast used instead is
+The contrast here is
   DiD = (S2 - S1)_novel - (S2 - S1)_control.
 
 Design: per-session values as the notebook's LMM (median d2_rel per file x session; mean
 as a check), d2 (2024 Euclidean, p = 20, 40 ms), d2_rel = (d2 - m_pre) / (d2 + m_pre)
 relative to pre-task sleep. Tables: all windows (`ed2a_corrected_all_windows.csv`,
 PPP8_day14 from its own d2, the primary session-level test), shipped (reference), disjoint
-(`ed_nonoverlap_tables`). Files with both S1 and S2 only (PPP7_day14 has no S1). Tests, all
+(`ed_nonoverlap_tables`). Files with both S1 and S2. Tests, all
 with the session as the unit:
   1. LMM value ~ C(S2) * C(novel), random intercept per file -> the interaction = DiD;
   2. the same with animal as the group and file as a variance component (5 animals have

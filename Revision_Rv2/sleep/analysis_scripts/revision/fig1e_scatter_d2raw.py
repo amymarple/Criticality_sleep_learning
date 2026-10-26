@@ -18,7 +18,7 @@ that session and group, before task selection). d2 untouched. Plot style copied 
 (colours, 4 pt points, dashed line over the state's 1-99 % MUA range) except the line: the median
 within-session slope drawn through the state's centroid, not the pooled OLS (which, with MUA z-scored
 over all wake, keeps between-session offsets in theta / non-theta and overstates their slopes); REM is
-drawn as points without a line (too few disjoint windows per session).
+drawn as points without a line.
 Statistics per session (>= 5 windows): Pearson r (equal to the z-scored version's per-session r),
 Fisher mean, sessions in direction, signed-rank p; OLS slope in d2 per SD of MUA and the d2 change
 across the session's 5-95 % MUA range. The pooled slope (the drawn line) and pooled r are reported too.

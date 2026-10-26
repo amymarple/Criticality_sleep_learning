@@ -1,9 +1,9 @@
 """
 fig1_d2_vs_mua_2x2.py -- d2 vs MUA, per state, across the definition x excision 2x2.
 
-This is a **Figure 1** analysis (cross-state metric behaviour), not Figure 2: it is the
-revision counterpart of `figures/Fig1_E_MUA_d2_correlation_FigS1_G_plotting_dynrange.ipynb`
-and it uses the Fig-1 18-session set wherever the data exist.
+A Figure 1 analysis (cross-state metric behaviour): the revision counterpart of
+`first_submission_figures/Fig1_E_MUA_d2_correlation_FigS1_G_plotting_dynrange.ipynb`, on the
+Fig-1 sessions (18; 10 in the ripple-excised arms).
 
 Four panels:
     Euclidean full   |  Euclidean ripple-excised
@@ -14,11 +14,9 @@ colour scheme from `Fig1_E_MUA_d2_correlation_FigS1_G_plotting_dynrange.ipynb` c
 
     NREM #7b3294   REM #d7b5d8   THETA #d95f0e   non-THETA #fdb863
 
-> **The ablated panels are NREM-only.** `matlab/time_resolved_d2_across_state_ripple_ablate.m`
-> guards the ripple subtraction with `isNREM`, so REM and WAKE rows in
-> `*_rippleablate.mat` are byte-identical to the unablated file -- there is no ablated
-> REM/THETA to plot. The KL-excised arm (`r35_kl_rippleablate.py`) was likewise computed
-> for NREM only.
+The ablated panels are NREM-only: `matlab/time_resolved_d2_across_state_ripple_ablate.m`
+subtracts ripples within NREM (`isNREM`), and the KL-excised arm (`r35_kl_rippleablate.py`)
+is computed for NREM.
 
 The 2x2 compares the d2-MUA relationship across the Euclidean and KL definitions,
 full-window and ripple-excised, by state.
@@ -62,11 +60,9 @@ COLORS = {"NREM": "#7b3294", "REM": "#d7b5d8",
           "THETA": "#d95f0e", "nonTHETA": "#fdb863"}
 STATE_ORDER = ["NREM", "REM", "THETA", "nonTHETA"]
 
-# The Fig-1 set: 18 sessions, 6 mice, CA1. The FULL-window arms use all 18. The
-# ripple-excised arms are limited to the 10 sessions that have a
-# *_D2_time_resolved_rippleablate.mat on the share (PPP7 day12/14, PPP8 day14,
-# PPP20 day7/8/9, PPP21 day7/8 do not) -- n is reported per arm rather than silently
-# equalised by dropping sessions from the full arms.
+# The Fig-1 set: 18 sessions, 6 mice, CA1. The full-window arms use all 18, the
+# ripple-excised arms the 10 sessions with a *_D2_time_resolved_rippleablate.mat;
+# n is reported per arm.
 SESSIONS = {f"{a}_{d}": rf"W:\data\PPP\{a}\{d}" for a, d in [
     ("PPP4", "day11"),
     ("PPP7", "day7"), ("PPP7", "day10"), ("PPP7", "day12"), ("PPP7", "day14"),
@@ -163,7 +159,7 @@ def zscore_within_session(D):
     Sessions differ in absolute firing rate and in absolute d2, and those offsets invert
     the pooled NREM correlation relative to the per-session one. Removing them per
     session makes pooling across sessions valid, and one fit line per state then matches
-    the per-session estimate rather than reflecting a between-session artifact. Each d2
+    the per-session estimate rather than the between-session offsets. Each d2
     column is standardised over the windows where that column exists (the excised
     columns are NREM-only by construction, see the header note)."""
     D = D.copy()

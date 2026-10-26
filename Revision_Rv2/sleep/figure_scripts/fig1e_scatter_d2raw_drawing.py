@@ -57,8 +57,8 @@ def per_session(d):
 
 # --- fig1e_scatter_d2raw.py
 def meta_r(d, min_n=META_MIN_N):
-    """Per-session correlations pooled across sessions, weighted by each session's window count (a session
-    with few windows gives an unreliable per-session fit): Fisher z_i = arctanh(r_i) with variance 1 / (n_i - 3).
+    """Per-session correlations combined with weights for how many windows each session has: Fisher
+    z_i = arctanh(r_i) with variance 1 / (n_i - 3).
     Fixed effect: inverse-variance weighted mean of z_i. Random effects (DerSimonian-Laird, primary): weights
     1 / (v_i + tau^2), so a few large sessions cannot carry the result if sessions genuinely differ. Two-sided z
     tests; the pooled r = tanh(pooled z)."""

@@ -2,9 +2,8 @@
 ed2a_ppp8_day14_rebuild.py -- ED2a (novel vs familiar, d2 relative to pre-task sleep) with PPP8_day14's
 d2 (2024 Euclidean) computed from its own recording.
 
-data/novel_familiar/novel/PPP8_day14.pkl carries the d2 timeline of PPP8_day12 at day 14's epoch times;
-this script computes PPP8_day14's d2 from its own recording. PPP8_day14 enters the novel arm's paired test
-(PPP7_day14 has no mid rows and does not).
+This script computes PPP8_day14's d2 from its own recording, in place of the d2 timeline in
+data/novel_familiar/novel/PPP8_day14.pkl, for the novel arm's paired test.
 
 Method: the producer's own code, as reproduced exactly for all 18 stored pickles by
 ed_nonoverlap_ed2a_ed1f.py (MUA_sleepstage cell 8 load_d2_timeline_complete -> newest
@@ -13,8 +12,8 @@ m_pre = mean presleep d2, d2_rel = (d2 - m_pre) / (d2 + m_pre)), run on W:\data\
 own epochs. Then:
   * all windows: the table with PPP8_day14's rows replaced;
   * disjoint: the ed_nonoverlap override table plus PPP8_day14 thinned the same way.
-FigS2_A_novel_familar's own cells are run on both (LMM S2 - S1 paired by file). PPP7_day14 is kept as in
-the table (post rows only; it does not enter the paired test).
+FigS2_A_novel_familar's own cells are run on both (LMM S2 - S1 paired by file); the other sessions are as
+in the table.
 
     -> data/revision/log/ed2a_ppp8_day14_rebuilt.csv (PPP8_day14 rows, both arms)
     -> data/revision/log/ed2a_corrected_all_windows.csv, ed2a_corrected_stats.csv

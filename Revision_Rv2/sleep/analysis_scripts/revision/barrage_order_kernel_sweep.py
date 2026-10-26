@@ -3,9 +3,8 @@ barrage_order_kernel_sweep.py -- Figure 3 (barrage) order/kernel sweep, d2 (2024
 
 Figure 3 uses a different session set from Figures 1-2 (barrage needs CA2 recordings),
 and those sessions have far fewer CA1 units (29-64 vs 152-297). The stored Figure 3 d2
-`.mat` files use the same parameters as Figure 1 (40 ms, p=20, 30 s, CA1), which puts
-most of them at 1.4-6.7 spikes/bin against the ~10 floor used elsewhere; only PPP7_day7
-clears it at those settings.
+`.mat` files use the same parameters as Figure 1 (40 ms, p=20, 30 s, CA1), which gives
+1.4-6.7 spikes/bin in most of these sessions; the other figures use a floor of ~10.
 
 The script:
   1. reports spikes/bin per session for CA1 and CA1+CA2 at several bins, to establish
