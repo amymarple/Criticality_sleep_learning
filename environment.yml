@@ -1,0 +1,26 @@
+name: criticality
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - numba
+  - statsmodels
+  - umap-learn
+  - networkx
+  - h5py
+  - tqdm
+  - joblib
+  - ipykernel
+  - jupyterlab
+  - pip
+  - pip:
+      - powerlaw
+      - neo
+      - elephant

@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "criticality"
+version = "0.1.0"
+description = "Branching ratio (MR estimator) and neuronal avalanches, as used in Chang, Chen et al."
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "scipy",
+    "pandas",
+    "powerlaw",
+]
+
+[tool.setuptools]
+packages = ["criticality"]

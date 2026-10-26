@@ -1,0 +1,5 @@
+# fetched from the authors repository by methods/criticality/get_wiltingpriesemann.py
+methods/criticality/WiltingPriesemann.py
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
